@@ -13,22 +13,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User{
-  id Int @id @default(autoincrement())
-  email String? @unique
-  name    String
-  username String @unique @db.VarChar(100)
-  password String 
+  id              Int @id @default(autoincrement())
+  email           String? @unique
+  name            String
+  username        String @unique @db.VarChar(100)
+  password        String 
 
-  isActive  Boolean   @default(true)
+  isActive        Boolean   @default(true)
+  branchId        String?
 
-  createdAt   DateTime    @default(now())
-  updateAt    DateTime?    @updatedAt
 
-  roles        UserRole[]
- 
+  createdAt       DateTime    @default(now())
+  updateAt        DateTime?    @updatedAt
+
+
+  branch          Branch? @relation(fields: [branchId], references: [id])
+  roles           UserRole[]
+  uploadedBatches ImportBatch[]
+  auditLogs       AuditLog[]
 
   @@map("user")
+}
+
+model Branch {
+  id              String   @id @default(uuid())
+  
+  branchCode      String   @unique
+  branchName      String
+  users           User[]
+  importBatches   ImportBatch[]
+  clients         Client[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 
@@ -69,4 +88,283 @@ model RolePermission {
   permission Permission @relation(fields: [permissionId], references: [id])
 
   @@id([roleId, permissionId])
+}
+
+
+
+
+enum PenType {
+  SD
+  EC
+  RT
+}
+
+
+model CicData {
+  id              Int           @id @default(autoincrement())
+  accountId       Int
+  firstName       String
+  lastName        String
+  middleName      String
+  // bank            String
+  // birthDate       DateTime?      @db.Date
+  // inDate          DateTime?     @db.Date
+  // accountPension  Decimal?      @db.Decimal(10,2) 
+  // pension         Decimal       @db.Decimal(10,2) 
+  // branch          String
+  // change          Decimal       @default(0.00) @db.Decimal(10,2)
+  // balanceAmount   Decimal       @default(0.00) @db.Decimal(10,2)
+  // pentionType     PenType
+  // mark            Boolean       @default(false)
+  // balanceTerm     Int           @default(0)
+
+}
+
+
+enum ReportingStatus {
+  OPEN
+  CLOSED
+  FINALIZED
+}
+
+model ReportingPeriod {
+  id              String   @id @default(uuid())
+
+  month           Int
+  year            Int
+
+  status          ReportingStatus
+
+  batches         ImportBatch[]
+  snapshots       ContractMonthlySnapshot[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([month, year])
+}
+
+
+enum ImportStatus {
+  UPLOADED
+  PROCESSING
+  PENDING_COMPLETION
+  FOR_REVIEW
+  RETURNED
+  APPROVED
+  FINALIZED
+}
+
+model ImportBatch {
+  id                  String   @id @default(uuid())
+
+  branchId            String
+  reportingPeriodId   String
+  uploadedById        Int
+
+  fileName            String
+  originalFilePath    String
+
+  status              ImportStatus
+
+  totalRecords        Int      @default(0)
+  completedRecords    Int      @default(0)
+  errorRecords        Int      @default(0)
+
+  branch              Branch @relation(fields: [branchId], references: [id])
+
+  reportingPeriod     ReportingPeriod @relation(fields: [reportingPeriodId], references: [id])
+
+  uploadedBy          User  @relation(fields: [uploadedById], references: [id])
+
+  stagingClients      StagingClient[]
+  stagingContracts    StagingContract[]
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([branchId, reportingPeriodId])
+}
+
+
+enum ValidationStatus {
+  COMPLETE
+  INCOMPLETE
+  WITH_ERRORS
+}
+
+model StagingClient {
+  id                    String   @id @default(uuid())
+
+  batchId               String
+
+  providerSubjectNo     String?
+
+  firstName             String?
+  middleName            String?
+  lastName              String?
+
+  birthDate             DateTime?
+
+  gender                String?
+  civilStatus           String?
+
+  address               String?
+  tinNumber             String?
+
+
+  validationStatus      ValidationStatus
+
+  isConfirmed           Boolean @default(false)
+
+  batch                 ImportBatch  @relation(fields: [batchId], references: [id])
+
+  stagingContracts      StagingContract[]
+
+  validationErrors      ValidationError[]
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+
+model StagingContract {
+  id                    String   @id @default(uuid())
+
+  batchId               String
+  stagingClientId       String
+
+  contractNo            String?
+
+  contractStatus        String?
+
+  financedAmount        Decimal? @db.Decimal(18,2)
+
+  contractStartDate     DateTime?
+  contractEndDate       DateTime?
+
+  lastPaymentDate       DateTime?
+
+  validationStatus      ValidationStatus
+
+  isConfirmed Boolean @default(false)
+
+  batch                 ImportBatch @relation(fields: [batchId], references: [id])
+
+  stagingClient         StagingClient @relation(fields: [stagingClientId], references: [id])
+  
+
+  validationErrors      ValidationError[]
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+
+model ValidationError {
+  id                    String   @id @default(uuid())
+
+  stagingClientId       String?
+  stagingContractId     String?
+
+  fieldName             String
+  errorMessage          String
+
+  stagingClient         StagingClient?  @relation(fields: [stagingClientId], references: [id])
+
+  stagingContract       StagingContract?  @relation(fields: [stagingContractId], references: [id])
+
+  createdAt             DateTime @default(now())
+}
+
+
+model Client {
+  id                    String   @id @default(uuid())
+
+  branchId              String
+
+  providerSubjectNo     String?  @unique
+
+  firstName             String
+  middleName            String?
+  lastName              String
+
+  birthDate             DateTime?
+
+  gender                String?
+  civilStatus           String?
+
+  address               String?
+  tinNumber             String?
+
+  branch                Branch @relation(fields: [branchId], references: [id])
+
+  contracts             Contract[]
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model Contract {
+  id                    String   @id @default(uuid())
+
+  clientId              String
+
+  contractNo            String   @unique
+
+  client                Client  @relation(fields: [clientId], references: [id])
+
+  monthlySnapshots      ContractMonthlySnapshot[]
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+enum ContractStatus {
+  CURRENT
+  PAST_DUE
+  RESTRUCTURED
+  CLOSED
+  WRITTEN_OFF
+}
+
+model ContractMonthlySnapshot {
+  id                    String   @id @default(uuid())
+
+  contractId            String
+  reportingPeriodId     String
+
+  contractStatus        ContractStatus
+
+  financedAmount        Decimal? @db.Decimal(18,2)
+  balanceAmount         Decimal? @db.Decimal(18,2)
+
+  lastPaymentDate       DateTime?
+
+  contract              Contract @relation(fields: [contractId], references: [id])
+
+  reportingPeriod       ReportingPeriod @relation(fields: [reportingPeriodId], references: [id])
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([contractId, reportingPeriodId])
+}
+
+model AuditLog {
+  id                    String   @id @default(uuid())
+
+  userId                Int
+
+  module                String
+  action                String
+
+  referenceId           String?
+
+  oldValues             Json?
+  newValues             Json?
+
+  user                  User  @relation(fields: [userId], references: [id])
+
+  createdAt             DateTime @default(now())
 }

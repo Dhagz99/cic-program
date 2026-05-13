@@ -34,7 +34,7 @@ export default function LoginPage() {
     await mutateAsync(data);
     toast.success("Login successful")
     await refreshUser();
-    router.replace("/");
+    router.replace("/dashboard");
   };
 
   return (

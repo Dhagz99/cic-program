@@ -1,8 +1,6 @@
 import { MenuSection } from "@repo/shared"
 import {
     LayoutDashboard,
-    Calculator,
-    Archive,
     Users,
     WalletCards
   } from "lucide-react"
@@ -27,6 +25,12 @@ export const MENU_SECTIONS: MenuSection[] = [
         {
           label: "Loans",
           path: "/loans",
+          icon: WalletCards,
+          permission:"ADMIN_MANAGE"
+        },
+        {
+          label: "Initialize",
+          path: "/initialize",
           icon: WalletCards,
           permission:"ADMIN_MANAGE"
         },

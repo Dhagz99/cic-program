@@ -4,6 +4,4 @@ import { me, logout } from "./auth.controller";
 
 const router = Router();
 
-
-
 export default router;

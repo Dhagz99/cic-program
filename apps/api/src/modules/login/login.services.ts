@@ -53,7 +53,8 @@ export async function loginUser(params: LoginDTO) {
     id: user.id,
     username: user.username,
     roles,
-    permissions
+    permissions,
+    branchId: user.branchId
   })
 
   return {
@@ -62,7 +63,8 @@ export async function loginUser(params: LoginDTO) {
       id: user.id,
       username: user.username,
       roles,
-      permissions
+      permissions,
+      branchId: user.branchId
     }
   }
 }
@@ -70,7 +72,7 @@ export async function loginUser(params: LoginDTO) {
 
 
 export async function createUserService(data: RegisterSchema) {
-  const { email, name, username, password, roleIds } = data
+  const { email, name, username, password, roleIds, branchId } = data
 
   const existing = await prisma.user.findFirst({
     where: {
@@ -103,10 +105,11 @@ export async function createUserService(data: RegisterSchema) {
       data: {
         email,
         name,
+        branchId,
         username,
         password: hashedPassword,
         isActive: true,
-    }
+      }
     })
 
     await tx.userRole.createMany({

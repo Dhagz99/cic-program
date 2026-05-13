@@ -13,8 +13,8 @@ export interface AuthPayload {
   id: number
   username: string
   roles:string
-
-  company_id?: string | null
+  
+  branchId?: string | null
   permissions?: string[]
 }
 
@@ -53,7 +53,7 @@ export function authenticateToken(
       username: decoded.username,
       roles: decoded.roles,
 
-      company_id: decoded.company_id ?? null,   
+      branchId: decoded.branchId ?? null,   
       permissions: decoded.permissions ?? []   
     }
 
