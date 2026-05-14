@@ -15,7 +15,7 @@ datasource db {
 
 
 model User{
-  id              Int @id @default(autoincrement())
+  id              String  @id @default(uuid())
   email           String? @unique
   name            String
   username        String @unique @db.VarChar(100)
@@ -60,7 +60,7 @@ model Branch {
 
 
 model Role {
-  id        Int       @id @default(autoincrement())
+  id        String       @id @default(uuid())
   name      String    @unique
   description  String?
 
@@ -69,8 +69,8 @@ model Role {
 }
 
 model UserRole {
-  userId    Int
-  roleId   Int
+  userId    String
+  roleId   String
 
 
   user    User @relation(fields: [userId], references: [id])
@@ -81,7 +81,7 @@ model UserRole {
 
 
 model Permission {
-  id   Int    @id @default(autoincrement())
+  id   String      @id @default(uuid())
   code String @unique
   name String
 
@@ -89,8 +89,8 @@ model Permission {
 }
 
 model RolePermission {
-  roleId       Int
-  permissionId Int
+  roleId       String
+  permissionId String
 
   role       Role       @relation(fields: [roleId], references: [id])
   permission Permission @relation(fields: [permissionId], references: [id])
@@ -109,7 +109,7 @@ enum PenType {
 
 
 model CicData {
-  id              Int           @id @default(autoincrement())
+  id              String             @id @default(uuid())
   accountId       Int
   firstName       String
   lastName        String
@@ -169,7 +169,7 @@ model ImportBatch {
 
   branchId            String
   reportingPeriodId   String
-  uploadedById        Int
+  uploadedById        String
 
   fileName            String
   originalFilePath    String
@@ -181,18 +181,18 @@ model ImportBatch {
   errorRecords        Int      @default(0)
 
   submittedAt         DateTime?
-  submittedById       Int?
+  submittedById       String?
 
   approvedAt          DateTime?
-  approvedById        Int?
+  approvedById        String?
 
   returnedAt          DateTime?
-  returnedById        Int?
+  returnedById        String?
 
   returnReason        String?
 
   rejectedAt          DateTime?
-  rejectedById        Int?
+  rejectedById        String?
 
   rejectionReason     String?
 
@@ -390,7 +390,7 @@ model ContractMonthlySnapshot {
 model AuditLog {
   id                    String   @id @default(uuid())
 
-  userId                Int
+  userId                String
 
   module                String
   action                String

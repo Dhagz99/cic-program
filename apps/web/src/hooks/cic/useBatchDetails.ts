@@ -1,10 +1,11 @@
 "use client";
 
-import { useQuery }
-from "@tanstack/react-query";
+import {
+   useQuery
+} from "@tanstack/react-query";
 
 import {
-   getBatchById
+   getBatchDetails
 } from "@/services/cic/batch.service";
 
 export const useBatchDetails =
@@ -20,9 +21,7 @@ export const useBatchDetails =
       ],
 
       queryFn: () =>
-         getBatchById(batchId),
-
-      enabled: !!batchId
+         getBatchDetails(batchId)
 
    });
 

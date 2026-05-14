@@ -8,11 +8,8 @@ export const createUserSchema = z.object({
     password: z.string().min(8),
   
     roleIds: z
-      .array(z.number().int().positive())
+      .array(z.string())
       .min(1, "At least one role is required"),
-
-   
-
   })
 
 

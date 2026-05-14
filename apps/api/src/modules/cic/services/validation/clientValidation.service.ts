@@ -19,16 +19,6 @@ export const validateClient = (
         });
   
      }
-
-     if (!client.middleName) {
-
-      errors.push({
-         fieldName: "middleName",
-         errorMessage:
-            "Name required"
-      });
-
-   }
  
     /*
     --------------------------------
@@ -61,6 +51,23 @@ export const validateClient = (
        });
  
     }
+
+
+    if (!client.gender) {
+
+      errors.push({
+         fieldName: "gender",
+         errorMessage: "Gender required"
+      });
+   }
+
+   if (!client.civilStatus) {
+
+      errors.push({
+         fieldName: "civilStatus",
+         errorMessage: "Civil status required"
+      });
+   }
  
     return errors;
  };

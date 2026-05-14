@@ -1,14 +1,15 @@
 "use client";
 
-import { useParams }
-from "next/navigation";
+import {
+   useParams
+} from "next/navigation";
 
 import {
    useBatchDetails
 } from "@/hooks/cic/useBatchDetails";
 
-import BatchStatusBadge
-from "@/components/cic/shared/BatchStatusBadge";
+import ClientCard
+from "@/components/cic/staging/ClientCard";
 
 export default function BatchDetailsPage() {
 
@@ -20,10 +21,9 @@ export default function BatchDetailsPage() {
 
    const {
       data,
-      isLoading
-   } = useBatchDetails(
-      batchId
-   );
+      isLoading,
+      refetch
+   } = useBatchDetails(batchId);
 
    if (isLoading) {
 
@@ -33,15 +33,25 @@ export default function BatchDetailsPage() {
 
    return (
 
-      <div className="p-6">
+      <div className="
+         p-6
+         space-y-6
+      ">
 
-         <h1 className="
-            text-2xl
-            font-bold
-            mb-6
+         <div className="
+            flex
+            justify-between
+            items-center
          ">
-            Batch Details
-         </h1>
+
+            <h1 className="
+               text-3xl
+               font-bold
+            ">
+               Batch Details
+            </h1>
+
+         </div>
 
          <div className="
             space-y-6
@@ -49,85 +59,15 @@ export default function BatchDetailsPage() {
 
             {data?.map((client: any) => (
 
-               <div
+               <ClientCard
+
                   key={client.id}
-                  className="
-                     border
-                     rounded
-                     p-4
-                  "
-               >
 
-                  <div className="
-                     flex
-                     justify-between
-                     mb-4
-                  ">
+                  client={client}
 
-                     <h2 className="
-                        font-bold
-                     ">
-                        {client.firstName}
-                        {" "}
-                        {client.lastName}
-                     </h2>
+                  refresh={refetch}
 
-                     <BatchStatusBadge
-                        status={
-                           client.validationStatus
-                        }
-                     />
-
-                  </div>
-
-                  <div className="
-                     mb-4
-                  ">
-
-                     <p>
-                        TIN:
-                        {" "}
-                        {client.tinNumber}
-                     </p>
-
-                     <p>
-                        Address:
-                        {" "}
-                        {client.address}
-                     </p>
-
-                  </div>
-
-                  {
-                     client.validationErrors
-                     ?.length > 0 && (
-
-                        <div className="
-                           bg-red-100
-                           p-3
-                           rounded
-                           mb-4
-                        ">
-
-                           {
-                              client.validationErrors
-                              .map((error: any) => (
-
-                                 <div
-                                    key={error.id}
-                                 >
-                                    {error.errorMessage}
-                                 </div>
-
-                              ))
-                           }
-
-                        </div>
-
-                     )
-                  }
-
-               </div>
+               />
 
             ))}
 

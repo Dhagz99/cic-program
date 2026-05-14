@@ -134,13 +134,13 @@ export async function createUserService(data: RegisterSchema) {
 
 
 export async function updateUserService(
-  userId: number,
+  userId: string,
   data: {
     email?: string
     name?: string
     username?: string
     password?: string
-    roleIds?: number[]
+    roleIds?: string[]
     company_id?: string | null
   }
 ) {
@@ -251,8 +251,8 @@ export async function getUsersService() {
 }
 
 export async function updateRolePermissionsService(
-  roleId: number,
-  permissionIds: number[]
+  roleId: string,
+  permissionIds: string[]
 ) {
   return prisma.$transaction(async tx => {
     const role = await tx.role.findUnique({ where: { id: roleId } })

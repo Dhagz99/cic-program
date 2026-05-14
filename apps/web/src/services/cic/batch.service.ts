@@ -65,6 +65,20 @@ async (
 
 };
 
+
+export const getBatchDetails =
+async (
+   batchId: string
+) => {
+
+   const response =
+      await api.get(
+         `/staging/batch/${batchId}`
+      );
+
+   return response.data;
+
+};
 /*
 -----------------------------------
 UPDATE CLIENT
@@ -182,7 +196,7 @@ async (
 
    const response =
       await api.post(
-         `/api/cic/batch/${batchId}/approve`
+         `/cic/batch/${batchId}/approve`
       );
 
    return response.data;

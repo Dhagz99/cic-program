@@ -36,8 +36,8 @@ export default function CreateUserPage() {
         name: "",
         username: "",
         password: "",
-        branchId:"bdefdd76-9294-4cf7-95a5-9c4f3ccdbda5",
-        roleIds: [1]
+        branchId:"7b22315a-f169-46df-ad09-27851de3635a",
+        roleIds: ["a81e6815-5c49-4523-a9a7-aa1eb83cf48a"]
       }
     })
 

@@ -1,8 +1,11 @@
 -- CreateEnum
+CREATE TYPE "PenType" AS ENUM ('SD', 'EC', 'RT');
+
+-- CreateEnum
 CREATE TYPE "ReportingStatus" AS ENUM ('OPEN', 'CLOSED', 'FINALIZED');
 
 -- CreateEnum
-CREATE TYPE "ImportStatus" AS ENUM ('UPLOADED', 'PROCESSING', 'PENDING_COMPLETION', 'FOR_REVIEW', 'RETURNED', 'APPROVED', 'FINALIZED');
+CREATE TYPE "ImportStatus" AS ENUM ('UPLOADED', 'PROCESSING', 'PENDING_COMPLETION', 'FOR_REVIEW', 'RETURNED', 'APPROVED', 'FINALIZED', 'REJECTED');
 
 -- CreateEnum
 CREATE TYPE "ValidationStatus" AS ENUM ('COMPLETE', 'INCOMPLETE', 'WITH_ERRORS');
@@ -10,8 +13,20 @@ CREATE TYPE "ValidationStatus" AS ENUM ('COMPLETE', 'INCOMPLETE', 'WITH_ERRORS')
 -- CreateEnum
 CREATE TYPE "ContractStatus" AS ENUM ('CURRENT', 'PAST_DUE', 'RESTRUCTURED', 'CLOSED', 'WRITTEN_OFF');
 
--- AlterTable
-ALTER TABLE "user" ADD COLUMN     "branchId" TEXT;
+-- CreateTable
+CREATE TABLE "user" (
+    "id" TEXT NOT NULL,
+    "email" TEXT,
+    "name" TEXT NOT NULL,
+    "username" VARCHAR(100) NOT NULL,
+    "password" TEXT NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "branchId" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updateAt" TIMESTAMP(3),
+
+    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Branch" (
@@ -22,6 +37,51 @@ CREATE TABLE "Branch" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Branch_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Role" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+
+    CONSTRAINT "Role_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "UserRole" (
+    "userId" TEXT NOT NULL,
+    "roleId" TEXT NOT NULL,
+
+    CONSTRAINT "UserRole_pkey" PRIMARY KEY ("userId","roleId")
+);
+
+-- CreateTable
+CREATE TABLE "Permission" (
+    "id" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "Permission_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "RolePermission" (
+    "roleId" TEXT NOT NULL,
+    "permissionId" TEXT NOT NULL,
+
+    CONSTRAINT "RolePermission_pkey" PRIMARY KEY ("roleId","permissionId")
+);
+
+-- CreateTable
+CREATE TABLE "CicData" (
+    "id" TEXT NOT NULL,
+    "accountId" INTEGER NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
+    "middleName" TEXT NOT NULL,
+
+    CONSTRAINT "CicData_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -41,13 +101,23 @@ CREATE TABLE "ImportBatch" (
     "id" TEXT NOT NULL,
     "branchId" TEXT NOT NULL,
     "reportingPeriodId" TEXT NOT NULL,
-    "uploadedById" INTEGER NOT NULL,
+    "uploadedById" TEXT NOT NULL,
     "fileName" TEXT NOT NULL,
     "originalFilePath" TEXT NOT NULL,
     "status" "ImportStatus" NOT NULL,
     "totalRecords" INTEGER NOT NULL DEFAULT 0,
     "completedRecords" INTEGER NOT NULL DEFAULT 0,
     "errorRecords" INTEGER NOT NULL DEFAULT 0,
+    "submittedAt" TIMESTAMP(3),
+    "submittedById" TEXT,
+    "approvedAt" TIMESTAMP(3),
+    "approvedById" TEXT,
+    "returnedAt" TIMESTAMP(3),
+    "returnedById" TEXT,
+    "returnReason" TEXT,
+    "rejectedAt" TIMESTAMP(3),
+    "rejectedById" TEXT,
+    "rejectionReason" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -62,6 +132,7 @@ CREATE TABLE "StagingClient" (
     "firstName" TEXT,
     "middleName" TEXT,
     "lastName" TEXT,
+    "suffix" TEXT,
     "birthDate" TIMESTAMP(3),
     "gender" TEXT,
     "civilStatus" TEXT,
@@ -87,6 +158,7 @@ CREATE TABLE "StagingContract" (
     "contractEndDate" TIMESTAMP(3),
     "lastPaymentDate" TIMESTAMP(3),
     "validationStatus" "ValidationStatus" NOT NULL,
+    "isConfirmed" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -113,6 +185,7 @@ CREATE TABLE "Client" (
     "firstName" TEXT NOT NULL,
     "middleName" TEXT,
     "lastName" TEXT NOT NULL,
+    "suffix" TEXT,
     "birthDate" TIMESTAMP(3),
     "gender" TEXT,
     "civilStatus" TEXT,
@@ -153,7 +226,7 @@ CREATE TABLE "ContractMonthlySnapshot" (
 -- CreateTable
 CREATE TABLE "AuditLog" (
     "id" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
     "module" TEXT NOT NULL,
     "action" TEXT NOT NULL,
     "referenceId" TEXT,
@@ -165,7 +238,19 @@ CREATE TABLE "AuditLog" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_username_key" ON "user"("username");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Branch_branchCode_key" ON "Branch"("branchCode");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Role_name_key" ON "Role"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Permission_code_key" ON "Permission"("code");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ReportingPeriod_month_year_key" ON "ReportingPeriod"("month", "year");
@@ -186,6 +271,18 @@ CREATE UNIQUE INDEX "ContractMonthlySnapshot_contractId_reportingPeriodId_key" O
 ALTER TABLE "user" ADD CONSTRAINT "user_branchId_fkey" FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "UserRole" ADD CONSTRAINT "UserRole_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserRole" ADD CONSTRAINT "UserRole_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RolePermission" ADD CONSTRAINT "RolePermission_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RolePermission" ADD CONSTRAINT "RolePermission_permissionId_fkey" FOREIGN KEY ("permissionId") REFERENCES "Permission"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "ImportBatch" ADD CONSTRAINT "ImportBatch_branchId_fkey" FOREIGN KEY ("branchId") REFERENCES "Branch"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -193,6 +290,18 @@ ALTER TABLE "ImportBatch" ADD CONSTRAINT "ImportBatch_reportingPeriodId_fkey" FO
 
 -- AddForeignKey
 ALTER TABLE "ImportBatch" ADD CONSTRAINT "ImportBatch_uploadedById_fkey" FOREIGN KEY ("uploadedById") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ImportBatch" ADD CONSTRAINT "ImportBatch_submittedById_fkey" FOREIGN KEY ("submittedById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ImportBatch" ADD CONSTRAINT "ImportBatch_approvedById_fkey" FOREIGN KEY ("approvedById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ImportBatch" ADD CONSTRAINT "ImportBatch_returnedById_fkey" FOREIGN KEY ("returnedById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ImportBatch" ADD CONSTRAINT "ImportBatch_rejectedById_fkey" FOREIGN KEY ("rejectedById") REFERENCES "user"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "StagingClient" ADD CONSTRAINT "StagingClient_batchId_fkey" FOREIGN KEY ("batchId") REFERENCES "ImportBatch"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
