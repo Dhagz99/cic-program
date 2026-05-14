@@ -1,11 +1,15 @@
 "use client";
 
-import { useParams }
-from "next/navigation";
+import {
+   useParams
+} from "next/navigation";
 
 import {
-   useApproveBatch
-} from "@/hooks/cic/useApproveBatch";
+   useBatchReview
+} from "@/hooks/cic/useBatchReview";
+
+import ClientTable
+from "@/components/cic/review/ClientTable";
 
 export default function ReviewPage() {
 
@@ -15,39 +19,39 @@ export default function ReviewPage() {
    const batchId =
       params.batchId as string;
 
-   const approveBatch =
-      useApproveBatch();
+   const {
+
+      data,
+
+      isLoading,
+
+      refetch
+
+   } = useBatchReview(batchId);
+
+   console.log("data: ", data )
+
+   if (isLoading) {
+
+      return <div>Loading...</div>;
+
+   }
 
    return (
 
-      <div className="p-6">
+      <div className="
+         p-6
+         space-y-6
+      ">
 
-         <h1 className="
-            text-2xl
-            font-bold
-            mb-6
-         ">
-            Review Batch
-         </h1>
+      
+         <ClientTable
 
-         <button
+            clients={data || []}
 
-            onClick={() =>
-               approveBatch.mutate(
-                  batchId
-               )
-            }
+            refresh={refetch}
 
-            className="
-               bg-green-600
-               text-white
-               px-4
-               py-2
-               rounded
-            "
-         >
-            Approve Batch
-         </button>
+         />
 
       </div>
 

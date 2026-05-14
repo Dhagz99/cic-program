@@ -75,7 +75,7 @@ export default function UploadPage() {
             );
 
          router.push(
-            `/cic/batches/${response.batchId}`
+            `/cic/batches/${response.batchId}/review`
          );
 
       } catch (error: unknown) {
