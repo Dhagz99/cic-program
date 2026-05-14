@@ -30,7 +30,7 @@ export const MENU_SECTIONS: MenuSection[] = [
         },
         {
           label: "Initialize",
-          path: "/initialize",
+          path: "/cic/upload",
           icon: WalletCards,
           permission:"ADMIN_MANAGE"
         },

@@ -34,6 +34,14 @@ model User{
   uploadedBatches ImportBatch[]
   auditLogs       AuditLog[]
 
+  submittedBatches ImportBatch[] @relation("SubmittedBy")
+
+  approvedBatches ImportBatch[] @relation("ApprovedBy")     
+
+  returnedBatches ImportBatch[]   @relation("ReturnedBy")
+
+  rejectedBatches ImportBatch[]  @relation("BatchRejectedBy")
+
   @@map("user")
 }
 
@@ -153,6 +161,7 @@ enum ImportStatus {
   RETURNED
   APPROVED
   FINALIZED
+  REJECTED
 }
 
 model ImportBatch {
@@ -171,11 +180,35 @@ model ImportBatch {
   completedRecords    Int      @default(0)
   errorRecords        Int      @default(0)
 
+  submittedAt         DateTime?
+  submittedById       Int?
+
+  approvedAt          DateTime?
+  approvedById        Int?
+
+  returnedAt          DateTime?
+  returnedById        Int?
+
+  returnReason        String?
+
+  rejectedAt          DateTime?
+  rejectedById        Int?
+
+  rejectionReason     String?
+
   branch              Branch @relation(fields: [branchId], references: [id])
 
   reportingPeriod     ReportingPeriod @relation(fields: [reportingPeriodId], references: [id])
 
   uploadedBy          User  @relation(fields: [uploadedById], references: [id])
+
+  submittedBy User? @relation(  "SubmittedBy", fields: [submittedById],  references: [id] )
+
+  approvedBy User? @relation("ApprovedBy", fields: [approvedById], references: [id] )
+
+  returnedBy User?@relation( "ReturnedBy", fields: [returnedById],references: [id])
+
+  rejectedBy User?  @relation( "BatchRejectedBy", fields: [rejectedById],  references: [id] )
 
   stagingClients      StagingClient[]
   stagingContracts    StagingContract[]
@@ -203,6 +236,7 @@ model StagingClient {
   firstName             String?
   middleName            String?
   lastName              String?
+  suffix                String?
 
   birthDate             DateTime?
 
@@ -288,6 +322,8 @@ model Client {
   firstName             String
   middleName            String?
   lastName              String
+
+  suffix                String?
 
   birthDate             DateTime?
 

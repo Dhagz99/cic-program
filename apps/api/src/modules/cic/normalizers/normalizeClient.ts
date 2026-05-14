@@ -1,9 +1,63 @@
 import { parseDate }
-   from "../utils/parseDate";
+from "../utils/parseDate";
+
+import { parseFullName }
+from "../utils/parseFullName";
+
+import { decodeDbfText }
+from "../utils/decodeDbfText";
 
 export const normalizeClient = (
    row: any
 ) => {
+
+   /*
+   -----------------------------------
+   DECODE TEXT FIELDS
+   -----------------------------------
+   */
+
+   const decodedName =
+      decodeDbfText(
+         row.NAME
+      );
+
+   const decodedAdd1 =
+      decodeDbfText(
+         row.ADD1
+      );
+
+   const decodedAdd2 =
+      decodeDbfText(
+         row.ADD2
+      );
+
+   const decodedBranch =
+      decodeDbfText(
+         row.BRANCH
+      );
+
+   const decodedBank =
+      decodeDbfText(
+         row.BANK
+      );
+
+   /*
+   -----------------------------------
+   PARSE NAME
+   -----------------------------------
+   */
+
+   const parsedName =
+      parseFullName(
+         decodedName
+      );
+
+   /*
+   -----------------------------------
+   RETURN NORMALIZED CLIENT
+   -----------------------------------
+   */
 
    return {
 
@@ -11,7 +65,19 @@ export const normalizeClient = (
          String(row.ID),
 
       fullName:
-         row.NAME?.trim(),
+         decodedName,
+
+      firstName:
+         parsedName.firstName,
+
+      middleName:
+         parsedName.middleName,
+
+      lastName:
+         parsedName.lastName,
+
+      suffix:
+         parsedName.suffix,
 
       birthDate:
          parseDate(
@@ -19,20 +85,20 @@ export const normalizeClient = (
          ),
 
       address1:
-         row.ADD1?.trim(),
+         decodedAdd1,
 
       address2:
-         row.ADD2?.trim(),
+         decodedAdd2,
 
       address:
-         `${row.ADD1 || ""}
-          ${row.ADD2 || ""}`.trim(),
+         `${decodedAdd1 || ""}
+          ${decodedAdd2 || ""}`.trim(),
 
       branch:
-         row.BRANCH?.trim(),
+         decodedBranch,
 
       bank:
-         row.BANK?.trim(),
+         decodedBank,
 
       pensionAmount:
          row.PENSION,
@@ -51,6 +117,7 @@ export const normalizeClient = (
 
       grouping:
          row.GROUPING
+
    };
 
 };

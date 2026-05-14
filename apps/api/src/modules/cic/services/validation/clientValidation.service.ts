@@ -19,6 +19,16 @@ export const validateClient = (
         });
   
      }
+
+     if (!client.middleName) {
+
+      errors.push({
+         fieldName: "middleName",
+         errorMessage:
+            "Name required"
+      });
+
+   }
  
     /*
     --------------------------------

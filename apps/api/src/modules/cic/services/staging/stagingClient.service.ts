@@ -18,26 +18,38 @@ export const saveStagingClient = async ({
    */
 
    const stagingClient =
-      await prisma.stagingClient.create({
-         data: {
+   await prisma.stagingClient.create({
 
-            batchId,
+      data: {
 
-            providerSubjectNo:
-               client.providerSubjectNo,
+         batchId,
 
-            firstName:
-               client.fullName,
+         providerSubjectNo:
+            client.providerSubjectNo,
 
-            birthDate:
-               client.birthDate,
+         firstName:
+            client.firstName,
 
-            address:
-               client.address,
+         middleName:
+            client.middleName,
 
-            validationStatus
-         }
-      });
+         lastName:
+            client.lastName,
+         
+         suffix:
+            client.suffix,
+
+         birthDate:
+            client.birthDate,
+
+         address:
+            client.address,
+
+         validationStatus
+
+      }
+
+   });
 
    /*
    --------------------------------
