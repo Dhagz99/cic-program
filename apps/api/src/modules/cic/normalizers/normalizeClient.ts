@@ -91,8 +91,13 @@ export const normalizeClient = (
          decodedAdd2,
 
       address:
-         `${decodedAdd1 || ""}
-          ${decodedAdd2 || ""}`.trim(),
+         [
+            decodedAdd1?.trim(),
+            decodedAdd2?.trim()
+         ]
+            .filter(Boolean)
+            .join(" "),
+
 
       branch:
          decodedBranch,
@@ -108,12 +113,6 @@ export const normalizeClient = (
 
       sssNo:
          row.SSSNO,
-
-      sss:
-         row.SSS,
-
-      gsis:
-         row.GSIS,
 
       grouping:
          row.GROUPING

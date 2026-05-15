@@ -44,6 +44,13 @@ export const saveStagingClient = async ({
 
          address:
             client.address,
+         address2: 
+            client.address,
+         
+         identificationType:
+            client.grouping,
+         identificationNumber:
+            client.sssNo,   
 
          validationStatus
 

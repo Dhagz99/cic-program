@@ -429,7 +429,7 @@ export default function ClientTable({
                         rounded-xl
                         px-4
                         py-2
-                        w-[300px]
+                        w-75
                         outline-none
                         focus:ring-2
                         focus:ring-blue-500
@@ -575,7 +575,7 @@ export default function ClientTable({
 
                <div className="
                   overflow-auto
-                  max-h-[700px]
+                  max-h-175
                ">
 
                   <table className="

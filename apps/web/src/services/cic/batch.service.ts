@@ -1,4 +1,5 @@
 import api from "@/lib/axios";
+import { UpdateClientDTO } from "@repo/shared";
 
 /*
 -----------------------------------
@@ -88,12 +89,12 @@ UPDATE CLIENT
 export const updateClient =
 async (
    clientId: string,
-   data: any
+   data: UpdateClientDTO
 ) => {
 
    const response =
       await api.put(
-         `/api/staging/client/${clientId}`,
+         `/staging/client/${clientId}`,
          data
       );
 

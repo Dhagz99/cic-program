@@ -226,28 +226,52 @@ enum ValidationStatus {
   WITH_ERRORS
 }
 
+enum AddressType {
+  MI
+  AI
+}
+
+
+
 model StagingClient {
-  id                    String   @id @default(uuid())
+  id                                String    @id @default(uuid())
+  recordType                        String    @default("ID")
+  batchId                           String
+  providerCode                      String?   @default("PF007980")
+  branchCode                        String?
+  subjectRefeerenceDate             DateTime?
+  providerSubjectNo                 String?
+  title                             String?
 
-  batchId               String
+  firstName                         String?
+  middleName                        String?
+  lastName                          String?
+  suffix                            String?
+  nickname                          String?
+  
+  prevLastName                      String?
+  gender                            String?
+  birthDate                         DateTime 
+  placeOfBirth                      String?
+  countryOfBirthCode                String?   @default("PH")
+  nationality                       String?   @default("PH")
+  resident                          Boolean?   @default(true)
+  civilStatus                       String?
+  numberOfDependents                Int    @default(0)
 
-  providerSubjectNo     String?
+  addressType                       AddressType    @default(MI)
+  address                           String?
 
-  firstName             String?
-  middleName            String?
-  lastName              String?
-  suffix                String?
+  addressType2                      AddressType    @default(AI)
+  address2                          String?
 
-  birthDate             DateTime?
+  identificationType                String?
+  identificationNumber              String?
 
-  gender                String?
-  civilStatus           String?
+  contactType                       String?
+  contactValue                      String?
 
-  address               String?
-  tinNumber             String?
-
-
-  validationStatus      ValidationStatus
+  validationStatus        ValidationStatus
 
   isConfirmed           Boolean @default(false)
 

@@ -18,12 +18,17 @@ async ({
 
    const updatedClient =
       await prisma.stagingClient.update({
-
          where: {
             id
          },
-
-         data
+         
+         data: {
+            ...data,
+            birthDate:
+               data.birthDate 
+                ? new Date(data.birthDate)
+               : null
+         }
       });
 
    /*

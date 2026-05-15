@@ -60,9 +60,7 @@ async (
    req: Request,
    res: Response
 ) => {
-
    try {
-
       const result =
          await updateStagingClientService({
             id: req.params.id,

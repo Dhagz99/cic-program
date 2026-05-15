@@ -39,14 +39,28 @@ export interface ValidationError {
     lastName: string;
 
     suffix: string | null;
+    
+    placeOfBirth: string | null;
  
     gender: string | null;
  
     civilStatus: string | null;
+
+    numberOfDependents: number;
  
-    tinNumber: string | null;
- 
+   birthDate: string
+
+    addressType: string;
     address: string;
+    addressType2: string;
+    address2: string;
+
+    identificationType: string;
+    identificationNumber: string;
+
+    contactType: string | null;
+    contactValue: string | null;
+
  
     validationStatus: string;
  

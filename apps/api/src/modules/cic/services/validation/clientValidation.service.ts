@@ -68,6 +68,9 @@ export const validateClient = (
          errorMessage: "Civil status required"
       });
    }
+
+
+   
  
     return errors;
  };

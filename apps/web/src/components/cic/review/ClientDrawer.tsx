@@ -9,10 +9,11 @@ import {
 } from "@hookform/resolvers/zod";
 
 
-import {
-   updateClient
-} from "@/services/cic/review.service";
-import { StagingClient, UpdateClientDTO, updateClientSchema } from "@repo/shared";
+
+import { StagingClient, UpdateClientDTO, UpdateClientFormValues, updateClientSchema } from "@repo/shared";
+import { useUpdateClient } from "@/hooks/cic/useStaging";
+import InputField from "@/components/ui/InputField";
+import SelectField from "@/components/ui/SelectField";
 
 type Props = {
 
@@ -31,17 +32,19 @@ export default function ClientDrawer({
 }: Props) {
 
    const {
+      mutateAsync: updateClientMutation
+   } = useUpdateClient();
+
+   const {
 
       register,
 
       handleSubmit,
-
       formState: {
-         errors,
-         isSubmitting
+         errors
       }
 
-   } = useForm<UpdateClientDTO>({
+   } = useForm<UpdateClientFormValues>({
 
       resolver:
          zodResolver(
@@ -55,9 +58,12 @@ export default function ClientDrawer({
 
          middleName:
             client.middleName,
+            
 
          lastName:
             client.lastName,
+         suffix:
+            client.suffix || "",
 
          gender:
             client.gender || "",
@@ -65,8 +71,38 @@ export default function ClientDrawer({
          civilStatus:
             client.civilStatus || "",
 
-         tinNumber:
-            client.tinNumber || ""
+
+         birthDate:
+            client.birthDate
+               ? new Date(client.birthDate)
+                    .toISOString()
+                    .split("T")[0]
+               : "",
+            
+         placeOfBirth:
+               client.placeOfBirth || "",
+
+         numberOfDependents:
+               client.numberOfDependents ,
+
+         addressType:
+            client.addressType || "",
+         address:
+            client.address || "",
+         addressType2:
+            client.addressType2 || "",
+         address2:
+            client.address2 || "",
+         
+         identificationType:
+            client.identificationType || "",
+         identificationNumber:
+            client.identificationNumber || "",
+
+         contactType:
+            client.contactType || "",
+         contactValue:
+            client.contactValue || "",
 
       }
 
@@ -76,16 +112,12 @@ export default function ClientDrawer({
    async (
       values: UpdateClientDTO
    ) => {
-
-      await updateClient(
-         client.id,
+      await updateClientMutation({
+         id: client.id,
          values
-      );
-
+      });
       refresh();
-
       onClose();
-
    };
 
    return (
@@ -95,7 +127,6 @@ export default function ClientDrawer({
          inset-0
          z-50
          bg-black/40
-         backdrop-blur-sm
          flex
          justify-end
       ">
@@ -109,7 +140,7 @@ export default function ClientDrawer({
          <div className="
             h-screen
             w-full
-            max-w-2xl
+            max-w-5xl
             bg-white
             shadow-2xl
             overflow-y-auto
@@ -301,295 +332,212 @@ export default function ClientDrawer({
                </div>
    
                {/*
-               -----------------------------------
-               FORM GRID
-               -----------------------------------
-               */}
-   
-               <div className="
-                  grid
-                  grid-cols-1
-                  md:grid-cols-2
-                  gap-5
+            -----------------------------------
+            FORM GRID
+            -----------------------------------
+            */}
+
+            <div className="
+               grid
+               grid-cols-1
+               md:grid-cols-3
+               gap-5
                ">
    
-                  {/*
-                  FIRST NAME
-                  */}
-   
-                  <div className="
-                     space-y-2
-                  ">
-   
-                     <label className="
-                        text-sm
-                        font-medium
-                        text-gray-700
-                     ">
-                        First Name
-                     </label>
-   
-                     <input
-   
-                        {...register(
-                           "firstName"
-                        )}
-   
-                        className="
-                           w-full
-                           border
-                           rounded-xl
-                           px-4
-                           py-3
-                           outline-none
-                           focus:ring-2
-                           focus:ring-blue-500
-                           focus:border-blue-500
-                        "
+                  {/* FIRST NAME*/}
+                  <InputField
+                     label="First Name"
+                     placeholder="Enter first name"
+                     {...register("firstName")}
+                     error={errors.firstName}
                      />
+
+                  {/*MIDDLE NAME */}
+                  <InputField
+                        label="Middle Name"
+                        placeholder="Enter middle name"
+                        {...register("middleName")}
+                        error={errors.middleName}
+                        />
    
-                  </div>
-   
-                  {/*
-                  MIDDLE NAME
-                  */}
-   
-                  <div className="
-                     space-y-2
-                  ">
-   
-                     <label className="
-                        text-sm
-                        font-medium
-                        text-gray-700
-                     ">
-                        Middle Name
-                     </label>
-   
-                     <input
-   
-                        {...register(
-                           "middleName"
-                        )}
-   
-                        className="
-                           w-full
-                           border
-                           rounded-xl
-                           px-4
-                           py-3
-                           outline-none
-                           focus:ring-2
-                           focus:ring-blue-500
-                           focus:border-blue-500
-                        "
-                     />
-   
-                  </div>
-   
-                  {/*
-                  LAST NAME
-                  */}
-   
-                  <div className="
-                     space-y-2
-                  ">
-   
-                     <label className="
-                        text-sm
-                        font-medium
-                        text-gray-700
-                     ">
-                        Last Name
-                     </label>
-   
-                     <input
-   
-                        {...register(
-                           "lastName"
-                        )}
-   
-                        className="
-                           w-full
-                           border
-                           rounded-xl
-                           px-4
-                           py-3
-                           outline-none
-                           focus:ring-2
-                           focus:ring-blue-500
-                           focus:border-blue-500
-                        "
-                     />
-   
-                  </div>
-   
-                  {/*
-                  SUFFIX
-                  */}
-   
-                  <div className="
-                     space-y-2
-                  ">
-   
-                     <label className="
-                        text-sm
-                        font-medium
-                        text-gray-700
-                     ">
-                        Suffix
-                     </label>
-   
+                  {/* LAST NAME */}
+                  <InputField
+                        label="Last Name"
+                        placeholder="Enter last name"
+                        {...register("lastName")}
+                        error={errors.lastName}
+                        />
+
+                  {/* SUFFIX */}
+                  <InputField
+                        label="Suffix"
+                        placeholder="Enter suffix"
+                        {...register("suffix")}
+                        error={errors.suffix}
+                        />
                  
    
-                  </div>
-   
-                  {/*
-                  GENDER
-                  */}
-   
-                  <div className="
-                     space-y-2
-                  ">
-   
-                     <label className="
-                        text-sm
-                        font-medium
-                        text-gray-700
-                     ">
-                        Gender
-                     </label>
-   
-                     <select
-   
-                        {...register(
-                           "gender"
-                        )}
-   
-                        className="
-                           w-full
-                           border
-                           rounded-xl
-                           px-4
-                           py-3
-                           outline-none
-                           focus:ring-2
-                           focus:ring-blue-500
-                           focus:border-blue-500
-                        "
-                     >
-   
-                        <option value="">
-                           Select Gender
-                        </option>
-   
-                        <option value="M">
-                           Male
-                        </option>
-   
-                        <option value="F">
-                           Female
-                        </option>
-   
-                     </select>
-   
-                  </div>
-   
-                  {/*
-                  CIVIL STATUS
-                  */}
-   
-                  <div className="
-                     space-y-2
-                  ">
-   
-                     <label className="
-                        text-sm
-                        font-medium
-                        text-gray-700
-                     ">
-                        Civil Status
-                     </label>
-   
-                     <select
-   
-                        {...register(
-                           "civilStatus"
-                        )}
-   
-                        className="
-                           w-full
-                           border
-                           rounded-xl
-                           px-4
-                           py-3
-                           outline-none
-                           focus:ring-2
-                           focus:ring-blue-500
-                           focus:border-blue-500
-                        "
-                     >
-   
-                        <option value="">
-                           Select Status
-                        </option>
-   
-                        <option value="SINGLE">
-                           Single
-                        </option>
-   
-                        <option value="MARRIED">
-                           Married
-                        </option>
-   
-                        <option value="WIDOWED">
-                           Widowed
-                        </option>
-   
-                     </select>
-   
-                  </div>
-   
-                  {/*
-                  TIN
-                  */}
-   
-                  <div className="
-                     md:col-span-2
-                     space-y-2
-                  ">
-   
-                     <label className="
-                        text-sm
-                        font-medium
-                        text-gray-700
-                     ">
-                        TIN Number
-                     </label>
-   
-                     <input
-   
-                        {...register(
-                           "tinNumber"
-                        )}
-   
-                        className="
-                           w-full
-                           border
-                           rounded-xl
-                           px-4
-                           py-3
-                           outline-none
-                           focus:ring-2
-                           focus:ring-blue-500
-                           focus:border-blue-500
-                        "
+                  {/* GENDER */}
+                     <SelectField
+                        label="Gender"
+                        {...register("gender")}
+                        error={errors.gender}
+                        options={[
+                        {
+                           label: "Male",
+                           value: "M"
+                        },
+
+                        {
+                           label: "Female",
+                           value: "F"
+                        }
+                     ]}
                      />
-   
-                  </div>
-   
+
+               {/* Birthdate */}
+               <InputField
+                     type="date"
+                     label="Birthdate"
+                     placeholder="Enter birthDate"
+                     {...register("birthDate")}
+                     error={errors.birthDate}
+                     />
+
+               {/* Place of Birth */}
+                 <InputField
+                     label="Place of Birth"
+                     placeholder="Enter place of birth"
+                     containerClassName="col-span-2"
+                     {...register("placeOfBirth")}
+                     error={errors.placeOfBirth}
+                     />
+             
+                 
+                  
+                {/* Civil Status */}
+                <SelectField
+                      label=" Civil Status"
+                      {...register("civilStatus")}
+                      error={errors.civilStatus}
+                     options={[
+                     {
+                        label: "Single",
+                        value: "SINGLE"
+                     },
+
+                     {
+                        label: "Married",
+                        value: "MARRIED"
+                     },
+
+                     {
+                        label: "Widowed",
+                        value: "WIDOWED"
+                     }
+                    ]}
+                  />
+
+
+                  <div
+                       className="
+                       grid
+                       grid-cols-[50%_50%]
+                       gap-4"
+                     >
+
+                  {/* Number of Dependents */}
+                 <InputField
+                     type="number"
+                     label="Number of Dependents"
+                     placeholder="Enter number of dependents"
+                     {...register(
+                        "numberOfDependents",
+                        {
+                           valueAsNumber: true
+                        }
+                     )}
+                     error={errors.numberOfDependents}
+                     />
+                  {/* Address Type */}
+                  <SelectField
+                           label="Address Type"
+                           {...register("addressType")}
+                           error={errors.addressType}
+                           options={[
+                           {
+                              label: "Main Address",
+                              value: "MI"
+                           },
+                           {
+                              label: "Additional  Address",
+                              value: "AI"
+                           }
+                        ]}
+                     />
+
+                     </div>
+
+               {/* Full Address */}
+                  <InputField
+                     containerClassName="col-span-2"
+                     label="Full Address"
+                     {...register("address")}
+                     error={errors.address}
+                  />
+
+                     {/* Address  2 Type */}
+                     <SelectField
+                           label="Address 2 Type"
+                           {...register("addressType2")}
+                           error={errors.addressType2}
+                           options={[
+                           {
+                              label: "Main Address",
+                              value: "MI"
+                           },
+                           {
+                              label: "Additional  Address",
+                              value: "AI"
+                           }
+                        ]}
+                     />
+
+                  {/* Full Address2 */}
+                  <InputField
+                     containerClassName="col-span-2"
+                     label="Full Address 2"
+                     {...register("address2")}
+                     error={errors.address2}
+                  />
+
+                  {/* Identification Type */}
+                  <InputField
+                     label="Identification Type"
+                     {...register("identificationType")}
+                     error={errors.identificationType}
+                  />
+                  {/* Identification Number */}
+                  <InputField
+                     label="Identification Number"
+                     {...register("identificationNumber")}
+                     error={errors.identificationNumber}
+                  />
+
+                  {/* Identification Type */}
+                  <InputField
+                     label="contactType"
+                     {...register("contactType")}
+                     error={errors.contactType}
+                  />
+                  {/* Identification Number */}
+                  <InputField
+                     label="contactValue"
+                     {...register("contactValue")}
+                     error={errors.contactValue}
+                  />
+
                </div>
-   
             </form>
    
             {/*
