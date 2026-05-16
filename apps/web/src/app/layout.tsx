@@ -3,6 +3,12 @@ import "./globals.css"
 
 import ReactQueryProvider from "@/providers/ReactQueryProvider"
 import { Toaster } from "sonner"
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "App",
@@ -16,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+     <body className={inter.className}>
         <ReactQueryProvider>
           {children}
         </ReactQueryProvider>

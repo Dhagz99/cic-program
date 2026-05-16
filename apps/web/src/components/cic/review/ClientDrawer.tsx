@@ -10,10 +10,11 @@ import {
 
 
 
-import { StagingClient, UpdateClientDTO, UpdateClientFormValues, updateClientSchema } from "@repo/shared";
+import { DomainOption, StagingClient, UpdateClientDTO, UpdateClientFormValues, updateClientSchema } from "@repo/shared";
 import { useUpdateClient } from "@/hooks/cic/useStaging";
 import InputField from "@/components/ui/InputField";
 import SelectField from "@/components/ui/SelectField";
+import { useCivilStatusDomain, useGenderDomain, useIdentificationTypeDomain } from "@/hooks/cic/useDomain";
 
 type Props = {
 
@@ -34,6 +35,18 @@ export default function ClientDrawer({
    const {
       mutateAsync: updateClientMutation
    } = useUpdateClient();
+
+   const {
+      data: genders
+   } = useGenderDomain();
+
+   const {
+      data: civilStatuses
+   } = useCivilStatusDomain();
+
+   const {
+      data: identoficationTypes
+   } = useIdentificationTypeDomain();
 
    const {
 
@@ -66,10 +79,10 @@ export default function ClientDrawer({
             client.suffix || "",
 
          gender:
-            client.gender || "",
+            client.gender?.code || "",
 
          civilStatus:
-            client.civilStatus || "",
+            client.civilStatus?.code || undefined,
 
 
          birthDate:
@@ -95,7 +108,7 @@ export default function ClientDrawer({
             client.address2 || "",
          
          identificationType:
-            client.identificationType || "",
+             client.identificationType?.code || undefined,
          identificationNumber:
             client.identificationNumber || "",
 
@@ -140,7 +153,7 @@ export default function ClientDrawer({
          <div className="
             h-screen
             w-full
-            max-w-5xl
+            max-w-6xl
             bg-white
             shadow-2xl
             overflow-y-auto
@@ -378,22 +391,22 @@ export default function ClientDrawer({
                  
    
                   {/* GENDER */}
-                     <SelectField
-                        label="Gender"
-                        {...register("gender")}
-                        error={errors.gender}
-                        options={[
-                        {
-                           label: "Male",
-                           value: "M"
-                        },
+                  <SelectField
+                     label="Gender"
+                     error={errors.gender}
+                     {...register("gender")}
+                     options={
+                        genders?.map((item: DomainOption) => ({
 
-                        {
-                           label: "Female",
-                           value: "F"
-                        }
-                     ]}
-                     />
+                           label:
+                              item.description,
+
+                           value:
+                              item.code
+
+                        })) || []
+                     }
+                  />
 
                {/* Birthdate */}
                <InputField
@@ -416,28 +429,20 @@ export default function ClientDrawer({
                  
                   
                 {/* Civil Status */}
+
                 <SelectField
-                      label=" Civil Status"
-                      {...register("civilStatus")}
-                      error={errors.civilStatus}
-                     options={[
-                     {
-                        label: "Single",
-                        value: "SINGLE"
-                     },
-
-                     {
-                        label: "Married",
-                        value: "MARRIED"
-                     },
-
-                     {
-                        label: "Widowed",
-                        value: "WIDOWED"
-                     }
-                    ]}
+                  label="Civil Status"
+                  {...register("civilStatus")}
+                  error={errors.civilStatus}
+                  options={
+                     civilStatuses?.map((item: DomainOption) => ({
+                        label:
+                           item.description,
+                        value:
+                           item.code
+                     })) || []
+                  }
                   />
-
 
                   <div
                        className="
@@ -512,11 +517,24 @@ export default function ClientDrawer({
                   />
 
                   {/* Identification Type */}
-                  <InputField
+
+                  <SelectField
                      label="Identification Type"
-                     {...register("identificationType")}
                      error={errors.identificationType}
+                     {...register("identificationType")}
+                     options={
+                        identoficationTypes?.map((item: DomainOption) => ({
+
+                           label:
+                              item.description,
+
+                           value:
+                              item.code
+
+                        })) || []
+                     }
                   />
+                
                   {/* Identification Number */}
                   <InputField
                      label="Identification Number"
@@ -524,15 +542,15 @@ export default function ClientDrawer({
                      error={errors.identificationNumber}
                   />
 
-                  {/* Identification Type */}
+                  {/* Contact Type */}
                   <InputField
-                     label="contactType"
+                     label="Contact Type"
                      {...register("contactType")}
                      error={errors.contactType}
                   />
-                  {/* Identification Number */}
+                  {/* Contact Value */}
                   <InputField
-                     label="contactValue"
+                     label="Contact Value"
                      {...register("contactValue")}
                      error={errors.contactValue}
                   />

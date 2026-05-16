@@ -16,20 +16,89 @@ async ({
    -----------------------------------
    */
 
-   const updatedClient =
-      await prisma.stagingClient.update({
-         where: {
-            id
+  const updatedClient =
+   await prisma.stagingClient.update({
+
+      where: {
+         id
+      },
+
+      data: {
+
+         firstName:
+            data.firstName,
+
+         middleName:
+            data.middleName,
+
+         lastName:
+            data.lastName,
+
+         suffix:
+            data.suffix,
+
+         gender: {
+
+            connect: {
+               code: data.gender
+            }
+
          },
-         
-         data: {
-            ...data,
-            birthDate:
-               data.birthDate 
-                ? new Date(data.birthDate)
-               : null
-         }
-      });
+
+         birthDate:
+         data.birthDate
+            ? new Date(data.birthDate)
+            : undefined,
+
+         placeOfBirth:
+            data.placeOfBirth,
+
+         civilStatus: {
+
+            connect: {
+               code: data.civilStatus
+            }
+
+         },
+
+         numberOfDependents:
+            data.numberOfDependents,
+
+         addressType:
+            data.addressType,
+
+         address:
+            data.address,
+
+         addressType2:
+            data.addressType2,
+
+         address2:
+            data.address2,
+
+         identificationType: {
+
+            connect: {
+
+               code:
+                  data.identificationType
+
+            }
+
+         },
+
+         identificationNumber:
+            data.identificationNumber,
+
+         contactType:
+            data.contactType,
+
+         contactValue:
+            data.contactValue
+
+      }
+
+   });
 
    /*
    -----------------------------------

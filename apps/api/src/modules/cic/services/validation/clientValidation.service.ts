@@ -53,18 +53,18 @@ export const validateClient = (
     }
 
 
-    if (!client.gender) {
+    if (!client.genderCode) {
 
       errors.push({
-         fieldName: "gender",
+         fieldName: "genderCode",
          errorMessage: "Gender required"
       });
    }
 
-   if (!client.civilStatus) {
+   if (!client.civilStatusCode) {
 
       errors.push({
-         fieldName: "civilStatus",
+         fieldName: "civilStatusCode",
          errorMessage: "Civil status required"
       });
    }

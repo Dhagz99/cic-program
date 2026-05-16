@@ -21,8 +21,11 @@ export const saveStagingClient = async ({
    await prisma.stagingClient.create({
 
       data: {
-
-         batchId,
+         batch: {
+            connect: {
+               id: batchId
+            }
+         },
 
          providerSubjectNo:
             client.providerSubjectNo,
@@ -47,8 +50,13 @@ export const saveStagingClient = async ({
          address2: 
             client.address,
          
-         identificationType:
-            client.grouping,
+         identificationType: {
+
+               connect: {
+                  code: client.grouping
+               }
+   
+            },
          identificationNumber:
             client.sssNo,   
 

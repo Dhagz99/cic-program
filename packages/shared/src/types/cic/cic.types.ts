@@ -1,3 +1,12 @@
+
+export interface DomainOption<T = string | number> {
+
+   code: T;
+
+   description: string;
+
+}
+
 export interface ValidationError {
 
     id: string;
@@ -42,9 +51,9 @@ export interface ValidationError {
     
     placeOfBirth: string | null;
  
-    gender: string | null;
+    gender: DomainOption<string> | null;
  
-    civilStatus: string | null;
+    civilStatus: DomainOption<number> | null;
 
     numberOfDependents: number;
  
@@ -55,7 +64,8 @@ export interface ValidationError {
     addressType2: string;
     address2: string;
 
-    identificationType: string;
+    identificationType:
+      DomainOption<number> | null;
     identificationNumber: string;
 
     contactType: string | null;

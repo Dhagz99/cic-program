@@ -6,9 +6,10 @@ from "../utils/parseFullName";
 
 import { decodeDbfText }
 from "../utils/decodeDbfText";
+import { DbfTypes } from "@repo/shared";
 
 export const normalizeClient = (
-   row: any
+   row: DbfTypes
 ) => {
 
    /*
@@ -107,7 +108,7 @@ export const normalizeClient = (
 
       pensionAmount:
          row.PENSION,
-
+ 
       pensionType:
          row.PTYPE,
 
@@ -115,7 +116,11 @@ export const normalizeClient = (
          row.SSSNO,
 
       grouping:
-         row.GROUPING
+         row.GROUPING === "SSS"
+            ? 11
+            : row.GROUPING === "GSIS"
+            ? 12
+            : null,
 
    };
 

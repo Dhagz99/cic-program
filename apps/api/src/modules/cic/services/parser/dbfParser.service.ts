@@ -1,8 +1,9 @@
+import { DbfTypes } from "@repo/shared";
 import { DBFFile } from "dbffile";
 
 export const parseDbfFile = async (
    filePath: string
-) => {
+): Promise<DbfTypes[]> => {
 
    const dbf =
       await DBFFile.open(filePath);
@@ -10,5 +11,5 @@ export const parseDbfFile = async (
    const records =
       await dbf.readRecords();
 
-   return records;
+   return records as unknown as DbfTypes[];
 };

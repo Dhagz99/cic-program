@@ -1,22 +1,87 @@
+import { DbfTypes } from "@repo/shared";
 import { parseAmount }
    from "../utils/parseAmount";
 
 import { parseDate }
    from "../utils/parseDate";
+import { addTermToDate } from "../utils/addTermToDate";
 
 export const normalizeContract = (
-   row: any
+   row: DbfTypes
 ) => {
 
+   const decodedContractEnd = row.EFF + row.FATERM;
+
    return {
+      providerSubjectNo:
+      String(row.ID),
 
       contractNo:
          `${row.ID}-${row.BRANCH}`,
+      
+      contractStartDate:
+         parseDate(
+            row.AVAIL
+         ),
+
+      contractRequestDate:
+         parseDate(
+            row.AVAIL
+         ),
+
+      contractEndPlannedDate:
+         addTermToDate(
+            row.EFF,
+            Number(row.FATERM), 
+         ),
+
+      lastPaymentDate:
+         parseDate(
+            row.LPDATE
+         ),
 
       financedAmount:
          parseAmount(
-            row.BALAMT
+            row.FAMT
          ),
+
+      installmentsNumber:
+         parseAmount(
+            row.FATERM
+         ),
+
+      monthlyPaymentAmount:
+         parseAmount(
+            row.PRINCIPAL
+         ),
+
+      firstPaymentDate:
+         parseDate(
+            row.EFF
+         ),
+      lastPaymentAmount:
+         parseAmount(
+            row.MPA
+         ),
+      nextPaymentDate:
+         addTermToDate(
+               row.LPDATE, 1
+            ),  
+      nextPaymentAmount:
+         parseAmount(
+            row.MPA
+         ),
+
+      outstandingPaymentNumber:
+         parseAmount(
+            row.TOTERM
+         ),
+
+      outstandingBalance:
+         parseAmount(
+            row.TOT
+         ),
+
 
       principalAmount:
          parseAmount(
@@ -59,10 +124,7 @@ export const normalizeContract = (
             row.AVAIL
          ),
 
-      lastPaymentDate:
-         parseDate(
-            row.LPDATE
-         ),
+     
 
       effectivityDate:
          parseDate(
@@ -74,16 +136,7 @@ export const normalizeContract = (
             row.INDATE
          ),
 
-      monthlyPaymentAmount:
-         parseAmount(
-            row.MPA
-         ),
-
-      lastPaymentAmount:
-         parseAmount(
-            row.LPAMT
-         ),
-
+  
       branch:
          row.BRANCH
    };

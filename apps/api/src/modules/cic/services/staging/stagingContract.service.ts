@@ -26,11 +26,46 @@ export const saveStagingContract = async ({
 
             stagingClientId,
 
+            providerSubjectNo:
+               contract.providerSubjectNo,
+
             contractNo:
                contract.contractNo,
+            
+            contractStartDate: 
+               contract.contractStartDate,
+            contractRequestDate: 
+               contract.contractRequestDate,
+
+            contractEndPlannedDate:
+               contract.contractEndPlannedDate,
+
+            contractEndActualDate:
+               contract.contractEndPlannedDate,
+
+            lastPaymentDate: 
+               contract.lastPaymentDate,
 
             financedAmount:
                contract.financedAmount,
+            installmentsNumber: 
+               contract.installmentsNumber,
+
+            monthlyPaymentAmount: 
+               contract.monthlyPaymentAmount,
+
+            firstPaymentDate:
+               contract.firstPaymentDate,
+            lastPaymentAmount:
+               contract.lastPaymentAmount,
+            nextPaymentDate:
+               contract.nextPaymentDate,
+            nextPaymentAmount:
+               contract.nextPaymentAmount,
+            outstandingPaymentNumber:
+               contract.outstandingPaymentNumber,
+            outstandingBalance:
+               contract.outstandingBalance,
 
             contractStatus:
                contract.contractStatus,

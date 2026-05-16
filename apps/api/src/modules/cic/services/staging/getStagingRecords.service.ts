@@ -16,6 +16,10 @@ async (
 
             validationErrors: true,
 
+            identificationType: true,
+            gender: true,
+            civilStatus: true,
+
             stagingContracts: {
                include: {
                   validationErrors: true

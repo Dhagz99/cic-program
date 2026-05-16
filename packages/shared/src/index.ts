@@ -9,3 +9,4 @@ export * from "./schemas/client.schema";
 export * from "./types/auth.types";
 export * from "./types/sidebar.types";
 export * from "./types/cic/cic.types";
+export * from "./types/cic/dbf.types";

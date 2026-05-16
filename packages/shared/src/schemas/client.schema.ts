@@ -47,12 +47,14 @@ import {
                .optional(),
             
             
-   civilStatus:
-      z
-         .string()
-         .trim()
-         .min(1, "Civil status is required"),
-
+      civilStatus:
+         z
+            .coerce
+            .number()
+            .int()
+            .positive(
+               "Civil status is required"
+            ),
    numberOfDependents:
       z
          .number()
@@ -84,12 +86,15 @@ import {
         .optional(),
 
 
-      identificationType:
+        identificationType:
         z
-          .string()
-          .trim()
-          .min(1, "Identification type is required"),
-    
+        .coerce
+        .number()
+        .int()
+        .positive(
+           "Identification type is required"
+        ),
+      
       identificationNumber:
          z
           .string()

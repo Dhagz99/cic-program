@@ -232,6 +232,50 @@ enum AddressType {
 }
 
 
+model GenderDomain {
+
+  code          String   @id
+  description   String
+
+  stagingCLients       StagingClient[]
+
+  @@map("gender_domain")
+
+}
+
+model CivilStatusDomain {
+
+  code          Int      @id
+  description   String
+
+   stagingCLients       StagingClient[]
+
+  @@map("civil_status_domain")
+
+}
+
+model IdentificationTypeDomain {
+
+  code          Int      @id
+  description   String
+
+   stagingCLients       StagingClient[]
+
+  @@map("identification_type_domain")
+
+}
+
+// model OccupationStatusDomain {
+
+//   code          Int      @id
+//   description   String
+
+//   clients       Client[]
+
+//   @@map("occupation_status_domain")
+
+// }
+
 
 model StagingClient {
   id                                String    @id @default(uuid())
@@ -250,13 +294,13 @@ model StagingClient {
   nickname                          String?
   
   prevLastName                      String?
-  gender                            String?
+  genderCode                        String?
   birthDate                         DateTime 
   placeOfBirth                      String?
   countryOfBirthCode                String?   @default("PH")
   nationality                       String?   @default("PH")
   resident                          Boolean?   @default(true)
-  civilStatus                       String?
+  civilStatusCode                   Int?
   numberOfDependents                Int    @default(0)
 
   addressType                       AddressType    @default(MI)
@@ -265,7 +309,7 @@ model StagingClient {
   addressType2                      AddressType    @default(AI)
   address2                          String?
 
-  identificationType                String?
+  identificationTypeCode            Int
   identificationNumber              String?
 
   contactType                       String?
@@ -281,41 +325,76 @@ model StagingClient {
 
   validationErrors      ValidationError[]
 
+  civilStatus            CivilStatusDomain? @relation( fields: [civilStatusCode], references: [code])
+  identificationType    IdentificationTypeDomain @relation( fields: [identificationTypeCode], references: [code])
+  gender                 GenderDomain? @relation( fields: [genderCode], references: [code])
+
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 }
 
 
 model StagingContract {
-  id                    String   @id @default(uuid())
+  id                          String   @id @default(uuid())
+  recordType                  String    @default("CI")
+  providerCode                String?   @default("PF007980")
+  branchCode                  String?
+  batchId                     String
+  stagingClientId             String
+  providerSubjectNo           String?
+  role                        String      @default("B")
 
-  batchId               String
-  stagingClientId       String
+  contractNo                  String?
+  contractType                Int?        @default(15)
+  contractPhase               String?     @default("AC")
+  contractStatus              String?
 
-  contractNo            String?
+  currency                    String?     @default("PHP")
+  originalCurrency            String?     @default("PHP")
 
-  contractStatus        String?
+  contractStartDate           DateTime?
+  contractRequestDate         DateTime?
 
-  financedAmount        Decimal? @db.Decimal(18,2)
+  contractEndPlannedDate      DateTime?
+  contractEndActualDate       DateTime?
 
-  contractStartDate     DateTime?
-  contractEndDate       DateTime?
+  lastPaymentDate             DateTime?
 
-  lastPaymentDate       DateTime?
 
-  validationStatus      ValidationStatus
+  financedAmount              Decimal? @db.Decimal(18,2)
+  installmentsNumber          Int?
 
-  isConfirmed Boolean @default(false)
+  transactionType             String? @default("NA")
 
-  batch                 ImportBatch @relation(fields: [batchId], references: [id])
+  paymentPeriodicity          String? @default("M")
+  paymentMethod               String? @default("OTH")
 
-  stagingClient         StagingClient @relation(fields: [stagingClientId], references: [id])
+  monthlyPaymentAmount        Decimal? @db.Decimal(18,2)
+
+  firstPaymentDate            DateTime?
+  lastPaymentAmount           Decimal? @db.Decimal(18,2)
+  nextPaymentDate             DateTime?
+  nextPaymentAmount           Decimal? @db.Decimal(18,2)
+  outstandingPaymentNumber    Int?
+  outstandingBalance          Decimal? @db.Decimal(18,2)
+
+  overduePaymentNumber        Int?
+  overduePaymentAmount        Decimal? @db.Decimal(18,2)
+
+
+  validationStatus            ValidationStatus
+
+  isConfirmed                 Boolean @default(false)
+
+  batch                       ImportBatch @relation(fields: [batchId], references: [id])
+
+  stagingClient               StagingClient @relation(fields: [stagingClientId], references: [id])
   
 
-  validationErrors      ValidationError[]
+  validationErrors            ValidationError[]
 
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
 }
 
 

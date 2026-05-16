@@ -187,29 +187,7 @@ export default function ClientTable({
          -----------------------------------
          */
 
-         columnHelper.accessor(
-            "tinNumber",
-            {
-
-               header: "TIN",
-
-               cell: (info) => (
-
-                  <span className="
-                     text-sm
-                  ">
-
-                     {
-                        info.getValue()
-                        || "-"
-                     }
-
-                  </span>
-
-               )
-
-            }
-         ),
+        
 
          /*
          -----------------------------------
@@ -217,28 +195,56 @@ export default function ClientTable({
          -----------------------------------
          */
 
-         columnHelper.accessor(
-            "gender",
-            {
+      /*
+-----------------------------------
+GENDER
+-----------------------------------
+*/
 
-               header: "Gender",
+columnHelper.accessor(
+   "gender",
+   {
 
-               cell: (info) => (
+      header: "Gender",
 
-                  <span>
+      cell: (info) => {
 
-                     {
-                        info.getValue()
-                        || "-"
-                     }
+         const gender =
+            info.getValue();
 
-                  </span>
+         const genderValue =
+            gender?.code;
 
-               )
+         return (
 
-            }
-         ),
+            <span
+               className={`
+                  inline-flex
+                  items-center
+                  justify-center
+                  px-2
+                  py-1
+                  rounded-md
+                  text-xs
+                  font-medium
+                  ${
+                     genderValue === "M"
+                        ? "bg-blue-100 text-blue-700"
+                        : genderValue === "F"
+                        ? "bg-pink-100 text-pink-700"
+                        : "bg-gray-100 text-gray-700"
+                  }
+               `}
+            >
+               {gender?.description || "-"}
+            </span>
 
+         );
+
+      }
+
+   }
+),
          /*
          -----------------------------------
          STATUS
@@ -661,19 +667,13 @@ export default function ClientTable({
                            .getRowModel()
                            .rows
                            .map((row) => (
-
                               <tr
-
                                  key={row.id}
-
                                  className={`
-
                                     border-b
                                     hover:bg-gray-50
                                     transition
-
                                     ${
-
                                        row.original
                                        .validationStatus
                                        === "WITH_ERRORS"
@@ -686,15 +686,12 @@ export default function ClientTable({
 
                                  `}
                               >
-
                                  {
 
                                     row
                                     .getVisibleCells()
                                     .map((cell) => (
-
                                        <td
-
                                           key={cell.id}
 
                                           className="
