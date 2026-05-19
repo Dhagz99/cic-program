@@ -8,6 +8,7 @@ import generalRoute from "../modules/general/general.route"
 import stagingRoute from "../modules/cic/routes/staging.route";
 import batchRoute from "../modules/cic/routes/batch.route";
 import domainRoute from "../modules/cic/routes/domain.route";
+import reportRoutes from "../modules/reports/report.route";
 
 
 const router = Router();
@@ -21,6 +22,7 @@ router.use( "/cic", cicUploadRoute);
 router.use("/staging", stagingRoute);
 router.use("/batch", batchRoute);
 router.use("/domain", domainRoute);
+router.use( "/reports", reportRoutes);
 
 
 export default router;

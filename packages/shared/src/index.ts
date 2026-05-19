@@ -6,7 +6,8 @@ export * from "./schemas/client.schema";
 
 
 // Types 
+export * from "./types/cic/cic.types";
+export * from "./types/cic/batch.types";
 export * from "./types/auth.types";
 export * from "./types/sidebar.types";
-export * from "./types/cic/cic.types";
 export * from "./types/cic/dbf.types";

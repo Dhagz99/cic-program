@@ -1,6 +1,6 @@
 "use client";
 
-import { useState }
+import { useEffect, useState }
 from "react";
 
 import { useRouter }
@@ -16,6 +16,7 @@ import {
 import {
    uploadDBF
 } from "@/services/cic/batch.service";
+import { useReportingPeriods } from "@/hooks/cic/useReports";
 
 export default function UploadPage() {
 
@@ -25,13 +26,23 @@ export default function UploadPage() {
    const [file, setFile] =
       useState<File | null>(null);
 
-   const [reportingPeriodId,
-      setReportingPeriodId] =
-      useState("");
+      const {
+         data: periods = []
+      } = useReportingPeriods();
+      
+      const [
+         reportingPeriodId,
+         setReportingPeriodId
+      ] = useState("");
 
    const [loading,
       setLoading] =
       useState(false);
+
+      const selectedReportingPeriodId =
+   reportingPeriodId ||
+   periods[0]?.id ||
+   "";
 
    const handleUpload =
    async () => {
@@ -43,13 +54,13 @@ export default function UploadPage() {
          return;
 
       }
+      if (!selectedReportingPeriodId) {
 
-      if (!reportingPeriodId) {
-
-         alert("Please enter reporting period");
-
+         alert(
+            "Please enter reporting period"
+         );
+      
          return;
-
       }
 
       const formData =
@@ -62,7 +73,7 @@ export default function UploadPage() {
 
       formData.append(
          "reportingPeriodId",
-         reportingPeriodId
+         selectedReportingPeriodId
       );
 
       try {
@@ -288,56 +299,100 @@ export default function UploadPage() {
 
                   </div>
 
-                  {/* REPORTING PERIOD */}
+                {/* REPORTING PERIOD */}
 
-                  <div className="
-                     mb-8
-                  ">
+<div
+   className="
+      mb-8
+   "
+>
 
-                     <label className="
-                        flex
-                        items-center
-                        gap-2
-                        text-sm
-                        font-medium
-                        text-slate-700
-                        mb-3
-                     ">
+   <label
+      className="
+         flex
+         items-center
+         gap-2
+         text-sm
+         font-medium
+         text-slate-700
+         mb-3
+      "
+   >
 
-                        <CalendarDays
-                           size={16}
-                        />
+      <CalendarDays
+         size={16}
+      />
 
-                        Reporting Period ID
+      Reporting Period
 
-                     </label>
+   </label>
 
-                     <input
-                        type="text"
-                        placeholder="Enter reporting period ID"
-                        value={reportingPeriodId}
-                        onChange={(e) =>
-                           setReportingPeriodId(
-                              e.target.value
-                           )
-                        }
-                        className="
-                           w-full
-                           border
-                           border-slate-300
-                           rounded-xl
-                           px-4
-                           py-3
-                           outline-none
-                           focus:ring-2
-                           focus:ring-blue-500
-                           focus:border-blue-500
-                           transition
-                        "
-                     />
+   <select
 
-                  </div>
+      value={
+         reportingPeriodId ||
+         periods[0]?.id ||
+         ""
+      }
 
+      onChange={(e) =>
+         setReportingPeriodId(
+            e.target.value
+         )
+      }
+
+      className="
+         w-full
+         border
+         border-slate-300
+         rounded-xl
+         px-4
+         py-3
+         outline-none
+         focus:ring-2
+         focus:ring-blue-500
+         focus:border-blue-500
+         transition
+         bg-white
+      "
+   >
+
+{
+   periods.map((period) => (
+
+      <option
+         key={period.id}
+         value={period.id}
+      >
+
+         {
+            new Date(
+
+               period.year,
+               period.month - 1
+
+            ).toLocaleString(
+
+               "en-US",
+
+               {
+                  month: "long"
+               }
+
+            )
+         }
+
+         {" "}
+
+         {period.year}
+
+      </option>
+
+   ))
+}
+   </select>
+
+</div>
                   {/* ACTION BUTTON */}
 
                   <button

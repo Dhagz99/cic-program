@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import {
    useForm
 } from "react-hook-form";
@@ -8,17 +10,53 @@ import {
    zodResolver
 } from "@hookform/resolvers/zod";
 
+import {
+
+   
+
+   StagingClient,
+
+   StagingContract,
+
+   UpdateClientDTO,
+
+   UpdateClientFormValues,
+
+   updateClientSchema,
+   UpdateLoanFormValues,
+   updateLoanSchema
+
+} from "@repo/shared";
+
+import {
+
+   useUpdateClient,
+   useUpdateStagingContract
+
+} from "@/hooks/cic/useStaging";
+
+import {
+
+   useCivilStatusDomain,
+   useGenderDomain,
+   useIdentificationTypeDomain
+
+} from "@/hooks/cic/useDomain";
+
+import ClientInformationForm from
+"@/components/cic/review/forms/ClientInformationForm";
+import LoanInformationForm from "./forms/LoanInformationForm";
 
 
-import { DomainOption, StagingClient, UpdateClientDTO, UpdateClientFormValues, updateClientSchema } from "@repo/shared";
-import { useUpdateClient } from "@/hooks/cic/useStaging";
-import InputField from "@/components/ui/InputField";
-import SelectField from "@/components/ui/SelectField";
-import { useCivilStatusDomain, useGenderDomain, useIdentificationTypeDomain } from "@/hooks/cic/useDomain";
+
+
 
 type Props = {
 
-   client: StagingClient;
+      client: StagingClient & {
+      contracts?: StagingContract[];
+
+   };
 
    onClose: () => void;
 
@@ -26,15 +64,55 @@ type Props = {
 
 };
 
+type ActiveTab =
+   "CLIENT"
+   | "LOAN";
+
 export default function ClientDrawer({
+
    client,
+
    onClose,
+
    refresh
+
 }: Props) {
 
+   const [activeTab, setActiveTab] =
+      useState<ActiveTab>("CLIENT");
+
+   /*
+   |--------------------------------------------------------------------------
+   | FIRST CONTRACT
+   |--------------------------------------------------------------------------
+   */
+
+   const firstContract =
+      client.stagingContracts?.[0];
+
+   /*
+   |--------------------------------------------------------------------------
+   | MUTATIONS
+   |--------------------------------------------------------------------------
+   */
+
    const {
+
       mutateAsync: updateClientMutation
+
    } = useUpdateClient();
+
+   const {
+
+      mutateAsync: updateLoanMutation
+
+   } = useUpdateStagingContract();
+
+   /*
+   |--------------------------------------------------------------------------
+   | DOMAINS
+   |--------------------------------------------------------------------------
+   */
 
    const {
       data: genders
@@ -45,14 +123,21 @@ export default function ClientDrawer({
    } = useCivilStatusDomain();
 
    const {
-      data: identoficationTypes
+      data: identificationTypes
    } = useIdentificationTypeDomain();
+
+   /*
+   |--------------------------------------------------------------------------
+   | CLIENT FORM
+   |--------------------------------------------------------------------------
+   */
 
    const {
 
       register,
 
       handleSubmit,
+
       formState: {
          errors
       }
@@ -67,23 +152,26 @@ export default function ClientDrawer({
       defaultValues: {
 
          firstName:
-            client.firstName,
+            client.firstName || "",
 
          middleName:
-            client.middleName,
-            
+            client.middleName || "",
 
          lastName:
-            client.lastName,
+            client.lastName || "",
+
          suffix:
             client.suffix || "",
 
          gender:
-            client.gender?.code || "",
+            client.gender?.code
+               ? String(client.gender.code)
+               : "",
 
          civilStatus:
-            client.civilStatus?.code || undefined,
-
+               client.civilStatus?.code
+                  ? Number(client.civilStatus.code)
+                  : undefined,
 
          birthDate:
             client.birthDate
@@ -91,536 +179,642 @@ export default function ClientDrawer({
                     .toISOString()
                     .split("T")[0]
                : "",
-            
+
          placeOfBirth:
-               client.placeOfBirth || "",
+            client.placeOfBirth || "",
 
          numberOfDependents:
-               client.numberOfDependents ,
+            client.numberOfDependents || 0,
 
          addressType:
             client.addressType || "",
+
          address:
             client.address || "",
+
          addressType2:
             client.addressType2 || "",
+
          address2:
             client.address2 || "",
-         
+
          identificationType:
-             client.identificationType?.code || undefined,
+            client.identificationType?.code
+               ? Number(client.identificationType.code)
+               : 0,
+
          identificationNumber:
             client.identificationNumber || "",
 
          contactType:
             client.contactType || "",
+
          contactValue:
-            client.contactValue || "",
+            client.contactValue || ""
 
       }
 
    });
 
-   const onSubmit =
+   /*
+   |--------------------------------------------------------------------------
+   | LOAN FORM
+   |--------------------------------------------------------------------------
+   */
+
+   const {
+
+      register: registerLoan,
+
+      handleSubmit: handleLoanSubmit,
+
+      formState: {
+         errors: loanErrors
+      }
+
+   } = useForm<UpdateLoanFormValues>({
+      resolver:
+      zodResolver(
+         updateLoanSchema
+      ),
+
+      defaultValues: {
+
+         contractNo:
+            firstContract?.contractNo || "",
+      
+         contractType:
+            firstContract?.contractType || 15,
+      
+         contractPhase:
+            firstContract?.contractPhase || "AC",
+      
+         contractStatus:
+            firstContract?.contractStatus || "",
+      
+         currency:
+            firstContract?.currency || "PHP",
+      
+         originalCurrency:
+            firstContract?.originalCurrency || "PHP",
+      
+         contractStartDate:
+            firstContract?.contractStartDate
+               ? new Date(firstContract.contractStartDate)
+                    .toISOString()
+                    .split("T")[0]
+               : "",
+         contractRequestDate:
+            firstContract?.contractRequestDate
+               ? new Date(firstContract.contractRequestDate)
+                    .toISOString()
+                    .split("T")[0]
+               : "",
+      
+         contractEndPlannedDate:
+            firstContract?.contractEndPlannedDate
+               ? new Date(firstContract.contractEndPlannedDate)
+                    .toISOString()
+                    .split("T")[0]
+               : "",
+
+         contractEndActualDate:
+               firstContract?.contractEndActualDate
+                  ? new Date(firstContract.contractEndActualDate)
+                       .toISOString()
+                       .split("T")[0]
+                  : "",
+         firstPaymentDate:
+            firstContract?.firstPaymentDate
+               ? new Date(firstContract.firstPaymentDate)
+                     .toISOString()
+                     .split("T")[0]
+               : "",
+         lastPaymentDate:
+               firstContract?.lastPaymentDate
+                  ? new Date(firstContract.lastPaymentDate)
+                        .toISOString()
+                        .split("T")[0]
+                  : "",
+          nextPaymentDate:
+            firstContract?.nextPaymentDate
+               ? new Date(firstContract.nextPaymentDate)
+                     .toISOString()
+                     .split("T")[0]
+               : "",
+            
+      
+         financedAmount:
+            Number(
+               firstContract?.financedAmount || 0
+            ),
+      
+         installmentsNumber:
+            firstContract?.installmentsNumber || 0,
+      
+         monthlyPaymentAmount:
+            Number(
+               firstContract?.monthlyPaymentAmount || 0
+            ),
+
+          outstandingPaymentNumber:
+            Number(
+               firstContract?.outstandingPaymentNumber || 0
+            ),
+      
+         outstandingBalance:
+            Number(
+               firstContract?.outstandingBalance || 0
+            ),
+      
+         overduePaymentAmount:
+            Number(
+               firstContract?.overduePaymentAmount || 0
+            ),
+
+            overduePaymentNumber:
+            Number(
+               firstContract?.overduePaymentNumber || 0
+            ),
+
+
+         lastPaymentAmount:
+            Number(
+               firstContract?.lastPaymentAmount || 0
+            ),
+
+         nextPaymentAmount:
+            Number(
+               firstContract?.nextPaymentAmount || 0
+            ),
+            
+      }
+
+   });
+
+   /*
+   |--------------------------------------------------------------------------
+   | SAVE CLIENT
+   |--------------------------------------------------------------------------
+   */
+
+   const onSubmitClient =
    async (
       values: UpdateClientDTO
    ) => {
+
       await updateClientMutation({
+
          id: client.id,
+
          values
+
       });
+
       refresh();
+
       onClose();
+
+   };
+
+   /*
+   |--------------------------------------------------------------------------
+   | SAVE LOAN
+   |--------------------------------------------------------------------------
+   */
+
+   const onSubmitLoan =
+   async (
+      values: UpdateLoanFormValues
+   ) => {
+
+      if (!firstContract) {
+         return;
+      }
+
+      await updateLoanMutation({
+
+         id: firstContract.id,
+      
+         values: {
+      
+            contractNo:
+               values.contractNo,
+      
+            contractType:
+               Number(values.contractType),
+      
+            contractPhase:
+               values.contractPhase,
+      
+            contractStatus:
+               values.contractStatus,
+      
+            currency:
+               values.currency,
+      
+            originalCurrency:
+               values.originalCurrency,
+      
+            contractStartDate:
+               values.contractStartDate,
+      
+            contractEndPlannedDate:
+               values.contractEndPlannedDate,
+      
+            financedAmount:
+               Number(values.financedAmount),
+      
+            installmentsNumber:
+               Number(values.installmentsNumber),
+      
+            monthlyPaymentAmount:
+               Number(values.monthlyPaymentAmount),
+      
+            outstandingBalance:
+               Number(values.outstandingBalance),
+      
+            overduePaymentAmount:
+               Number(values.overduePaymentAmount)
+      
+         }
+      
+      });
+
+      refresh();
+
+      onClose();
+
    };
 
    return (
 
-      <div className="
-         fixed
-         inset-0
-         z-50
-         bg-black/40
-         flex
-         justify-end
-      ">
-   
-         {/*
-         -----------------------------------
-         DRAWER
-         -----------------------------------
-         */}
-   
-         <div className="
-            h-screen
-            w-full
-            max-w-6xl
-            bg-white
-            shadow-2xl
-            overflow-y-auto
+      <div
+         className="
+            fixed
+            inset-0
+            z-50
+            bg-black/40
             flex
-            flex-col
-         ">
-   
-            {/*
-            -----------------------------------
-            HEADER
-            -----------------------------------
-            */}
-   
-            <div className="
-               sticky
-               top-0
-               z-10
+            justify-end
+         "
+      >
+
+         <div
+            className="
+               h-screen
+               w-full
+               max-w-7xl
                bg-white
-               border-b
-               px-8
-               py-6
+               shadow-2xl
+               overflow-y-auto
                flex
-               items-center
-               justify-between
-            ">
-   
+               flex-col
+            "
+         >
+
+            {/* HEADER */}
+
+            <div
+               className="
+                  sticky
+                  top-0
+                  z-20
+                  bg-white
+                  border-b
+                  px-8
+                  py-6
+                  flex
+                  items-center
+                  justify-between
+               "
+            >
+
                <div>
-   
-                  <h2 className="
-                     text-2xl
-                     font-bold
-                     text-gray-900
-                  ">
-                     Edit Client
+
+                  <h2
+                     className="
+                        text-3xl
+                        font-bold
+                     "
+                  >
+                     Review CIC Record
                   </h2>
-   
-                  <p className="
-                     text-sm
-                     text-gray-500
-                     mt-1
-                  ">
-                     Update CIC staging data
+
+                  <p
+                     className="
+                        text-sm
+                        text-gray-500
+                        mt-1
+                     "
+                  >
+                     Review borrower and loan information
                   </p>
-   
+
                </div>
-   
+
                <button
-   
                   onClick={onClose}
-   
                   className="
-                     h-10
-                     w-10
-                     rounded-xl
-                     hover:bg-gray-100
-                     transition
-                     flex
-                     items-center
-                     justify-center
-                     text-xl
+                     text-2xl
                   "
                >
                   ✕
                </button>
-   
+
             </div>
-   
-            {/*
-            -----------------------------------
-            FORM
-            -----------------------------------
-            */}
-   
-            <form
-               onSubmit={handleSubmit(onSubmit)}
+
+            {/* TABS */}
+
+            <div
                className="
-                  flex-1
                   px-8
-                  py-6
-                  space-y-6
+                  border-b
+                  flex
+                  gap-4
                "
             >
-   
-               {/*
-               -----------------------------------
-               CLIENT SUMMARY
-               -----------------------------------
-               */}
-   
-               <div className="
-                  bg-gray-50
-                  border
-                  rounded-2xl
-                  p-5
-               ">
-   
-                  <div className="
-                     flex
-                     items-start
-                     justify-between
-                  ">
-   
-                     <div>
-   
-                        <h3 className="
-                           text-xl
-                           font-bold
-                           text-gray-900
-                        ">
-   
-                           {
-   
-                              [
-                                 client.firstName,
-                                 client.middleName,
-                                 client.lastName,
-                                 client.suffix
-                              ]
-   
-                              .filter(Boolean)
-   
-                              .join(" ")
-   
-                           }
-   
-                        </h3>
-   
-                        <p className="
-                           text-sm
-                           text-gray-500
-                           mt-1
-                        ">
-   
-                           Provider ID:
-                           {" "}
-                           {
-                              client.providerSubjectNo
-                           }
-   
-                        </p>
-   
-                     </div>
-   
-                     <div>
-   
-                        {
-   
-                           client.validationStatus
-                           === "COMPLETE"
-   
-                           ? (
-   
-                              <span className="
-                                 bg-green-100
-                                 text-green-700
-                                 text-xs
-                                 font-semibold
-                                 px-3
-                                 py-1
-                                 rounded-full
-                              ">
-                                 COMPLETE
-                              </span>
-   
-                           )
-   
-                           : (
-   
-                              <span className="
-                                 bg-red-100
-                                 text-red-700
-                                 text-xs
-                                 font-semibold
-                                 px-3
-                                 py-1
-                                 rounded-full
-                              ">
-                                 WITH ERRORS
-                              </span>
-   
-                           )
-   
-                        }
-   
-                     </div>
-   
-                  </div>
-   
-               </div>
-   
-               {/*
-            -----------------------------------
-            FORM GRID
-            -----------------------------------
-            */}
 
-            <div className="
-               grid
-               grid-cols-1
-               md:grid-cols-3
-               gap-5
-               ">
-   
-                  {/* FIRST NAME*/}
-                  <InputField
-                     label="First Name"
-                     placeholder="Enter first name"
-                     {...register("firstName")}
-                     error={errors.firstName}
-                     />
+               <button
 
-                  {/*MIDDLE NAME */}
-                  <InputField
-                        label="Middle Name"
-                        placeholder="Enter middle name"
-                        {...register("middleName")}
-                        error={errors.middleName}
-                        />
-   
-                  {/* LAST NAME */}
-                  <InputField
-                        label="Last Name"
-                        placeholder="Enter last name"
-                        {...register("lastName")}
-                        error={errors.lastName}
-                        />
+                  type="button"
 
-                  {/* SUFFIX */}
-                  <InputField
-                        label="Suffix"
-                        placeholder="Enter suffix"
-                        {...register("suffix")}
-                        error={errors.suffix}
-                        />
-                 
-   
-                  {/* GENDER */}
-                  <SelectField
-                     label="Gender"
-                     error={errors.gender}
-                     {...register("gender")}
-                     options={
-                        genders?.map((item: DomainOption) => ({
-
-                           label:
-                              item.description,
-
-                           value:
-                              item.code
-
-                        })) || []
-                     }
-                  />
-
-               {/* Birthdate */}
-               <InputField
-                     type="date"
-                     label="Birthdate"
-                     placeholder="Enter birthDate"
-                     {...register("birthDate")}
-                     error={errors.birthDate}
-                     />
-
-               {/* Place of Birth */}
-                 <InputField
-                     label="Place of Birth"
-                     placeholder="Enter place of birth"
-                     containerClassName="col-span-2"
-                     {...register("placeOfBirth")}
-                     error={errors.placeOfBirth}
-                     />
-             
-                 
-                  
-                {/* Civil Status */}
-
-                <SelectField
-                  label="Civil Status"
-                  {...register("civilStatus")}
-                  error={errors.civilStatus}
-                  options={
-                     civilStatuses?.map((item: DomainOption) => ({
-                        label:
-                           item.description,
-                        value:
-                           item.code
-                     })) || []
+                  onClick={() =>
+                     setActiveTab("CLIENT")
                   }
-                  />
 
-                  <div
-                       className="
-                       grid
-                       grid-cols-[50%_50%]
-                       gap-4"
+                  className={`
+                     py-4
+                     border-b-2
+                     text-sm
+                     font-medium
+                     ${
+                        activeTab === "CLIENT"
+                        ? "border-blue-600 text-blue-600"
+                        : "border-transparent text-gray-500"
+                     }
+                  `}
+               >
+                  Client Information
+               </button>
+
+               <button
+
+                  type="button"
+
+                  onClick={() =>
+                     setActiveTab("LOAN")
+                  }
+
+                  className={`
+                     py-4
+                     border-b-2
+                     text-sm
+                     font-medium
+                     ${
+                        activeTab === "LOAN"
+                        ? "border-blue-600 text-blue-600"
+                        : "border-transparent text-gray-500"
+                     }
+                  `}
+               >
+                  Loan Information
+               </button>
+
+            </div>
+
+            {/* BODY */}
+
+            <div
+               className="
+                  flex-1
+                  overflow-y-auto
+                  px-8
+                  py-6
+               "
+            >
+             <div className="
+                        bg-gray-50
+                        border
+                        rounded-2xl
+                        p-5
+                        mb-4
+                     ">
+         
+                        <div className="
+                           flex
+                           items-start
+                           justify-between
+                        ">
+         
+                           <div>
+         
+                              <h3 className="
+                                 text-xl
+                                 font-bold
+                                 text-gray-900
+                              ">
+         
+                                 {
+         
+                                    [
+                                       client.firstName,
+                                       client.middleName,
+                                       client.lastName,
+                                       client.suffix
+                                    ]
+         
+                                    .filter(Boolean)
+         
+                                    .join(" ")
+         
+                                 }
+         
+                              </h3>
+         
+                              <p className="
+                                 text-sm
+                                 text-gray-500
+                                 mt-1
+                              ">
+         
+                                 Provider ID:
+                                 {" "}
+                                 {
+                                    client.providerSubjectNo
+                                 }
+         
+                              </p>
+         
+                           </div>
+         
+                           <div>
+         
+                              {
+         
+                                 client.validationStatus
+                                 === "COMPLETE"
+         
+                                 ? (
+         
+                                    <span className="
+                                       bg-green-100
+                                       text-green-700
+                                       text-xs
+                                       font-semibold
+                                       px-3
+                                       py-1
+                                       rounded-full
+                                    ">
+                                       COMPLETE
+                                    </span>
+         
+                                 )
+         
+                                 : (
+         
+                                    <span className="
+                                       bg-red-100
+                                       text-red-700
+                                       text-xs
+                                       font-semibold
+                                       px-3
+                                       py-1
+                                       rounded-full
+                                    ">
+                                       WITH ERRORS
+                                    </span>
+         
+                                 )
+         
+                              }
+         
+                           </div>
+         
+                        </div>
+         
+                     </div>
+         
+               {
+                  activeTab === "CLIENT"
+                  && (
+
+                     <form
+                        onSubmit={
+                           handleSubmit(
+                              onSubmitClient
+                           )
+                        }
+                        className="
+                           space-y-6
+                        "
                      >
 
-                  {/* Number of Dependents */}
-                 <InputField
-                     type="number"
-                     label="Number of Dependents"
-                     placeholder="Enter number of dependents"
-                     {...register(
-                        "numberOfDependents",
-                        {
-                           valueAsNumber: true
+                        <ClientInformationForm
+
+                           register={register}
+
+                           errors={errors}
+
+                           genders={
+                              genders || []
+                           }
+
+                           civilStatuses={
+                              civilStatuses || []
+                           }
+
+                           identificationTypes={
+                              identificationTypes || []
+                           }
+
+                        />
+
+                        <div
+                           className="
+                              flex
+                              justify-end
+                              gap-3
+                           "
+                        >
+
+                           <button
+                              type="submit"
+                              className="
+                                 bg-blue-600
+                                 text-white
+                                 px-6
+                                 py-3
+                                 rounded-xl
+                              "
+                           >
+                              Save Client
+                           </button>
+
+                        </div>
+
+                     </form>
+
+                  )
+               }
+
+               {
+                  activeTab === "LOAN"
+                  && (
+
+                     <form
+                        onSubmit={
+                           handleLoanSubmit(
+                              onSubmitLoan
+                           )
                         }
-                     )}
-                     error={errors.numberOfDependents}
-                     />
-                  {/* Address Type */}
-                  <SelectField
-                           label="Address Type"
-                           {...register("addressType")}
-                           error={errors.addressType}
-                           options={[
-                           {
-                              label: "Main Address",
-                              value: "MI"
-                           },
-                           {
-                              label: "Additional  Address",
-                              value: "AI"
-                           }
-                        ]}
-                     />
+                        className="
+                           space-y-6
+                        "
+                     >
 
-                     </div>
+                        <LoanInformationForm
 
-               {/* Full Address */}
-                  <InputField
-                     containerClassName="col-span-2"
-                     label="Full Address"
-                     {...register("address")}
-                     error={errors.address}
-                  />
+                           register={registerLoan}
 
-                     {/* Address  2 Type */}
-                     <SelectField
-                           label="Address 2 Type"
-                           {...register("addressType2")}
-                           error={errors.addressType2}
-                           options={[
-                           {
-                              label: "Main Address",
-                              value: "MI"
-                           },
-                           {
-                              label: "Additional  Address",
-                              value: "AI"
-                           }
-                        ]}
-                     />
+                           errors={loanErrors}
 
-                  {/* Full Address2 */}
-                  <InputField
-                     containerClassName="col-span-2"
-                     label="Full Address 2"
-                     {...register("address2")}
-                     error={errors.address2}
-                  />
+                        />
 
-                  {/* Identification Type */}
+                        <div
+                           className="
+                              flex
+                              justify-end
+                              gap-3
+                           "
+                        >
 
-                  <SelectField
-                     label="Identification Type"
-                     error={errors.identificationType}
-                     {...register("identificationType")}
-                     options={
-                        identoficationTypes?.map((item: DomainOption) => ({
+                           <button
+                              type="submit"
+                              className="
+                                 bg-blue-600
+                                 text-white
+                                 px-6
+                                 py-3
+                                 rounded-xl
+                              "
+                           >
+                              Save Loan
+                           </button>
 
-                           label:
-                              item.description,
+                        </div>
 
-                           value:
-                              item.code
+                     </form>
 
-                        })) || []
-                     }
-                  />
-                
-                  {/* Identification Number */}
-                  <InputField
-                     label="Identification Number"
-                     {...register("identificationNumber")}
-                     error={errors.identificationNumber}
-                  />
+                  )
+               }
 
-                  {/* Contact Type */}
-                  <InputField
-                     label="Contact Type"
-                     {...register("contactType")}
-                     error={errors.contactType}
-                  />
-                  {/* Contact Value */}
-                  <InputField
-                     label="Contact Value"
-                     {...register("contactValue")}
-                     error={errors.contactValue}
-                  />
-
-               </div>
-            </form>
-   
-            {/*
-            -----------------------------------
-            FOOTER
-            -----------------------------------
-            */}
-   
-            <div className="
-               sticky
-               bottom-0
-               bg-white
-               border-t
-               px-8
-               py-5
-               flex
-               justify-end
-               gap-3
-            ">
-   
-               <button
-   
-                  type="button"
-   
-                  onClick={onClose}
-   
-                  className="
-                     px-5
-                     py-3
-                     rounded-xl
-                     border
-                     hover:bg-gray-100
-                     transition
-                  "
-               >
-                  Cancel
-               </button>
-   
-               <button
-   
-                  type="submit"
-   
-                  onClick={handleSubmit(onSubmit)}
-   
-                  className="
-                     bg-blue-600
-                     hover:bg-blue-700
-                     transition
-                     text-white
-                     px-6
-                     py-3
-                     rounded-xl
-                     font-medium
-                     shadow-sm
-                  "
-               >
-                  Save Changes
-               </button>
-   
             </div>
-   
+
          </div>
-   
+
       </div>
-   
+
    );
 
 }

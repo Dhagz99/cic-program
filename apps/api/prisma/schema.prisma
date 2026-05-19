@@ -53,6 +53,7 @@ model Branch {
   users           User[]
   importBatches   ImportBatch[]
   clients         Client[]
+  contracts         Contract[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -210,8 +211,11 @@ model ImportBatch {
 
   rejectedBy User?  @relation( "BatchRejectedBy", fields: [rejectedById],  references: [id] )
 
+  
   stagingClients      StagingClient[]
   stagingContracts    StagingContract[]
+  contracts            Contract[]  
+  cleints            Client[]  
 
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -238,6 +242,7 @@ model GenderDomain {
   description   String
 
   stagingCLients       StagingClient[]
+  clients         Client[]
 
   @@map("gender_domain")
 
@@ -249,6 +254,7 @@ model CivilStatusDomain {
   description   String
 
    stagingCLients       StagingClient[]
+     clients         Client[] 
 
   @@map("civil_status_domain")
 
@@ -260,6 +266,7 @@ model IdentificationTypeDomain {
   description   String
 
    stagingCLients       StagingClient[]
+     clients         Client[]
 
   @@map("identification_type_domain")
 
@@ -416,47 +423,120 @@ model ValidationError {
 
 
 model Client {
-  id                    String   @id @default(uuid())
+  id                                String    @id @default(uuid())
+  recordType                        String    @default("ID")
+  branchId                          String   
+  batchId                           String            
+  providerCode                      String?   @default("PF007980")
+  branchCode                        String?
+  subjectRefeerenceDate             DateTime?
+  providerSubjectNo                 String?
+  title                             String?
 
-  branchId              String
+  firstName                         String?
+  middleName                        String?
+  lastName                          String?
+  suffix                            String?
+  nickname                          String?
+  
+  prevLastName                      String?
+  genderCode                        String?
+  birthDate                         DateTime 
+  placeOfBirth                      String?
+  countryOfBirthCode                String?   @default("PH")
+  nationality                       String?   @default("PH")
+  resident                          Boolean?   @default(true)
+  civilStatusCode                   Int?
+  numberOfDependents                Int    @default(0)
 
-  providerSubjectNo     String?  @unique
+  addressType                       AddressType    @default(MI)
+  address                           String?
 
-  firstName             String
-  middleName            String?
-  lastName              String
+  addressType2                      AddressType    @default(AI)
+  address2                          String?
 
-  suffix                String?
+  identificationTypeCode            Int
+  identificationNumber              String?
 
-  birthDate             DateTime?
+  contactType                       String?
+  contactValue                      String?
 
-  gender                String?
-  civilStatus           String?
 
-  address               String?
-  tinNumber             String?
+  branch                             Branch  @relation(fields: [branchId], references: [id])
+  batch                       ImportBatch @relation(fields: [batchId], references: [id])
+  Contracts                          Contract[]
 
-  branch                Branch @relation(fields: [branchId], references: [id])
-
-  contracts             Contract[]
+  civilStatus                        CivilStatusDomain? @relation( fields: [civilStatusCode], references: [code])
+  identificationType    IdentificationTypeDomain @relation( fields: [identificationTypeCode], references: [code])
+  gender                 GenderDomain? @relation( fields: [genderCode], references: [code])
 
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
+
+  @@unique([branchId, providerSubjectNo])
 }
 
 model Contract {
-  id                    String   @id @default(uuid())
+  id                          String   @id @default(uuid())
+  recordType                  String    @default("CI")
+  providerCode                String?   @default("PF007980")
+  branchId                    String
+  branchCode                  String?
+  batchId                     String
+  clientId                    String
+  providerSubjectNo           String?
+  role                        String      @default("B")
 
-  clientId              String
+  contractNo                  String?
+  contractType                Int?        @default(15)
+  contractPhase               String?     @default("AC")
+  contractStatus              String?
 
-  contractNo            String   @unique
+  currency                    String?     @default("PHP")
+  originalCurrency            String?     @default("PHP")
 
-  client                Client  @relation(fields: [clientId], references: [id])
+  contractStartDate           DateTime?
+  contractRequestDate         DateTime?
 
-  monthlySnapshots      ContractMonthlySnapshot[]
+  contractEndPlannedDate      DateTime?
+  contractEndActualDate       DateTime?
 
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  lastPaymentDate             DateTime?
+
+
+  financedAmount              Decimal? @db.Decimal(18,2)
+  installmentsNumber          Int?
+
+  transactionType             String? @default("NA")
+
+  paymentPeriodicity          String? @default("M")
+  paymentMethod               String? @default("OTH")
+
+  monthlyPaymentAmount        Decimal? @db.Decimal(18,2)
+
+  firstPaymentDate            DateTime?
+  lastPaymentAmount           Decimal? @db.Decimal(18,2)
+  nextPaymentDate             DateTime?
+  nextPaymentAmount           Decimal? @db.Decimal(18,2)
+  outstandingPaymentNumber    Int?
+  outstandingBalance          Decimal? @db.Decimal(18,2)
+
+  overduePaymentNumber        Int?
+  overduePaymentAmount        Decimal? @db.Decimal(18,2)
+
+
+  batch                       ImportBatch @relation(fields: [batchId], references: [id])
+  branch                       Branch @relation(fields: [branchId], references: [id])
+
+  client               Client @relation(fields: [clientId], references: [id])
+  
+  monthlyContract       ContractMonthlySnapshot[]
+
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
+
+
+  @@unique([branchId, contractNo])
 }
 
 enum ContractStatus {
@@ -506,4 +586,20 @@ model AuditLog {
   user                  User  @relation(fields: [userId], references: [id])
 
   createdAt             DateTime @default(now())
+}
+
+model Domain {
+
+  id            String @id @default(uuid())
+
+  type          String
+  code          String
+  description   String
+
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+   @@unique([type, code], name: "type_code")
+
 }

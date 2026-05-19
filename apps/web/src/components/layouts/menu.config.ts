@@ -34,6 +34,12 @@ export const MENU_SECTIONS: MenuSection[] = [
           icon: WalletCards,
           permission:"ADMIN_MANAGE"
         },
+        {
+          label: "Reports",
+          path: "/reports",
+          icon: WalletCards,
+          permission:"ADMIN_MANAGE"
+        },
         // {
         //   label: "Payroll",
         //   icon: Calculator,

@@ -52,7 +52,7 @@ export const normalizeContract = (
 
       monthlyPaymentAmount:
          parseAmount(
-            row.PRINCIPAL
+            row.MPA
          ),
 
       firstPaymentDate:

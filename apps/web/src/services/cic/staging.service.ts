@@ -1,4 +1,13 @@
 import api from "@/lib/axios";
+import { UpdateLoanFormValues } from "@repo/shared";
+
+type UpdateStagingContractParams = {
+
+   id: string;
+
+   values: UpdateLoanFormValues;
+
+};
 
 export const updateStagingClient =
 async (
@@ -16,21 +25,26 @@ async (
 
 };
 
-export const updateStagingContract =
-async (
-   id: string,
-   payload: any
-) => {
+export async function updateStagingContract({
+
+   id,
+
+   values
+
+}: UpdateStagingContractParams) {
 
    const response =
-      await api.put(
-         `/staging/contract/${id}`,
-         payload
+      await api.patch(
+
+         `/cic/staging-contracts/${id}`,
+
+         values
+
       );
 
    return response.data;
 
-};
+}
 
 export const confirmStagingClient =
 async (
@@ -59,3 +73,5 @@ async (
    return response.data;
 
 };
+
+

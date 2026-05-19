@@ -125,3 +125,149 @@ import {
    z.input<
       typeof updateClientSchema
    >;
+
+
+   // schemas/cic/loan.schema.ts
+
+
+export const updateLoanSchema = z.object({
+
+   contractNo:
+      z
+         .string()
+         .min(
+            1,
+            "Contract number is required"
+         ),
+
+   contractType:
+      z
+         .number()
+         .optional(),
+
+   contractPhase:
+      z
+         .string()
+         .optional(),
+
+   contractStatus:
+      z
+         .string()
+         .optional(),
+
+   currency:
+      z
+         .string()
+         .optional(),
+
+   originalCurrency:
+      z
+         .string()
+         .optional(),
+
+
+
+   contractStartDate:
+      z
+         .string()
+         .optional(),
+
+   contractRequestDate:
+      z
+         .string()
+         .optional(),
+
+   contractEndPlannedDate:
+      z
+         .string()
+         .optional(),
+
+   contractEndActualDate:
+      z
+         .string()
+         .optional(),
+
+   firstPaymentDate:
+      z
+         .string()
+         .optional(),
+
+   lastPaymentDate:
+      z
+         .string()
+         .optional(),
+
+   nextPaymentDate:
+      z
+         .string()
+         .optional(),
+
+
+
+   financedAmount:
+      z
+         .number()
+         .optional(),
+
+   installmentsNumber:
+      z
+         .number()
+         .optional(),
+
+   monthlyPaymentAmount:
+      z
+         .number()
+         .optional(),
+
+   lastPaymentAmount:
+      z
+         .number()
+         .optional(),
+
+   nextPaymentAmount:
+      z
+         .number()
+         .optional(),
+
+   outstandingBalance:
+      z
+         .number()
+         .optional(),
+
+   overduePaymentAmount:
+      z
+         .number()
+         .optional(),
+
+ 
+   outstandingPaymentNumber:
+      z
+         .number()
+         .optional(),
+
+   overduePaymentNumber:
+      z
+         .number()
+         .optional(),
+
+   paymentPeriodicity:
+      z
+         .string()
+         .optional(),
+
+   paymentMethod:
+      z
+         .string()
+         .optional(),
+
+   transactionType:
+      z
+         .string()
+         .optional()
+
+});
+
+export type UpdateLoanFormValues =
+   z.infer<
+      typeof updateLoanSchema
+   >;

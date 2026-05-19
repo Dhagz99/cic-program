@@ -1,4 +1,5 @@
 import { updateClient } from "@/services/cic/batch.service";
+import { updateStagingContract } from "@/services/cic/staging.service";
 import { UpdateClientDTO } from "@repo/shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -38,4 +39,26 @@ export function useUpdateClient() {
     });
  
  }
- 
+
+
+
+ export function useUpdateStagingContract() {
+
+   const queryClient =
+      useQueryClient();
+
+   return useMutation({
+
+      mutationFn: updateStagingContract,
+
+      onSuccess: () => {
+
+         queryClient.invalidateQueries({
+            queryKey: ["staging-contracts"]
+         });
+
+      }
+
+   });
+
+}

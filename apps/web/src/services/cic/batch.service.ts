@@ -239,7 +239,7 @@ async (
 
    const response =
       await api.post(
-         `/api/cic/batch/${batchId}/finalize`
+         `/batch/${batchId}/finalize`
       );
 
    return response.data;
