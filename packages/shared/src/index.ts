@@ -11,3 +11,4 @@ export * from "./types/cic/batch.types";
 export * from "./types/auth.types";
 export * from "./types/sidebar.types";
 export * from "./types/cic/dbf.types";
+export * from "./types/client/client.types";

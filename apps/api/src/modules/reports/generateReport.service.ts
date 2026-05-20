@@ -121,17 +121,25 @@ async ({
 
          client.providerCode || "",
 
+         client.branchCode || "",
+
          reportDate,
 
          client.providerSubjectNo || "",
 
-         client.firstName || "",
+         client.title || "",
 
-         client.middleName || "",
+         client.firstName || "",
 
          client.lastName || "",
 
+         client.middleName || "",
+
          client.suffix || "",
+
+         client.nickname || "",
+
+         client.prevLastName || "",
 
          client.genderCode || "",
 
@@ -141,6 +149,7 @@ async ({
               )
             : "",
 
+         client.placeOfBirth || "",
          client.countryOfBirthCode || "PH",
 
          client.nationality || "PH",
@@ -148,26 +157,133 @@ async ({
          client.resident
             ? "1"
             : "0",
-
          client.civilStatusCode || "",
 
          client.numberOfDependents || "0",
+         client.empty || "0",
+
+         client.empty || "",
+         client.empty || "",
+         client.empty || "",
+
+         client.empty || "", //Mother Maiden
+         client.empty || "", //Father First Name
+         client.empty || "", //Father Last Name
+         client.empty || "", //Father Midlle Name
+         client.empty || "", //Father Suffix Name
 
          client.addressType || "",
 
          client.address || "",
 
+         client.empty || "", //Address 1: StreetNo
+         client.empty || "", //Address 1: PostalCode
+         client.empty || "", //Address 1: Subdivision
+         client.empty || "", //Address 1: Barangay
+         client.empty || "", //Address 1: City
+         client.empty || "", //Address 1: Province
+         client.empty || "", //Address 1:Country
+         client.empty || "1", //Address 1: House Owner/Lessee
+         client.empty || "", //Address 1: Occupied Since
+
+
+
          client.addressType2 || "",
 
          client.address2 || "",
 
-         client.identificationTypeCode || "",
+         client.empty || "", //Address 2: StreetNo
+         client.empty || "", //Address 2: PostalCode
+         client.empty || "", //Address 2: Subdivision
+         client.empty || "", //Address 2: Barangay
+         client.empty || "", //Address 2: City
+         client.empty || "", //Address 2: Province
+         client.empty || "", //Address 2: Country
+         client.empty || "", //Address 2: House Owner/Lessee
+         client.empty || "", //Address 2: Occupied Since
 
+         client.identificationTypeCode || "",
          client.identificationNumber || "",
+         client.empty || "", //Identification 2: Type
+         client.empty || "", //Identification 2: Number
+         client.empty || "", //Identification 3: Type
+         client.empty || "", //Identification 3: Number
+
+         client.empty || "", //ID 1: Type
+         client.empty || "", //ID 1: Number
+         client.empty || "", //ID 1: IssueDate
+         client.empty || "", //ID 1: IssueCountry
+         client.empty || "", //ID 1: ExpiryDate
+         client.empty || "", //ID 1: Issued By
+
+         client.empty || "", //ID 2: Type
+         client.empty || "", //ID 2: Number
+         client.empty || "", //ID 2: IssueDate
+         client.empty || "", //ID 2: IssueCountry
+         client.empty || "", //ID 2: ExpiryDate
+         client.empty || "", //ID 2: Issued By
+
+         client.empty || "", //ID 3: Type
+         client.empty || "", //ID 3: Number
+         client.empty || "", //ID 3: IssueDate
+         client.empty || "", //ID 3: IssueCountry
+         client.empty || "", //ID 3: ExpiryDate
+         client.empty || "", //ID 3: Issued By
 
          client.contactType || "",
+         client.contactValue || "",
 
-         client.contactValue || ""
+         client.empty || "", //Contact 2: Type
+         client.empty || "", //Contact 2: Value
+
+         client.empty || "", //Employment: Trade Name
+         client.empty || "", //Employment: TIN
+         client.empty || "", //Employment: Phone Number
+         client.empty || "", //Employment:  PSIC
+         client.empty || "0", //Employment: GrossIncome
+         client.empty || "", //Employment: Annual/Monthly Indicator
+         client.empty || "", //Employment: Currency
+         client.empty || "", //Employment: OccupationStatus
+         client.empty || "", //Employment: DateHiredFrom
+         client.empty || "", //Employment: DateHiredTo
+         client.empty || "", //Employment: Occupation
+
+         client.empty || "", //Sole Trader:  TradeName
+         client.empty || "", //Sole Trader 1: Address Type
+         client.empty || "", //Sole Trader 1: FullAddress
+         client.empty || "", //Sole Trader 1: StreetNo
+         client.empty || "", //Sole Trader 1: PostalCode
+         client.empty || "", //Sole Trader 1: Subdivision
+         client.empty || "", //Sole Trader 1: Barangay
+         client.empty || "", //Sole Trader 1: City
+         client.empty || "", //Sole Trader 1: Province
+         client.empty || "", //Sole Trader 1: Country
+         client.empty || "", //Sole Trader 1: House Owner/Lessee
+         client.empty || "", //Sole Trader 1: Occupied Since
+
+         client.empty || "", //Sole Trader 2: Address Type
+         client.empty || "", //Sole Trader 2: FullAddress
+         client.empty || "", //Sole Trader 2: StreetNo
+         client.empty || "", //Sole Trader 2: PostalCode
+         client.empty || "", //Sole Trader 2: Subdivision
+         client.empty || "", //Sole Trader 2: Barangay
+         client.empty || "", //Sole Trader 2: City
+         client.empty || "", //Sole Trader 2: Province
+         client.empty || "", //Sole Trader 2: Country
+         client.empty || "", //Sole Trader 2: House Owner/Lessee
+         client.empty || "", //Sole Trader 2: Occupied Since
+
+         client.empty || "", //Sole Trader 1:  Identification Type
+         client.empty || "", //Sole Trader 1:  Identification Number
+         client.empty || "", //Sole Trader 2:  Identification Type
+         client.empty || "", //Sole Trader 2: Identification Number
+         client.empty || "", //Sole Trader 1: Contact Type
+         client.empty || "", //Sole Trader 1: Contact Value
+         client.empty || "", //Sole Trader 2: Contact Type
+         client.empty || "", //Sole Trader 2: Contact Value
+    
+
+
 
       ].join("|");
 
@@ -196,6 +312,7 @@ async ({
             "CI",
 
             contract.providerCode || "",
+            "", //Branch Code
 
             reportDate,
 
@@ -208,6 +325,8 @@ async ({
             contract.contractType || "",
 
             contract.contractPhase || "",
+
+            "",//Contract Status
 
             contract.currency || "PHP",
 
@@ -237,13 +356,19 @@ async ({
                  )
                : "",
 
-            contract.contractStatus || "",
+               contract.lastPaymentDate
+               ? formatDate(
+                    contract.lastPaymentDate
+                 )
+               : "",
 
+            "", //Reorganized Credit Code
+            "0", //Board Resolution flag
             contract.financedAmount?.toString() || "0",
-
             contract.installmentsNumber || "",
-
             contract.transactionType || "NA",
+            "", //Purpose of credit
+
 
             contract.paymentPeriodicity || "M",
 
@@ -257,7 +382,7 @@ async ({
                  )
                : "",
 
-            contract.lastPaymentAmount?.toString() || "0",
+           contract.lastPaymentAmount || "0",
 
             contract.nextPaymentDate
                ? formatDate(
@@ -267,13 +392,146 @@ async ({
 
             contract.nextPaymentAmount?.toString() || "0",
 
-            contract.outstandingPaymentNumber || "",
+            contract.outstandingPaymentNumber || "0",
 
             contract.outstandingBalance?.toString() || "0",
 
-            contract.overduePaymentNumber || "",
+            contract.overduePaymentNumber || "0",
 
-            contract.overduePaymentAmount?.toString() || "0"
+            contract.overduePaymentAmount?.toString() || "0",
+           
+            "0", //Overdue Days
+
+
+            "", //Good Type
+            "", //Good Value
+            "", //New/Used Code
+            "", //Good Brand
+            "", //Manufacturing Date
+            "", //Registration number
+            "", //Provider Guarantee No 1
+            "", //Provider Subject No (Guarantor)
+            "", //Guarantor Name
+            "", //Guaranteed Amount
+            "", //Currency
+            "", //Validity Start Date
+            "", //Validity End Date
+            "", //Guarantee Type
+            "", //Asset Code
+            "", //Asset Description
+            "", //Asset Location
+            "", //Asset Appraised Value
+            "", //Asset Registry External Link
+            "", //Customer Type
+
+        
+            "", //Provider Guarantee No 2
+            "", //Provider Subject No (Guarantor)
+            "", //Guarantor Name
+            "", //Guaranteed Amount
+            "", //Currency
+            "", //Validity Start Date
+            "", //Validity End Date
+            "", //Guarantee Type
+            "", //Asset Code
+            "", //Asset Description
+            "", //Asset Location
+            "", //Asset Appraised Value
+            "", //Asset Registry External Link
+            "", //Customer Type
+
+            "", //Provider Guarantee No 3
+            "", //Provider Subject No (Guarantor)
+            "", //Guarantor Name
+            "", //Guaranteed Amount
+            "", //Currency
+            "", //Validity Start Date
+            "", //Validity End Date
+            "", //Guarantee Type
+            "", //Asset Code
+            "", //Asset Description
+            "", //Asset Location
+            "", //Asset Appraised Value
+            "", //Asset Registry External Link
+            "", //Customer Type
+
+            "", //Provider Guarantee No 4
+            "", //Provider Subject No (Guarantor)
+            "", //Guarantor Name
+            "", //Guaranteed Amount
+            "", //Currency
+            "", //Validity Start Date
+            "", //Validity End Date
+            "", //Guarantee Type
+            "", //Asset Code
+            "", //Asset Description
+            "", //Asset Location
+            "", //Asset Appraised Value
+            "", //Asset Registry External Link
+            "", //Customer Type
+
+            "", //Provider Guarantee No 5
+            "", //Provider Subject No (Guarantor)
+            "", //Guarantor Name
+            "", //Guaranteed Amount
+            "", //Currency
+            "", //Validity Start Date
+            "", //Validity End Date
+            "", //Guarantee Type
+            "", //Asset Code
+            "", //Asset Description
+            "", //Asset Location
+            "", //Asset Appraised Value
+            "", //Asset Registry External Link
+            "", //Customer Type
+
+            "", //Provider Guarantee No 6
+            "", //Provider Subject No (Guarantor)
+            "", //Guarantor Name
+            "", //Guaranteed Amount
+            "", //Currency
+            "", //Validity Start Date
+            "", //Validity End Date
+            "", //Guarantee Type
+            "", //Asset Code
+            "", //Asset Description
+            "", //Asset Location
+            "", //Asset Appraised Value
+            "", //Asset Registry External Link
+            "", //Customer Type
+
+
+            "", //Provider Subject No (Linked Subject 1)
+            "", //Role
+            "", //Name of the Linked Subject
+
+            "", //Provider Subject No (Linked Subject 2)
+            "", //Role
+            "", //Name of the Linked Subject
+           
+            "", //Provider Subject No (Linked Subject 3)
+            "", //Role
+            "", //Name of the Linked Subject
+           
+            "", //Provider Subject No (Linked Subject 4)
+            "", //Role
+            "", //Name of the Linked Subject
+           
+            "", //Provider Subject No (Linked Subject 5)
+            "", //Role
+            "", //Name of the Linked Subject
+           
+            "", //Provider Subject No (Linked Subject 6)
+            "", //Role
+            "", //Name of the Linked Subject
+           
+         
+
+           
+
+
+
+
 
          ].join("|");
 
@@ -318,7 +576,7 @@ async ({
    return {
 
       fileName:
-         `CIC_REPORT_${batch.id}.txt`,
+         `PF007980_CSDF_${batch.id}.txt`,
 
       content
 
@@ -439,7 +697,8 @@ async () => {
             select: {
 
                id: true,
-                month: true
+                month: true,
+                year: true
 
             }
 

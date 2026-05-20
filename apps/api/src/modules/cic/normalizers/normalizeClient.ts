@@ -120,7 +120,7 @@ export const normalizeClient = (
             ? 11
             : row.GROUPING === "GSIS"
             ? 12
-            : null,
+            : 10,
 
    };
 

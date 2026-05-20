@@ -98,6 +98,10 @@ export interface ValidationError {
     gender: DomainOption<string> | null;
  
     civilStatus: DomainOption<number> | null;
+    branch: {
+      branchCode: string      
+      branchName: string
+    }
 
     numberOfDependents: number;
  

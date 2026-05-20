@@ -11,13 +11,18 @@ export const normalizeContract = (
 ) => {
 
    const decodedContractEnd = row.EFF + row.FATERM;
+   console.log(row.MPA)
 
    return {
+
+
       providerSubjectNo:
       String(row.ID),
 
       contractNo:
-         `${row.ID}-${row.BRANCH}`,
+         row.ACCTNO
+            ? String(row.ACCTNO).trim()
+            : null,
       
       contractStartDate:
          parseDate(
@@ -51,9 +56,14 @@ export const normalizeContract = (
          ),
 
       monthlyPaymentAmount:
+         (row.MPA != 0) ?
          parseAmount(
             row.MPA
-         ),
+         ) :
+          parseAmount(
+            row.PENSION
+         ) ,
+
 
       firstPaymentDate:
          parseDate(
@@ -64,13 +74,22 @@ export const normalizeContract = (
             row.MPA
          ),
       nextPaymentDate:
+         row.LPDATE ?
          addTermToDate(
                row.LPDATE, 1
+            ) : 
+            addTermToDate(
+               row.EFF, 1
             ),  
       nextPaymentAmount:
-         parseAmount(
-            row.MPA
-         ),
+            (row.MPA != 0) ?
+            parseAmount(
+               row.MPA
+            ) :
+            parseAmount(
+               row.PENSION
+            ) ,
+
 
       outstandingPaymentNumber:
          parseAmount(

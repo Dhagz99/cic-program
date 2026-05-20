@@ -28,6 +28,7 @@ export interface ImportBatchItem {
       id: string;
 
       month: string;
+      year: string;
 
    };
 

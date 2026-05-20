@@ -454,12 +454,15 @@ model Client {
 
   addressType2                      AddressType    @default(AI)
   address2                          String?
+  
 
   identificationTypeCode            Int
   identificationNumber              String?
 
   contactType                       String?
   contactValue                      String?
+
+  empty                             String?
 
 
   branch                             Branch  @relation(fields: [branchId], references: [id])

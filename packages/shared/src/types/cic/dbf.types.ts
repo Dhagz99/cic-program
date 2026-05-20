@@ -40,4 +40,5 @@ export interface DbfTypes {
     NTOTAL: number;
     NBT: number;
     PAYAMT: number;
+    ACCTNO: number;
 }

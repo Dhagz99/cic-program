@@ -1,5 +1,7 @@
 import { MenuSection } from "@repo/shared"
 import {
+  FileText,
+  FolderPlus,
     LayoutDashboard,
     Users,
     WalletCards
@@ -31,13 +33,13 @@ export const MENU_SECTIONS: MenuSection[] = [
         {
           label: "Initialize",
           path: "/cic/upload",
-          icon: WalletCards,
+          icon: FolderPlus,
           permission:"ADMIN_MANAGE"
         },
         {
           label: "Reports",
           path: "/reports",
-          icon: WalletCards,
+          icon: FileText,
           permission:"ADMIN_MANAGE"
         },
         // {

@@ -70,6 +70,24 @@ export const validateClient = (
    }
 
 
+
+       /*
+    --------------------------------
+ Identification
+    --------------------------------
+    */
+ 
+    if (client.identificationTypeCode == 10) {
+ 
+      errors.push({
+         fieldName: "identificationTypeCode",
+         errorMessage:
+            "Identification code is required"
+      });
+
+   }
+
+
    
  
     return errors;

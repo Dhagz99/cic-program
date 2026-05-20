@@ -14,6 +14,7 @@ import {
    useImportBatches
 } from "@/hooks/cic/useReports";
 import { ImportBatchItem } from "@repo/shared";
+import { getLastDayOfMonth } from "@/utils/date/getLastDayOfMonth";
 
 
 
@@ -88,10 +89,18 @@ export default function Reports() {
 
    const handleExport =
    async (
-      batchId: string
+      batchId: string,
+      reportingPeriod: string,
+      year: string
    ) => {
 
       try {
+
+         const result =
+         getLastDayOfMonth(
+            Number(reportingPeriod),
+            Number(year)
+         );
 
          const blob =
             await exportReport(
@@ -113,7 +122,7 @@ export default function Reports() {
 
             "download",
 
-            `CIC_REPORT_${batchId}.txt`
+            `PF007980_CSDF_${result}.txt`
 
          );
 
@@ -153,8 +162,10 @@ export default function Reports() {
 
       <div
          className="
-            p-6
+            p-8
+          bg-slate-100
             space-y-6
+            min-h-screen 
          "
       >
 
@@ -373,7 +384,9 @@ export default function Reports() {
 
                                     onClick={() =>
                                        handleExport(
-                                          batch.id
+                                          batch.id,
+                                          batch.reportingPeriod.month,
+                                          batch.reportingPeriod.year
                                        )
                                     }
 
