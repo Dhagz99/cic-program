@@ -43,20 +43,24 @@ export const saveStagingClient = async ({
             client.suffix,
 
          birthDate:
-            client.birthDate,
+            client.birthDate
+               ? client.birthDate
+               : null,
 
          address:
             client.address,
          address2: 
             client.address,
-         
-         identificationType: {
 
-               connect: {
-                  code: client.grouping
+       ...(client.grouping && {
+
+               identificationType: {
+                  connect: {
+                     code: client.grouping
+                  }
                }
-   
-            },
+            }),
+            
          identificationNumber:
             client.sssNo,   
 

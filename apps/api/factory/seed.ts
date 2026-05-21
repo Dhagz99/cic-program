@@ -1,5 +1,6 @@
 import seedDomains from "./seeds/domain.seed";
 import { generalDomain } from "./seeds/general.domain.seed";
+import { seedPSGC } from "./seeds/psgc.seed";
 import seedRoles from "./seeds/role.seed";
 
 async function main() {
@@ -9,6 +10,8 @@ async function main() {
    await seedRoles();
 
    await generalDomain();
+   await seedPSGC();
+
 
    console.log(
       "All seeds completed"

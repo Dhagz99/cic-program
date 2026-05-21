@@ -7,8 +7,9 @@ from "../utils/parseFullName";
 import { decodeDbfText }
 from "../utils/decodeDbfText";
 import { DbfTypes } from "@repo/shared";
+import { resolveAddress } from "../services/address/resolveAddress.service";
 
-export const normalizeClient = (
+export const normalizeClient = async (
    row: DbfTypes
 ) => {
 
@@ -59,6 +60,29 @@ export const normalizeClient = (
    RETURN NORMALIZED CLIENT
    -----------------------------------
    */
+  const rawAddress =
+   [
+      decodedAdd1?.trim(),
+      decodedAdd2?.trim()
+   ]
+      .filter(Boolean)
+      .join(", ");
+
+
+      const resolvedAddress =
+      await resolveAddress(
+         rawAddress
+      );
+   
+   console.log(
+      resolvedAddress
+   );
+   console.log(
+      "RAW ADDRESS:",
+      rawAddress
+   );
+
+
 
    return {
 

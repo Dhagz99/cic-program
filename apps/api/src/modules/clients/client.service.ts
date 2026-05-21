@@ -129,7 +129,7 @@ export async function getClientContractsService(
      
                  take: limit,
                  orderBy: {
-                    createdAt: "desc",
+                    providerSubjectNo: "asc",
                  },
      
                  include: {

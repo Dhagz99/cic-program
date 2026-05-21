@@ -16,17 +16,12 @@ export interface ImportBatchItem {
    createdAt: string;
 
    branch: {
-
       id: string;
-
       branchName: string;
-
    };
 
    reportingPeriod: {
-
       id: string;
-
       month: string;
       year: string;
 

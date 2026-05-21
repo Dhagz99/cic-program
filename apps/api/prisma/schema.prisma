@@ -302,7 +302,7 @@ model StagingClient {
   
   prevLastName                      String?
   genderCode                        String?
-  birthDate                         DateTime 
+  birthDate                         DateTime? 
   placeOfBirth                      String?
   countryOfBirthCode                String?   @default("PH")
   nationality                       String?   @default("PH")
@@ -316,11 +316,13 @@ model StagingClient {
   addressType2                      AddressType    @default(AI)
   address2                          String?
 
-  identificationTypeCode            Int
+  identificationTypeCode            Int?
   identificationNumber              String?
 
   contactType                       String?
   contactValue                      String?
+
+ addressConfidence     Decimal? @db.Decimal(5,2)
 
   validationStatus        ValidationStatus
 
@@ -333,7 +335,7 @@ model StagingClient {
   validationErrors      ValidationError[]
 
   civilStatus            CivilStatusDomain? @relation( fields: [civilStatusCode], references: [code])
-  identificationType    IdentificationTypeDomain @relation( fields: [identificationTypeCode], references: [code])
+  identificationType    IdentificationTypeDomain? @relation( fields: [identificationTypeCode], references: [code])
   gender                 GenderDomain? @relation( fields: [genderCode], references: [code])
 
   createdAt             DateTime @default(now())
@@ -605,4 +607,26 @@ model Domain {
 
    @@unique([type, code], name: "type_code")
 
+}
+
+
+model PSGCReference {
+
+  id                 String   @id @default(uuid())
+
+  regionName         String?
+
+  provinceName       String
+
+  municipalityName   String
+
+  barangayName       String
+
+  zipCode            String?
+
+  createdAt          DateTime @default(now())
+
+  @@index([provinceName])
+  @@index([municipalityName])
+  @@index([barangayName])
 }

@@ -10,8 +10,7 @@ export const normalizeContract = (
    row: DbfTypes
 ) => {
 
-   const decodedContractEnd = row.EFF + row.FATERM;
-   console.log(row.MPA)
+
 
    return {
 
