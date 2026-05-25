@@ -313,6 +313,16 @@ model StagingClient {
   addressType                       AddressType    @default(MI)
   address                           String?
 
+  //Additional Address
+  addressStreetNo                         String?
+  addressPostalCode                       String?
+  addressSubdivision                      String?
+  addressBarangay                         String?
+  addressCity                             String?
+  addressProvince                         String?
+  addressCountry                          String? @default("PH")
+
+
   addressType2                      AddressType    @default(AI)
   address2                          String?
 
@@ -443,7 +453,7 @@ model Client {
   
   prevLastName                      String?
   genderCode                        String?
-  birthDate                         DateTime 
+  birthDate                         DateTime? 
   placeOfBirth                      String?
   countryOfBirthCode                String?   @default("PH")
   nationality                       String?   @default("PH")
@@ -454,11 +464,21 @@ model Client {
   addressType                       AddressType    @default(MI)
   address                           String?
 
+  //Additional Address
+  addressStreetNo                         String?
+  addressPostalCode                       String?
+  addressSubdivision                      String?
+  addressBarangay                         String?
+  addressCity                             String?
+  addressProvince                         String?
+  addressCountry                          String? @default("PH")
+
+
   addressType2                      AddressType    @default(AI)
   address2                          String?
   
 
-  identificationTypeCode            Int
+  identificationTypeCode            Int?
   identificationNumber              String?
 
   contactType                       String?
@@ -472,7 +492,7 @@ model Client {
   Contracts                          Contract[]
 
   civilStatus                        CivilStatusDomain? @relation( fields: [civilStatusCode], references: [code])
-  identificationType    IdentificationTypeDomain @relation( fields: [identificationTypeCode], references: [code])
+  identificationType    IdentificationTypeDomain? @relation( fields: [identificationTypeCode], references: [code])
   gender                 GenderDomain? @relation( fields: [genderCode], references: [code])
 
   createdAt             DateTime @default(now())

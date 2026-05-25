@@ -1,11 +1,14 @@
+import { detectProvince }
+from "./detectProvince.service";
 
+import { detectMunicipality }
+from "./detectMunicipality.service";
 
 import { detectBarangay }
 from "./detectBarangay.service";
 
 import { normalizeAddress }
 from "../../utils/address/normalizeClientAddress";
-import { detectMunicipality } from "./detectMunicipality.service";
 
 export const resolveAddress =
    async (
@@ -14,7 +17,7 @@ export const resolveAddress =
 
       /*
       --------------------------------
-      NORMALIZE ADDRESS
+      NORMALIZE
       --------------------------------
       */
 
@@ -25,20 +28,29 @@ export const resolveAddress =
 
       /*
       --------------------------------
+      DETECT PROVINCE FIRST
+      --------------------------------
+      */
+
+      const province =
+         await detectProvince(
+            normalizedAddress
+         );
+
+      /*
+      --------------------------------
       DETECT MUNICIPALITY
       --------------------------------
       */
 
       const municipalityMatch =
          await detectMunicipality(
-            normalizedAddress
-         );
 
-      /*
-      --------------------------------
-      MUNICIPALITY NOT FOUND
-      --------------------------------
-      */
+            normalizedAddress,
+
+            province
+
+         );
 
       if (!municipalityMatch) {
 
@@ -46,7 +58,7 @@ export const resolveAddress =
 
             normalizedAddress,
 
-            province: null,
+            province,
 
             municipality: null,
 
@@ -98,10 +110,10 @@ export const resolveAddress =
 
             barangay: null,
 
-            zipCode:
-               municipalityMatch.zipCode,
+            zipCode: null,
 
-            confidence: 0.40,
+            confidence:
+               municipalityMatch.confidence,
 
             validationStatus:
                "WITH_ERRORS",
@@ -136,11 +148,8 @@ export const resolveAddress =
             barangayMatch.confidence,
 
          validationStatus:
-
             barangayMatch.confidence >= 0.80
-
                ? "COMPLETE"
-
                : "WITH_ERRORS",
 
       };

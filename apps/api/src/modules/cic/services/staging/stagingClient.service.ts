@@ -17,6 +17,8 @@ export const saveStagingClient = async ({
    --------------------------------
    */
 
+   console.log(client);
+
    const stagingClient =
    await prisma.stagingClient.create({
 
@@ -49,6 +51,15 @@ export const saveStagingClient = async ({
 
          address:
             client.address,
+         addressCity:
+             client.addressCity,
+         addressBarangay:
+            client.addressBarangay,
+         addressProvince:
+            client.addressProvince,
+         addressPostalCode:
+            client.addressPostalCode,   
+
          address2: 
             client.address,
 
@@ -60,7 +71,7 @@ export const saveStagingClient = async ({
                   }
                }
             }),
-            
+
          identificationNumber:
             client.sssNo,   
 

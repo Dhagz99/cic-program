@@ -181,7 +181,7 @@ export const uploadDbfService = async ({
       */
 
       const normalizedClient =
-         normalizeClient(row);
+       await  normalizeClient(row);
 
       const normalizedContract =
          normalizeContract(row);

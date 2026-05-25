@@ -1,5 +1,8 @@
 import prisma
 from "../../../../lib/prisma";
+import { extractBarangayCandidate } from "./extractBarangayCanditate.service";
+
+
 
 export const detectBarangay =
    async (
@@ -48,12 +51,26 @@ export const detectBarangay =
 
       /*
       --------------------------------
-      REMOVE MUNICIPALITY/PROVINCE
+      EXTRACT BARANGAY CANDIDATE
+      --------------------------------
+      */
+
+      const candidate =
+         extractBarangayCandidate(
+            normalizedAddress
+         );
+
+      /*
+      --------------------------------
+      CLEAN ADDRESS
       --------------------------------
       */
 
       const cleanedAddress =
-         normalizedAddress
+         (
+            candidate ||
+            normalizedAddress
+         )
 
             .replace(
                new RegExp(
@@ -64,13 +81,196 @@ export const detectBarangay =
             )
 
             .replace(
-               /SIQUIJOR/gi,
+               /CITY/gi,
                ""
             )
 
-            .replace(/\s+/g, " ")
+            .replace(
+               /NEGROS ORIENTAL/gi,
+               ""
+            )
+
+            .replace(
+               /NEGROS OCCIDENTAL/gi,
+               ""
+            )
+
+            .replace(
+               /NEG OR/gi,
+               ""
+            )
+
+            .replace(
+               /NEG OCC/gi,
+               ""
+            )
+
+            .replace(
+               /BARANGAY/gi,
+               ""
+            )
+
+            .replace(
+               /BRGY/gi,
+               ""
+            )
+
+            .replace(
+               /BGY/gi,
+               ""
+            )
+
+            .replace(
+               /\bB\b/gi,
+               ""
+            )
+
+            /*
+            --------------------------------
+            REMOVE ADDRESS NOISE
+            --------------------------------
+            */
+
+            .replace(
+               /\bPUROK\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bPRK\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bSITIO\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bSO\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bHDA\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bSTREET\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bST\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bROAD\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bRD\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bPHASE\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bLOT\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bBLOCK\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bBLK\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bSUBD\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bPROPER\b/gi,
+               ""
+            )
+
+            .replace(
+               /\bPOB\b/gi,
+               ""
+            )
+
+            .replace(
+               /\s+/g,
+               " "
+            )
 
             .trim();
+
+      /*
+      --------------------------------
+      PREPARE SEARCH
+      --------------------------------
+      */
+
+      const prepared =
+         barangays.map(
+            item => ({
+
+               ...item,
+
+               searchable:
+                  item.barangayName
+                     .toUpperCase()
+                     .replace(/\s+/g, " ")
+                     .trim(),
+
+            })
+         );
+
+      /*
+      --------------------------------
+      EXACT MATCH FIRST
+      --------------------------------
+      */
+
+      const exactMatch =
+         prepared.find(
+            item =>
+               cleanedAddress.includes(
+                  item.searchable
+               )
+         );
+
+      if (exactMatch) {
+
+         return {
+
+            barangay:
+               exactMatch.barangayName,
+
+            province:
+               exactMatch.provinceName,
+
+            zipCode:
+               exactMatch.zipCode,
+
+            confidence: 1,
+
+         };
+
+      }
 
       /*
       --------------------------------
@@ -79,15 +279,19 @@ export const detectBarangay =
       */
 
       const fuse =
-         new Fuse(barangays, {
+         new Fuse(prepared, {
 
             keys: [
-               "barangayName"
+               "searchable"
             ],
 
-            threshold: 0.3,
+            threshold: 0.30,
 
             includeScore: true,
+
+            ignoreLocation: true,
+
+            minMatchCharLength: 2,
 
          });
 
@@ -116,12 +320,6 @@ export const detectBarangay =
 
       const bestMatch =
          result[0];
-
-      /*
-      --------------------------------
-      CONFIDENCE
-      --------------------------------
-      */
 
       const confidence =
          Number(

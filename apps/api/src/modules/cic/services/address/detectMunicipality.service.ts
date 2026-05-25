@@ -3,17 +3,28 @@ from "../../../../lib/prisma";
 
 export const detectMunicipality =
    async (
-      normalizedAddress: string
+
+      normalizedAddress: string,
+
+      province?: string | null
+
    ) => {
 
       /*
       --------------------------------
-      GET UNIQUE MUNICIPALITIES
+      GET MUNICIPALITIES
       --------------------------------
       */
 
       const municipalities =
          await prisma.pSGCReference.findMany({
+
+            where:
+               province
+               ? {
+                    provinceName: province
+                 }
+               : undefined,
 
             distinct: [
                "municipalityName"
@@ -25,15 +36,25 @@ export const detectMunicipality =
 
                provinceName: true,
 
-               zipCode: true,
-
             },
 
          });
 
       /*
       --------------------------------
-      TOKEN MATCH
+      SORT LONGEST FIRST
+      --------------------------------
+      */
+
+      municipalities.sort(
+         (a, b) =>
+            b.municipalityName.length -
+            a.municipalityName.length
+      );
+
+      /*
+      --------------------------------
+      EXACT MATCH FIRST
       --------------------------------
       */
 
@@ -44,11 +65,9 @@ export const detectMunicipality =
                .toUpperCase();
 
          if (
-
             normalizedAddress.includes(
                municipality
             )
-
          ) {
 
             return {
@@ -59,8 +78,7 @@ export const detectMunicipality =
                province:
                   item.provinceName,
 
-               zipCode:
-                  item.zipCode,
+               confidence: 1,
 
             };
 

@@ -48,11 +48,17 @@ export const normalizeAddress = (
 
       /*
       --------------------------------
-      STANDARDIZE SIQUIJOR
+      STANDARDIZE COMMON TERMS
       --------------------------------
       */
 
       .replace(/\bSIQ\b/g, "SIQUIJOR")
+
+      .replace(/\bNEG OR\b/g, "NEGROS ORIENTAL")
+
+      .replace(/\bNEG OCC\b/g, "NEGROS OCCIDENTAL")
+
+      .replace(/\bSCC\b/g, "SAN CARLOS CITY")
 
       /*
       --------------------------------
@@ -70,23 +76,15 @@ export const normalizeAddress = (
 
       .replace(/VILLANUEV\s+A/g, "VILLANUEVA")
 
-      /*
-      --------------------------------
-      REMOVE DUPLICATE WORDS
-      Example:
-      SIQUIJOR SIQUIJOR
-      --------------------------------
-      */
+      .replace(/GUIHULNGAN C ITY/g, "GUIHULNGAN CITY")
 
-      .split(" ")
+      .replace(/CANLAO N/g, "CANLAON")
 
-      .filter((word, index, array) => {
+      .replace(/SAN C ARLOS/g, "SAN CARLOS")
 
-         return array.indexOf(word) === index;
+      .replace(/VALLEHERMSO/g, "VALLEHERMOSO")
 
-      })
-
-      .join(" ")
+      .replace(/LALIBERTAD/g, "LA LIBERTAD")
 
       /*
       --------------------------------

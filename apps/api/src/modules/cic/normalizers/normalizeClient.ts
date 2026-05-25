@@ -11,8 +11,7 @@ import { resolveAddress } from "../services/address/resolveAddress.service";
 
 export const normalizeClient = async (
    row: DbfTypes
-) => {
-
+): Promise<any> => {
    /*
    -----------------------------------
    DECODE TEXT FIELDS
@@ -73,15 +72,9 @@ export const normalizeClient = async (
       await resolveAddress(
          rawAddress
       );
-   
-   console.log(
-      resolvedAddress
-   );
-   console.log(
-      "RAW ADDRESS:",
-      rawAddress
-   );
 
+      const isResolved =
+   resolvedAddress.validationStatus === "COMPLETE";
 
 
    return {
@@ -111,6 +104,28 @@ export const normalizeClient = async (
 
       address1:
          decodedAdd1,
+
+      addressPostalCode:
+         isResolved
+            ? resolvedAddress.zipCode
+            : null,
+      
+      addressBarangay:
+         isResolved
+            ? resolvedAddress.barangay
+            : null,
+      
+      addressCity:
+         isResolved
+            ? resolvedAddress.municipality
+            : null,
+      
+      addressProvince:
+         isResolved
+            ? resolvedAddress.province
+            : null,
+      
+    
 
       address2:
          decodedAdd2,
