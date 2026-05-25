@@ -18,24 +18,24 @@ import {
 
 }
 from "@tanstack/react-table";
-import { StagingClient } from "@repo/shared";
 import ValidationBadge from "./ValidationBandge";
 import ErrorCountBadge from "./ErrorCountBandge";
 import ClientDrawer from "./ClientDrawer";
+import { ReviewClient } from "@/types/review.types";
 
 
 
 
 type Props = {
 
-   clients: StagingClient[];
+   clients: ReviewClient[];
 
    refresh: () => void;
 
 };
 
 const columnHelper =
-   createColumnHelper<StagingClient>();
+   createColumnHelper<ReviewClient>();
 
 export default function ClientTable({
    clients,
@@ -50,7 +50,7 @@ export default function ClientTable({
 
    const [selectedClient,
       setSelectedClient] =
-      useState<StagingClient | null>(
+      useState<ReviewClient | null>(
          null
       );
 
@@ -79,10 +79,10 @@ export default function ClientTable({
                const fullName =
 
                   [
-                     client.firstName,
-                     client.middleName,
-                     client.lastName,
-                     client.suffix
+                     client.mergedPreview.firstName,
+                     client.mergedPreview.middleName,
+                     client.mergedPreview.lastName,
+                     client.mergedPreview.suffix
                   ]
 
                   .filter(Boolean)
@@ -146,10 +146,10 @@ export default function ClientTable({
                         {
 
                            [
-                              client.firstName,
-                              client.middleName,
-                              client.lastName,
-                              client.suffix
+                              client.mergedPreview.firstName,
+                              client.mergedPreview.middleName,
+                              client.mergedPreview.lastName,
+                              client.mergedPreview.suffix
                            ]
 
                            .filter(Boolean)
@@ -168,7 +168,7 @@ export default function ClientTable({
                         ID:
                         {" "}
                         {
-                           client.providerSubjectNo
+                           client.stagingClient.providerSubjectNo
                         }
 
                      </span>
@@ -201,21 +201,60 @@ GENDER
 -----------------------------------
 */
 
-columnHelper.accessor(
-   "gender",
-   {
+columnHelper.display({
 
-      header: "Gender",
+   id: "gender",
 
-      cell: (info) => {
+   header: "Gender",
 
-         const gender =
-            info.getValue();
+   cell: ({ row }) => {
 
-         const genderValue =
-            gender?.code;
+      const item =
+         row.original;
 
-         return (
+      /*
+      -----------------------------------
+      UPLOADED GENDER
+      -----------------------------------
+      */
+
+      const uploadedGender =
+         item.stagingClient.gender;
+
+      /*
+      -----------------------------------
+      FINAL GENDER
+      -----------------------------------
+      */
+
+      const finalGender =
+         item.mergedPreview.genderCode;
+
+      return (
+
+         <div className="
+            flex
+            flex-col
+            gap-1
+         ">
+
+            {/* UPLOADED */}
+
+            <span className="
+               text-xs
+               text-gray-500
+            ">
+
+               Uploaded:
+               {" "}
+
+               {
+                  uploadedGender?.description || "-"
+               }
+
+            </span>
+
+            {/* FINAL */}
 
             <span
                className={`
@@ -227,48 +266,100 @@ columnHelper.accessor(
                   rounded-md
                   text-xs
                   font-medium
+                  w-fit
+
                   ${
-                     genderValue === "M"
-                        ? "bg-blue-100 text-blue-700"
-                        : genderValue === "F"
-                        ? "bg-pink-100 text-pink-700"
-                        : "bg-gray-100 text-gray-700"
+                     finalGender === "M"
+
+                        ? `
+                           bg-blue-100
+                           text-blue-700
+                        `
+
+                        : finalGender === "F"
+
+                        ? `
+                           bg-pink-100
+                           text-pink-700
+                        `
+
+                        : `
+                           bg-gray-100
+                           text-gray-700
+                        `
                   }
                `}
             >
-               {gender?.description || "-"}
+
+               {
+                  finalGender === "M"
+
+                     ? "Male"
+
+                     : finalGender === "F"
+
+                     ? "Female"
+
+                     : "-"
+               }
+
             </span>
 
-         );
+            {/* USED EXISTING */}
 
-      }
+            {
+               item.comparison.genderMissing && (
+
+                  <span className="
+                     text-xs
+                     text-green-700
+                     bg-green-100
+                     px-2
+                     py-1
+                     rounded-md
+                     w-fit
+                  ">
+
+                     Used Existing
+
+                  </span>
+
+               )
+            }
+
+         </div>
+
+      );
 
    }
-),
-         /*
+
+}),     
+       /*
          -----------------------------------
          STATUS
          -----------------------------------
          */
 
-         columnHelper.accessor(
-            "validationStatus",
-            {
+         columnHelper.display({
 
-               header: "Status",
-
-               cell: (info) => (
-
-                  <ValidationBadge
-                     status={
-                        info.getValue()
-                     }
-                  />
-
-               )
-
-            }
-         ),
+            id: "status",
+         
+            header: "Status",
+         
+            cell: ({ row }) => (
+         
+               <ValidationBadge
+         
+                  status={
+                     row.original
+                        .effectiveValidationStatus
+                  }
+         
+               />
+         
+            )
+         
+         }),
 
          /*
          -----------------------------------
@@ -276,28 +367,27 @@ columnHelper.accessor(
          -----------------------------------
          */
 
-         columnHelper.accessor(
-            "validationErrors",
-            {
+         columnHelper.display({
 
-               header: "Errors",
-
-               cell: (info) => (
-
-                  <ErrorCountBadge
-
-                     count={
-                        info
-                        .getValue()
+            id: "errors",
+         
+            header: "Errors",
+         
+            cell: ({ row }) => (
+         
+               <ErrorCountBadge
+         
+                  count={
+                     row.original
+                        .effectiveValidationErrors
                         .length
-                     }
-
-                  />
-
-               )
-
-            }
-         ),
+                  }
+         
+               />
+         
+            )
+         
+         }),
 
          /*
          -----------------------------------
@@ -514,8 +604,7 @@ columnHelper.accessor(
                         clients.filter(
                            (client) =>
 
-                              client
-                              .validationStatus
+                              client.effectiveValidationStatus
                               === "WITH_ERRORS"
 
                         ).length
@@ -553,8 +642,7 @@ columnHelper.accessor(
                         clients.filter(
                            (client) =>
 
-                              client
-                              .validationStatus
+                              client.effectiveValidationStatus
                               === "COMPLETE"
 
                         ).length
@@ -676,8 +764,7 @@ columnHelper.accessor(
                                     hover:bg-gray-50
                                     transition
                                     ${
-                                       row.original
-                                       .validationStatus
+                                       row.original.effectiveValidationStatus
                                        === "WITH_ERRORS"
 
                                        ? "bg-red-50/20"
@@ -746,27 +833,25 @@ columnHelper.accessor(
          -----------------------------------
          */}
 
-         {
+{
+   selectedClient && (
 
-            selectedClient && (
+      <ClientDrawer
 
-               <ClientDrawer
-
-                  client={
-                     selectedClient
-                  }
-
-                  refresh={refresh}
-
-                  onClose={() =>
-                     setSelectedClient(null)
-                  }
-
-               />
-
-            )
-
+         reviewClient={
+            selectedClient
          }
+
+         refresh={refresh}
+
+         onClose={() =>
+            setSelectedClient(null)
+         }
+
+      />
+
+   )
+}
 
       </>
 

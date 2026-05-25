@@ -19,39 +19,29 @@ async ({
    */
 
    const batch =
-      await prisma.importBatch.findUnique({
+   await prisma.importBatch.findUnique({
 
-         where: {
-            id: batchId
-         },
+      where: {
+         id: batchId
+      },
 
-         include: {
+      include: {
 
-            branch: true,
+         branch: true,
 
-            reportingPeriod: true,
+         reportingPeriod: true
 
-            cleints: {
+      }
 
-               include: {
+   });
 
-                  Contracts: true
+if (!batch) {
 
-               }
+   throw new Error(
+      "Batch not found"
+   );
 
-            }
-
-         }
-
-      });
-
-   if (!batch) {
-
-      throw new Error(
-         "Batch not found"
-      );
-
-   }
+}
 
    /*
    |--------------------------------------------------------------------------
@@ -74,8 +64,48 @@ async ({
    |--------------------------------------------------------------------------
    */
 
-   const rows: string[] = [];
+   const snapshots =
+   await prisma.contractMonthlySnapshot.findMany({
 
+      where: {
+
+         branchId:
+            batch.branchId,
+
+         reportingPeriodId:
+            batch.reportingPeriodId
+
+      },
+
+      include: {
+
+         contract: {
+
+            include: {
+
+               client: true
+
+            }
+
+         }
+
+      },
+
+      orderBy: {
+
+         createdAt: "asc"
+
+      }
+
+   });
+
+/*
+|--------------------------------------------------------------------------
+| REPORT ROWS
+|--------------------------------------------------------------------------
+*/
+
+const rows: string[] = [];
    /*
    |--------------------------------------------------------------------------
    | HEADER
@@ -110,9 +140,28 @@ async ({
    |--------------------------------------------------------------------------
    */
 
+   const uniqueClients =
+   new Map();
+
+for (
+   const snapshot of
+   snapshots
+) {
+
+   const client =
+      snapshot.contract.client;
+
+   uniqueClients.set(
+      client.id,
+      client
+   );
+
+}
+
+
    for (
       const client of
-      batch.cleints
+      uniqueClients.values()
    ) {
 
       const idRow = [
@@ -298,14 +347,12 @@ async ({
    */
 
    for (
-      const client of
-      batch.cleints
+      const snapshot of
+      snapshots
    ) {
 
-      for (
-         const contract of
-         client.Contracts
-      ) {
+      const contract =
+         snapshot.contract;
 
          const ciRow = [
 
@@ -537,7 +584,6 @@ async ({
 
          rows.push(ciRow);
 
-      }
 
    }
 

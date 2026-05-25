@@ -17,7 +17,6 @@ export const saveStagingClient = async ({
    --------------------------------
    */
 
-   console.log(client);
 
    const stagingClient =
    await prisma.stagingClient.create({

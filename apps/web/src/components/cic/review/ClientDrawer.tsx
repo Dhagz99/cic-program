@@ -46,6 +46,7 @@ import {
 import ClientInformationForm from
 "@/components/cic/review/forms/ClientInformationForm";
 import LoanInformationForm from "./forms/LoanInformationForm";
+import { ReviewClient } from "@/types/review.types";
 
 
 
@@ -53,10 +54,8 @@ import LoanInformationForm from "./forms/LoanInformationForm";
 
 type Props = {
 
-      client: StagingClient & {
-      contracts?: StagingContract[];
-
-   };
+   reviewClient:
+   ReviewClient;
 
    onClose: () => void;
 
@@ -70,13 +69,22 @@ type ActiveTab =
 
 export default function ClientDrawer({
 
-   client,
+   reviewClient,
 
    onClose,
 
    refresh
 
 }: Props) {
+
+   const client =
+   reviewClient.stagingClient;
+
+const mergedPreview =
+   reviewClient.mergedPreview;
+
+const existingClient =
+   reviewClient.existingClient;
 
    const [activeTab, setActiveTab] =
       useState<ActiveTab>("CLIENT");
@@ -164,14 +172,14 @@ export default function ClientDrawer({
             client.suffix || "",
 
          gender:
-            client.gender?.code
-               ? String(client.gender.code)
-               : "",
+            mergedPreview.genderCode || "",
 
          civilStatus:
-               client.civilStatus?.code
-                  ? Number(client.civilStatus.code)
-                  : undefined,
+            mergedPreview.civilStatusCode
+               ? Number(
+                    mergedPreview.civilStatusCode
+                 )
+               : undefined,
 
          birthDate:
             client.birthDate

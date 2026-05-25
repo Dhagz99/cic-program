@@ -14,8 +14,8 @@ import {
    useImportBatches
 } from "@/hooks/cic/useReports";
 import { ImportBatchItem } from "@repo/shared";
-import { getLastDayOfMonth } from "@/utils/date/getLastDayOfMonth";
-
+import { getTimestamp } from "@/utils/date/getTimestamp";
+import { formatReportingPeriod } from "@/utils/date/formatReportingPerion";
 
 
 export default function Reports() {
@@ -90,17 +90,13 @@ export default function Reports() {
    const handleExport =
    async (
       batchId: string,
-      reportingPeriod: string,
-      year: string
+    
    ) => {
 
       try {
 
-         const result =
-         getLastDayOfMonth(
-            Number(reportingPeriod),
-            Number(year)
-         );
+         const timestamp =
+         getTimestamp();
 
          const blob =
             await exportReport(
@@ -122,7 +118,7 @@ export default function Reports() {
 
             "download",
 
-            `PF007980_CSDF_${result}.txt`
+            `PF007980_CSDF_${timestamp}.txt`
 
          );
 
@@ -334,7 +330,7 @@ export default function Reports() {
                                  "
                               >
                                  {
-                                    batch.reportingPeriod.month
+                                   formatReportingPeriod(Number(batch.reportingPeriod.month), Number(batch.reportingPeriod.year))
                                  }
                               </td>
 
@@ -385,8 +381,7 @@ export default function Reports() {
                                     onClick={() =>
                                        handleExport(
                                           batch.id,
-                                          batch.reportingPeriod.month,
-                                          batch.reportingPeriod.year
+                                        
                                        )
                                     }
 

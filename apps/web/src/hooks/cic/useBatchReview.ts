@@ -7,7 +7,7 @@ import {
 import {
    getBatchReview
 } from "@/services/cic/review.service";
-import { StagingClient } from "@repo/shared";
+import { ReviewClient } from "@/types/review.types";
 
 
 
@@ -16,7 +16,7 @@ export const useBatchReview =
    batchId: string
 ) => {
 
-   return useQuery<StagingClient[]>({
+   return useQuery<ReviewClient[]>({
 
       queryKey: [
          "batch-review",

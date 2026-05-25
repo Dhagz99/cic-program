@@ -1,12 +1,13 @@
 import api
 from "@/lib/axios";
+import { ReviewClient } from "@/types/review.types";
 import { StagingClient, UpdateClientDTO } from "@repo/shared";
 
 
 export const getBatchReview =
 async (
    batchId: string
-): Promise<StagingClient[]> => {
+): Promise<ReviewClient[]> => {
 
    const response =
       await api.get(

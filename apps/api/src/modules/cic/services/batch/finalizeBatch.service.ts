@@ -59,11 +59,140 @@ async ({
          continue;
       }
 
+//FIND EXISTING CLIENT
+const existingClient =
+   await prisma.client.findUnique({
+
+      where: {
+
+         branchId_providerSubjectNo: {
+
+            branchId:
+               batch.branchId,
+
+            providerSubjectNo:
+               stagingClient.providerSubjectNo || ""
+
+         }
+
+      }
+
+   });
+
+
+   const mergedClient = {
+
+      providerCode:
+         stagingClient.providerCode
+         || existingClient?.providerCode,
+   
+      branchCode:
+         stagingClient.branchCode
+         || existingClient?.branchCode,
+   
+      title:
+         stagingClient.title
+         || existingClient?.title,
+   
+      firstName:
+         stagingClient.firstName
+         || existingClient?.firstName
+         || "",
+   
+      middleName:
+         stagingClient.middleName
+         || existingClient?.middleName,
+   
+      lastName:
+         stagingClient.lastName
+         || existingClient?.lastName
+         || "",
+   
+      suffix:
+         stagingClient.suffix
+         || existingClient?.suffix,
+   
+      nickname:
+         stagingClient.nickname
+         || existingClient?.nickname,
+   
+      prevLastName:
+         stagingClient.prevLastName
+         || existingClient?.prevLastName,
+   
+      genderCode:
+         stagingClient.genderCode
+         || existingClient?.genderCode,
+   
+      birthDate:
+         stagingClient.birthDate
+         || existingClient?.birthDate,
+   
+      placeOfBirth:
+         stagingClient.placeOfBirth
+         || existingClient?.placeOfBirth,
+   
+      countryOfBirthCode:
+         stagingClient.countryOfBirthCode
+         || existingClient?.countryOfBirthCode,
+   
+      nationality:
+         stagingClient.nationality
+         || existingClient?.nationality,
+   
+      resident:
+         stagingClient.resident
+         ?? existingClient?.resident,
+   
+      civilStatusCode:
+         stagingClient.civilStatusCode
+         || existingClient?.civilStatusCode,
+   
+      numberOfDependents:
+         stagingClient.numberOfDependents
+         || existingClient?.numberOfDependents,
+   
+      addressType:
+         stagingClient.addressType
+         || existingClient?.addressType,
+   
+      address:
+         stagingClient.address
+         || existingClient?.address,
+   
+      addressType2:
+         stagingClient.addressType2
+         || existingClient?.addressType2,
+   
+      address2:
+         stagingClient.address2
+         || existingClient?.address2,
+   
+      identificationTypeCode:
+         stagingClient.identificationTypeCode
+         || existingClient?.identificationTypeCode,
+   
+      identificationNumber:
+         stagingClient.identificationNumber
+         || existingClient?.identificationNumber,
+   
+      contactType:
+         stagingClient.contactType
+         || existingClient?.contactType,
+   
+      contactValue:
+         stagingClient.contactValue
+         || existingClient?.contactValue
+   
+   };
+
       /*
       |--------------------------------------------------------------------------
       | UPSERT CLIENT
       |--------------------------------------------------------------------------
       */
+
+
 
       const client =
          await prisma.client.upsert({
@@ -86,7 +215,7 @@ async ({
             update: {
                
                providerCode:
-                  stagingClient.providerCode,
+                  mergedClient.providerCode,
 
                branchCode:
                   stagingClient.branchCode,
@@ -98,13 +227,13 @@ async ({
                   stagingClient.firstName || "",
 
                middleName:
-                  stagingClient.middleName,
+                   mergedClient.middleName,
 
                lastName:
                   stagingClient.lastName || "",
 
                suffix:
-                  stagingClient.suffix,
+                     mergedClient.suffix,
 
                nickname:
                   stagingClient.nickname,
@@ -113,7 +242,7 @@ async ({
                   stagingClient.prevLastName,
 
                genderCode:
-                  stagingClient.genderCode,
+                  mergedClient.genderCode,
 
                birthDate:
                   stagingClient.birthDate,
@@ -131,7 +260,7 @@ async ({
                   stagingClient.resident,
 
                civilStatusCode:
-                  stagingClient.civilStatusCode,
+                  mergedClient.civilStatusCode,
 
                numberOfDependents:
                   stagingClient.numberOfDependents,
@@ -159,7 +288,6 @@ async ({
 
                contactValue:
                   stagingClient.contactValue,
-
 
 
             },
@@ -492,31 +620,125 @@ async ({
          | SNAPSHOT
          |--------------------------------------------------------------------------
          */
-
-         await prisma.contractMonthlySnapshot.create({
-
-            data: {
-
+         const snapshotStatus =
+         Object.values(
+            ContractStatus
+         ).includes(
+      
+            stagingContract.contractStatus as ContractStatus
+      
+         )
+      
+            ? stagingContract.contractStatus as ContractStatus
+      
+            : ContractStatus.CURRENT;
+      
+      /*
+      |--------------------------------------------------------------------------
+      | CREATE SNAPSHOT
+      |--------------------------------------------------------------------------
+      */
+      
+      await prisma.contractMonthlySnapshot.upsert({
+      
+         where: {
+      
+            contractId_reportingPeriodId: {
+      
                contractId:
                   contract.id,
-
+      
                reportingPeriodId:
-                  batch.reportingPeriodId,
-
-                  contractStatus: "CURRENT",
-
-               financedAmount:
-                  stagingContract.financedAmount,
-
-               balanceAmount:
-                  stagingContract.outstandingBalance,
-
-               lastPaymentDate:
-                  stagingContract.lastPaymentDate
-
+                  batch.reportingPeriodId
+      
             }
-
-         });
+      
+         },
+      
+         update: {
+      
+            contractStatus:
+               snapshotStatus,
+      
+            financedAmount:
+               stagingContract.financedAmount,
+      
+            balanceAmount:
+               stagingContract.outstandingBalance,
+      
+            monthlyPaymentAmount:
+               stagingContract.monthlyPaymentAmount,
+      
+            overduePaymentAmount:
+               stagingContract.overduePaymentAmount,
+      
+            overduePaymentNumber:
+               stagingContract.overduePaymentNumber,
+      
+            outstandingPaymentNumber:
+               stagingContract.outstandingPaymentNumber,
+      
+            lastPaymentAmount:
+               stagingContract.lastPaymentAmount,
+      
+            lastPaymentDate:
+               stagingContract.lastPaymentDate,
+      
+            nextPaymentAmount:
+               stagingContract.nextPaymentAmount,
+      
+            nextPaymentDate:
+               stagingContract.nextPaymentDate
+      
+         },
+      
+         create: {
+      
+            branchId:
+               batch.branchId,
+      
+            contractId:
+               contract.id,
+      
+            reportingPeriodId:
+               batch.reportingPeriodId,
+      
+            contractStatus:
+               snapshotStatus,
+      
+            financedAmount:
+               stagingContract.financedAmount,
+      
+            balanceAmount:
+               stagingContract.outstandingBalance,
+      
+            monthlyPaymentAmount:
+               stagingContract.monthlyPaymentAmount,
+      
+            overduePaymentAmount:
+               stagingContract.overduePaymentAmount,
+      
+            overduePaymentNumber:
+               stagingContract.overduePaymentNumber,
+      
+            outstandingPaymentNumber:
+               stagingContract.outstandingPaymentNumber,
+      
+            lastPaymentAmount:
+               stagingContract.lastPaymentAmount,
+      
+            lastPaymentDate:
+               stagingContract.lastPaymentDate,
+      
+            nextPaymentAmount:
+               stagingContract.nextPaymentAmount,
+      
+            nextPaymentDate:
+               stagingContract.nextPaymentDate
+      
+         }
+      
+      });
 
       }
 

@@ -46,14 +46,15 @@ model User{
 }
 
 model Branch {
-  id              String   @id @default(uuid())
+  id                    String   @id @default(uuid())
   
-  branchCode      String   @unique
-  branchName      String
-  users           User[]
-  importBatches   ImportBatch[]
-  clients         Client[]
-  contracts         Contract[]
+  branchCode            String   @unique
+  branchName            String
+  users                 User[]
+  importBatches         ImportBatch[]
+  clients               Client[]
+  contracts             Contract[]
+  montlySnapshots       ContractMonthlySnapshot[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -573,27 +574,60 @@ enum ContractStatus {
 }
 
 model ContractMonthlySnapshot {
-  id                    String   @id @default(uuid())
 
-  contractId            String
-  reportingPeriodId     String
+  id                         String @id @default(uuid())
 
-  contractStatus        ContractStatus
+  branchId                   String
 
-  financedAmount        Decimal? @db.Decimal(18,2)
-  balanceAmount         Decimal? @db.Decimal(18,2)
+  contractId                 String
 
-  lastPaymentDate       DateTime?
+  reportingPeriodId          String
 
-  contract              Contract @relation(fields: [contractId], references: [id])
+  contractStatus             ContractStatus
 
-  reportingPeriod       ReportingPeriod @relation(fields: [reportingPeriodId], references: [id])
+  financedAmount             Decimal? @db.Decimal(18,2)
 
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  balanceAmount              Decimal? @db.Decimal(18,2)
 
-  @@unique([contractId, reportingPeriodId])
+  monthlyPaymentAmount       Decimal? @db.Decimal(18,2)
+
+  overduePaymentAmount       Decimal? @db.Decimal(18,2)
+
+  overduePaymentNumber       Int?
+
+  outstandingPaymentNumber   Int?
+
+  lastPaymentAmount          Decimal? @db.Decimal(18,2)
+
+  lastPaymentDate            DateTime?
+
+  nextPaymentAmount          Decimal? @db.Decimal(18,2)
+
+  nextPaymentDate            DateTime?
+
+  /*
+  |--------------------------------------------------------------------------
+  | RELATIONS
+  |--------------------------------------------------------------------------
+  */
+
+  branch                     Branch @relation( fields: [branchId],references: [id])
+
+  contract                   Contract @relation(fields: [contractId], references: [id])
+
+  reportingPeriod            ReportingPeriod @relation(fields: [reportingPeriodId], references: [id] )
+
+  createdAt                  DateTime @default(now())
+
+  updatedAt                  DateTime @updatedAt
+
+  @@unique([ contractId, reportingPeriodId])
+
+  @@index([branchId, reportingPeriodId])
+
 }
+
+
 
 model AuditLog {
   id                    String   @id @default(uuid())
