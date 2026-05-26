@@ -8,6 +8,7 @@ import { decodeDbfText }
 from "../utils/decodeDbfText";
 import { DbfTypes } from "@repo/shared";
 import { resolveAddress } from "../services/address/resolveAddress.service";
+import { normalizeAddressText } from "../utils/address/normalizeAddressText";
 
 export const normalizeClient = async (
    row: DbfTypes
@@ -89,7 +90,7 @@ export const normalizeClient = async (
          parsedName.firstName,
 
       middleName:
-         parsedName.middleName,
+         "",
 
       lastName:
          parsedName.lastName,
@@ -130,14 +131,25 @@ export const normalizeClient = async (
       address2:
          decodedAdd2,
 
-      address:
+         address:
          [
-            decodedAdd1?.trim(),
-            decodedAdd2?.trim()
+            normalizeAddressText(
+               decodedAdd1
+            ),
+      
+            normalizeAddressText(
+               decodedAdd2
+            ),
+      
+            "PH",
+      
+            isResolved
+               ? resolvedAddress.zipCode
+               : "6004"
+      
          ]
             .filter(Boolean)
-            .join(" "),
-
+            .join(", "),
 
       branch:
          decodedBranch,

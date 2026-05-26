@@ -66,12 +66,9 @@ if (!batch) {
 
    const snapshots =
    await prisma.contractMonthlySnapshot.findMany({
-
       where: {
-
          branchId:
             batch.branchId,
-
          reportingPeriodId:
             batch.reportingPeriodId
 
@@ -397,11 +394,13 @@ for (
                  )
                : "",
 
-            contract.contractEndActualDate
-               ? formatDate(
-                    contract.contractEndActualDate
-                 )
-               : "",
+            // contract.contractEndActualDate
+            //    ? formatDate(
+            //         contract.contractEndActualDate
+            //      )
+            //    : "",
+            
+            "", //contractEndActualDate
 
                contract.lastPaymentDate
                ? formatDate(

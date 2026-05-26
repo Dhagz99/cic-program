@@ -29,7 +29,7 @@ export const saveStagingClient = async ({
          },
 
          providerSubjectNo:
-            client.providerSubjectNo,
+         client.providerSubjectNo,
 
          firstName:
             client.firstName,

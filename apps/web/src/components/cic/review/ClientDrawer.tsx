@@ -13,11 +13,7 @@ import {
 import {
 
    
-
-   StagingClient,
-
-   StagingContract,
-
+ 
    UpdateClientDTO,
 
    UpdateClientFormValues,
@@ -198,18 +194,20 @@ const existingClient =
             client.addressType || "",
 
          address:
-            client.address || "",
+            mergedPreview.address || "",
 
          addressType2:
             client.addressType2 || "",
 
          address2:
-            client.address2 || "",
+              mergedPreview.address || "",
 
          identificationType:
-            client.identificationType?.code
-               ? Number(client.identificationType.code)
-               : 0,
+               mergedPreview.identificationTypeCode
+               ? Number(
+                    mergedPreview.identificationTypeCode
+                 )
+               : undefined,
 
          identificationNumber:
             client.identificationNumber || "",

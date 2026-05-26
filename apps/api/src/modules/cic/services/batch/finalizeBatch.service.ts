@@ -269,16 +269,16 @@ const existingClient =
                   stagingClient.addressType,
 
                address:
-                  stagingClient.address,
+                  mergedClient.address,
 
                addressType2:
                   stagingClient.addressType2,
 
                address2:
-                  stagingClient.address2,
+                  mergedClient.address2,
 
                identificationTypeCode:
-                  stagingClient.identificationTypeCode,
+                   mergedClient.identificationTypeCode,
 
                identificationNumber:
                   stagingClient.identificationNumber,

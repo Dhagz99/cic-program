@@ -37,6 +37,8 @@ import { StagingClient, StagingContract, ValidationError } from "@repo/shared";
 
        civilStatusCode: string;
 
+       identificationTypeCode: string;
+
  
     };
  
