@@ -1,4 +1,5 @@
 import prisma from "../../lib/prisma";
+import { removeSpecialCharacters } from "../utils/removeSpecialCharacters";
 
 
 type GenerateReportParams = {
@@ -212,7 +213,12 @@ for (
          client.empty || "",
          client.empty || "",
 
+         client.empty || "",//Black
+
          client.empty || "", //Mother Maiden
+
+         client.empty || "",//Black
+         
          client.empty || "", //Father First Name
          client.empty || "", //Father Last Name
          client.empty || "", //Father Midlle Name
@@ -249,7 +255,7 @@ for (
          client.empty || "", //Address 2: Occupied Since
 
          client.identificationTypeCode || "",
-         client.identificationNumber || "",
+         client.identificationNumber ? removeSpecialCharacters(client.identificationNumber) : "",
          client.empty || "", //Identification 2: Type
          client.empty || "", //Identification 2: Number
          client.empty || "", //Identification 3: Type

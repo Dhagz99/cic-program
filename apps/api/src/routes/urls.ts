@@ -10,6 +10,7 @@ import batchRoute from "../modules/cic/routes/batch.route";
 import domainRoute from "../modules/cic/routes/domain.route";
 import reportRoutes from "../modules/reports/report.route";
 import clientRoutes from "../modules/clients/client.route";
+import loanRoutes from "../modules/loans/loan.route";
 
 
 const router = Router();
@@ -25,6 +26,7 @@ router.use("/batch", batchRoute);
 router.use("/domain", domainRoute);
 router.use( "/reports", reportRoutes);
 router.use( "/clients", clientRoutes);
+router.use( "/loans", loanRoutes);
 
 
 export default router;

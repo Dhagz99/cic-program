@@ -1,15 +1,60 @@
+"use client";
+
+import { useState } from "react";
+
 import {
-    Download,
-    Eye,
-    Filter,
-    Pencil,
-    Plus,
-    Search,
-    Trash2,
-    WalletCards,
-  } from "lucide-react";
+   Download,
+   Eye,
+   Filter,
+   Pencil,
+   Plus,
+   Search,
+   Trash2,
+   WalletCards,
+} from "lucide-react";
+import { useClientLoan } from "@/hooks/loans/useLoans";
+
+
   
-  export default function Loans() {
+export default function Loans() {
+
+  const [
+     page,
+     setPage
+  ] = useState(1);
+
+  const [
+     search,
+     setSearch
+  ] = useState("");
+
+  const [
+     contractPhase,
+     setContractPhase
+  ] = useState("");
+
+  const {
+
+     loans,
+
+     total,
+
+     totalPages,
+
+     isLoading
+
+  } = useClientLoan({
+
+     page,
+
+     limit: 10,
+
+     search,
+
+     contractPhase:
+        contractPhase || undefined
+
+  });
     return (
       <div className="p-8 bg-slate-100 min-h-screen flex flex-col gap-7">
         {/* HEADER */}
@@ -135,20 +180,26 @@ import {
                 size={18}
               />
   
-              <input
-                type="text"
-                placeholder="Search contract no..."
-                className="
-                  w-full h-11 rounded-2xl
-                  border border-slate-200
-                  bg-slate-50
-                  pl-11 pr-4
-                  text-sm
-                  outline-none
-                  focus:ring-2 focus:ring-blue-500
-                  focus:border-blue-500
-                "
-              />
+                  <input
+                  type="text"
+                  placeholder="Search contract no..."
+                  value={search}
+                  onChange={(e) =>
+                      setSearch(
+                        e.target.value
+                      )
+                  }
+                  className="
+                      w-full h-11 rounded-2xl
+                      border border-slate-200
+                      bg-slate-50
+                      pl-11 pr-4
+                      text-sm
+                      outline-none
+                      focus:ring-2 focus:ring-blue-500
+                      focus:border-blue-500
+                  "
+                />
             </div>
   
             {/* FILTERS */}
@@ -166,19 +217,32 @@ import {
               </select>
   
               <select
-                className="
-                  h-11 px-4 rounded-2xl
-                  border border-slate-200
-                  bg-white
-                  text-sm text-slate-700
-                  outline-none
-                "
-              >
-                <option>All Status</option>
-                <option>Active</option>
-                <option>Closed</option>
-                <option>Overdue</option>
-              </select>
+                  value={contractPhase}
+                  onChange={(e) =>
+                      setContractPhase(
+                        e.target.value
+                      )
+                  }
+                  className="
+                      h-11 px-4 rounded-2xl
+                      border border-slate-200
+                      bg-white
+                      text-sm text-slate-700
+                      outline-none
+                  "
+                >
+                  <option value="">
+                      All Status
+                  </option>
+
+                  <option value="AC">
+                      Active
+                  </option>
+
+                  <option value="CL">
+                      Closed
+                  </option>
+                </select>
   
               <button
                 className="
@@ -239,134 +303,260 @@ import {
   
               {/* BODY */}
               <tbody>
-                {[1, 2, 3, 4, 5].map((item) => (
-                  <tr
-                    key={item}
-                    className="border-t border-slate-100 hover:bg-slate-50 transition"
+
+{
+   isLoading ? (
+
+      <tr>
+
+         <td
+            colSpan={8}
+            className="
+               text-center
+               py-10
+            "
+         >
+
+            Loading...
+
+         </td>
+
+      </tr>
+
+   ) : loans.length === 0 ? (
+
+      <tr>
+
+         <td
+            colSpan={8}
+            className="
+               text-center
+               py-10
+            "
+         >
+
+            No loans found
+
+         </td>
+
+      </tr>
+
+   ) : (
+
+      loans.map((loan) => (
+
+         <tr
+            key={loan.id}
+            className="
+               border-t
+               border-slate-100
+               hover:bg-slate-50
+               transition
+            "
+         >
+
+            <td className="px-6 py-4 text-sm font-semibold text-slate-800">
+
+               {loan.contractNo}
+
+            </td>
+
+            <td className="px-6 py-4">
+
+               <div>
+
+                  <p className="text-sm font-semibold text-slate-800">
+
+                     {loan.client.lastName},
+                     {" "}
+                     {loan.client.firstName}
+
+                  </p>
+
+                  <p className="text-xs text-slate-500 mt-1">
+
+                     {loan.client.providerSubjectNo}
+
+                  </p>
+
+               </div>
+
+            </td>
+
+            <td className="px-6 py-4 text-sm text-slate-700">
+
+               ₱
+               {
+                  Number(
+                     loan.financedAmount
+                  ).toLocaleString()
+               }
+
+            </td>
+
+            <td className="px-6 py-4 text-sm text-slate-700">
+
+               ₱
+               {
+                  Number(
+                     loan.outstandingBalance
+                  ).toLocaleString()
+               }
+
+            </td>
+
+            <td className="px-6 py-4 text-sm text-slate-700">
+
+               {
+                  loan.contractStartDate
+
+                     ? new Date(
+                        loan.contractStartDate
+                     ).toLocaleDateString()
+
+                     : "-"
+               }
+
+            </td>
+
+            <td className="px-6 py-4 text-sm text-slate-700">
+
+               {
+                  loan.contractEndPlannedDate
+
+                     ? new Date(
+                        loan.contractEndPlannedDate
+                     ).toLocaleDateString()
+
+                     : "-"
+               }
+
+            </td>
+
+            <td className="px-6 py-4">
+
+               <span
+                  className={`
+                     px-3 py-1 rounded-full text-xs font-medium
+                     ${
+                        loan.contractPhase === "AC"
+                           ? "bg-green-100 text-green-700"
+                           : "bg-slate-100 text-slate-700"
+                     }
+                  `}
+               >
+
+                  {loan.contractPhase}
+
+               </span>
+
+            </td>
+
+            <td className="px-6 py-4">
+
+               <div className="
+                  flex
+                  items-center
+                  justify-end
+                  gap-2
+               ">
+
+                  <button
+                     className="
+                        w-10 h-10 rounded-xl
+                        bg-slate-100 hover:bg-slate-200
+                        transition
+                        flex items-center justify-center
+                        text-slate-700
+                     "
                   >
-                    <td className="px-6 py-4 text-sm font-semibold text-slate-800">
-                      LN-2025-000{item}
-                    </td>
-  
-                    <td className="px-6 py-4">
-                      <div>
-                        <p className="text-sm font-semibold text-slate-800">
-                          Juan Dela Cruz
-                        </p>
-  
-                        <p className="text-xs text-slate-500 mt-1">
-                          CUS-000{item}
-                        </p>
-                      </div>
-                    </td>
-  
-                    <td className="px-6 py-4 text-sm text-slate-700">
-                      ₱50,000
-                    </td>
-  
-                    <td className="px-6 py-4 text-sm text-slate-700">
-                      ₱25,000
-                    </td>
-  
-                    <td className="px-6 py-4 text-sm text-slate-700">
-                      Aug 01, 2025
-                    </td>
-  
-                    <td className="px-6 py-4 text-sm text-slate-700">
-                      Aug 01, 2026
-                    </td>
-  
-                    <td className="px-6 py-4">
-                      <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
-                        Active
-                      </span>
-                    </td>
-  
-                    {/* ACTIONS */}
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          className="
-                            w-10 h-10 rounded-xl
-                            bg-slate-100 hover:bg-slate-200
-                            transition
-                            flex items-center justify-center
-                            text-slate-700
-                          "
-                        >
-                          <Eye size={18} />
-                        </button>
-  
-                        <button
-                          className="
-                            w-10 h-10 rounded-xl
-                            bg-blue-100 hover:bg-blue-200
-                            transition
-                            flex items-center justify-center
-                            text-blue-700
-                          "
-                        >
-                          <Pencil size={18} />
-                        </button>
-  
-                        <button
-                          className="
-                            w-10 h-10 rounded-xl
-                            bg-red-100 hover:bg-red-200
-                            transition
-                            flex items-center justify-center
-                            text-red-700
-                          "
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+                     <Eye size={18} />
+                  </button>
+
+                  <button
+                     className="
+                        w-10 h-10 rounded-xl
+                        bg-blue-100 hover:bg-blue-200
+                        transition
+                        flex items-center justify-center
+                        text-blue-700
+                     "
+                  >
+                     <Pencil size={18} />
+                  </button>
+
+                  <button
+                     className="
+                        w-10 h-10 rounded-xl
+                        bg-red-100 hover:bg-red-200
+                        transition
+                        flex items-center justify-center
+                        text-red-700
+                     "
+                  >
+                     <Trash2 size={18} />
+                  </button>
+
+               </div>
+
+            </td>
+
+         </tr>
+
+      ))
+
+   )
+}
+
+</tbody>
             </table>
           </div>
   
           {/* PAGINATION */}
           <div className="p-6 border-t border-slate-200 flex items-center justify-between">
             <p className="text-sm text-slate-500">
-              Showing 1 to 5 of 1,245 loans
+            Showing {loans.length} of {total.toLocaleString()} loans
             </p>
   
             <div className="flex items-center gap-2">
-              <button
-                className="
-                  w-10 h-10 rounded-xl
-                  border border-slate-200
-                  hover:bg-slate-100
-                  transition
-                "
-              >
-                1
-              </button>
-  
-              <button
-                className="
-                  w-10 h-10 rounded-xl
-                  border border-slate-200
-                  hover:bg-slate-100
-                  transition
-                "
-              >
-                2
-              </button>
-  
-              <button
-                className="
-                  w-10 h-10 rounded-xl
-                  border border-slate-200
-                  hover:bg-slate-100
-                  transition
-                "
-              >
-                3
-              </button>
+                      {
+            Array.from(
+                {
+                  length: totalPages
+                },
+                (_, index) => (
+
+                  <button
+
+                      key={index + 1}
+
+                      onClick={() =>
+                        setPage(
+                            index + 1
+                        )
+                      }
+
+                      className={`
+                        w-10 h-10 rounded-xl
+                        border border-slate-200
+                        transition
+                        ${
+                            page === index + 1
+
+                              ? "bg-blue-600 text-white"
+
+                              : "hover:bg-slate-100"
+                        }
+                      `}
+                  >
+
+                      {index + 1}
+
+                  </button>
+
+                )
+            )
+          }
             </div>
           </div>
         </div>

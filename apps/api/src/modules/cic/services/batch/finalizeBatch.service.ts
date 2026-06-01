@@ -1,5 +1,6 @@
 import { ContractStatus } from "../../../../../generated/prisma";
 import prisma from "../../../../lib/prisma";
+import { getMergedValue } from "../../utils/value/getMergedValue";
 
 type FinalizeBatchParams = {
    batchId: string;
@@ -169,8 +170,12 @@ const existingClient =
          || existingClient?.address2,
    
       identificationTypeCode:
-         stagingClient.identificationTypeCode
-         || existingClient?.identificationTypeCode,
+         (
+            stagingClient.identificationTypeCode === 10 ||
+            !stagingClient.identificationTypeCode
+         )
+         ? existingClient?.identificationTypeCode
+         : stagingClient.identificationTypeCode,
    
       identificationNumber:
          stagingClient.identificationNumber
@@ -197,17 +202,14 @@ const existingClient =
       const client =
          await prisma.client.upsert({
 
-
                where: {
 
                     branchId_providerSubjectNo: {
                
                      branchId:
                         batch.branchId,
-               
                      providerSubjectNo:
                         stagingClient.providerSubjectNo || ""
-               
                   }
                
             },
@@ -288,12 +290,9 @@ const existingClient =
 
                contactValue:
                   stagingClient.contactValue,
-
-
             },
 
             create: {
-
                batchId: batchId,
 
                branchId:
