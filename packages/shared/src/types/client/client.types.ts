@@ -140,6 +140,11 @@ export interface ClientLoanPaginationResponse {
       totalPages: number;
 
    };
+   summary:{
+      activeLoans: number;
+      pastDueLoans: number;
+      totalLoanAmount: number;
+   }
 
 }
 

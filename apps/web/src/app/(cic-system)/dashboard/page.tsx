@@ -1,3 +1,11 @@
+"use client"
+
+import GrowthIndicator from "@/components/dashboard/GrowthIndicatorProps";
+import LoanAnalyticsChart from "@/components/dashboard/LoanAnalyticsChart";
+import { useDashboard } from "@/hooks/dashboard/useDashboard";
+import { getCurrentDate } from "@/utils/date/getCurrentDate";
+import { formatCompactCurrency } from "@/utils/value/formatCompactCurrency";
+import { formatNumber } from "@/utils/value/formatNumber";
 import {
     Users,
     CreditCard,
@@ -7,6 +15,12 @@ import {
   } from "lucide-react";
   
   export default function Dashboard() {
+
+    const {data} = useDashboard();
+    const borrowerGrowth  = data?.data.borrowerGrowth ?? 0;
+    const activeLoanGrowth  = data?.data.activeLoanGrowth ?? 0;
+    const loanAmountGrowth  = data?.data.loanAmountGrowth ?? 0;
+    
     return (
       <div className="p-8 bg-slate-100 min-h-screen flex flex-col gap-7">
         {/* HEADER */}
@@ -27,7 +41,7 @@ import {
             </p>
   
             <p className="font-semibold text-slate-800">
-              August 11, 2025
+              {getCurrentDate()}
             </p>
           </div>
         </div>
@@ -43,7 +57,7 @@ import {
                 </p>
   
                 <h2 className="text-3xl font-bold text-slate-800 mt-3">
-                  1,245
+                  {formatNumber(data?.data.totalBorrowers)}
                 </h2>
               </div>
   
@@ -52,20 +66,10 @@ import {
               </div>
             </div>
   
-            <div className="mt-6 flex items-center gap-2 text-sm">
-              <TrendingUp
-                className="text-green-500"
-                size={16}
-              />
-  
-              <span className="text-green-600 font-medium">
-                +12%
-              </span>
-  
-              <span className="text-slate-500">
-                this month
-              </span>
-            </div>
+            <GrowthIndicator
+               value={borrowerGrowth}
+            />
+
           </div>
   
           {/* CARD */}
@@ -77,7 +81,7 @@ import {
                 </p>
   
                 <h2 className="text-3xl font-bold text-slate-800 mt-3">
-                  825
+                    {formatNumber(data?.data.totalActiveLoans)}
                 </h2>
               </div>
   
@@ -89,20 +93,10 @@ import {
               </div>
             </div>
   
-            <div className="mt-6 flex items-center gap-2 text-sm">
-              <TrendingUp
-                className="text-green-500"
-                size={16}
-              />
-  
-              <span className="text-green-600 font-medium">
-                +5%
-              </span>
-  
-              <span className="text-slate-500">
-                this month
-              </span>
-            </div>
+           
+            <GrowthIndicator
+               value={activeLoanGrowth}
+            />
           </div>
   
           {/* CARD */}
@@ -114,7 +108,7 @@ import {
                 </p>
   
                 <h2 className="text-3xl font-bold text-slate-800 mt-3">
-                  12
+                  {formatNumber(data?.data.totalExports)}
                 </h2>
               </div>
   
@@ -147,7 +141,7 @@ import {
                 </p>
   
                 <h2 className="text-3xl font-bold text-slate-800 mt-3">
-                  ₱12.5M
+                  {formatCompactCurrency(data?.data.totalLoanAmount)}
                 </h2>
               </div>
   
@@ -159,48 +153,51 @@ import {
               </div>
             </div>
   
-            <div className="mt-6 flex items-center gap-2 text-sm">
-              <TrendingUp
-                className="text-green-500"
-                size={16}
-              />
-  
-              <span className="text-green-600 font-medium">
-                +8%
-              </span>
-  
-              <span className="text-slate-500">
-                this month
-              </span>
-            </div>
+            <GrowthIndicator
+               value={loanAmountGrowth}
+            />
           </div>
         </div>
   
-        {/* CHART SECTION */}
-        <div className="bg-white rounded-3xl border border-slate-200 p-7 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-xl font-semibold text-slate-800">
-                Loan Analytics
-              </h2>
-  
-              <p className="text-sm text-slate-500 mt-1">
-                Monthly borrower and loan overview
-              </p>
-            </div>
-  
-            <button className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 transition text-sm font-medium">
-              View Report
-            </button>
-          </div>
-  
-          {/* MOCK CHART */}
-          <div className="h-72 rounded-2xl bg-linear-to-br from-blue-50 to-slate-50 border border-dashed border-slate-300 flex items-center justify-center">
-            <p className="text-slate-400 text-lg font-medium">
-              Chart Area
-            </p>
-          </div>
-        </div>
+   {/* CHART SECTION */}
+<div className="bg-white rounded-3xl border border-slate-200 p-7 shadow-sm">
+
+<div className="flex items-center justify-between mb-6">
+
+   <div>
+
+      <h2 className="text-xl font-semibold text-slate-800">
+         Loan Analytics
+      </h2>
+
+      <p className="text-sm text-slate-500 mt-1">
+         Monthly borrower and loan overview
+      </p>
+
+   </div>
+
+   <button className="
+      px-4
+      py-2
+      rounded-xl
+      bg-slate-100
+      hover:bg-slate-200
+      transition
+      text-sm
+      font-medium
+   ">
+      View Report
+   </button>
+
+</div>
+
+<LoanAnalyticsChart
+   data={
+      data?.data.monthlyLoanTrends ?? []
+   }
+/>
+
+</div>
   
         {/* TABLE */}
         <div className="bg-white rounded-3xl border border-slate-200 p-7 shadow-sm">

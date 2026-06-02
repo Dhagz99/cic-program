@@ -33,6 +33,7 @@ model User{
   roles           UserRole[]
   uploadedBatches ImportBatch[]
   auditLogs       AuditLog[]
+  cicExports       CicExport[]
 
   submittedBatches ImportBatch[] @relation("SubmittedBy")
 
@@ -55,6 +56,7 @@ model Branch {
   clients               Client[]
   contracts             Contract[]
   montlySnapshots       ContractMonthlySnapshot[]
+  cicExports             CicExport[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -147,6 +149,7 @@ model ReportingPeriod {
 
   batches         ImportBatch[]
   snapshots       ContractMonthlySnapshot[]
+  cicExports             CicExport[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -683,4 +686,37 @@ model PSGCReference {
   @@index([provinceName])
   @@index([municipalityName])
   @@index([barangayName])
+}
+
+enum ExportStatus {
+  Success
+  Pending
+  Reject
+}
+
+
+model CicExport {
+  id                String   @id @default(uuid())
+
+  reportingPeriodId String
+
+  branchId          String
+
+  generatedById     String
+
+  fileName          String
+
+  totalRecords      Int
+
+  status            ExportStatus
+
+  createdAt         DateTime @default(now())
+
+  
+   branch                     Branch @relation( fields: [branchId],references: [id])
+
+  reportingPeriod            ReportingPeriod @relation(fields: [reportingPeriodId], references: [id] )
+
+  generatedBy                 User @relation(fields: [generatedById], references: [id])
+
 }

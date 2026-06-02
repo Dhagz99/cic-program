@@ -13,6 +13,8 @@ import {
    WalletCards,
 } from "lucide-react";
 import { useClientLoan } from "@/hooks/loans/useLoans";
+import { formatNumber } from "@/utils/value/formatNumber";
+import { formatCompactCurrency } from "@/utils/value/formatCompactCurrency";
 
 
   
@@ -38,10 +40,11 @@ export default function Loans() {
      loans,
 
      total,
+     summary,
 
      totalPages,
 
-     isLoading
+     isLoading,
 
   } = useClientLoan({
 
@@ -55,6 +58,8 @@ export default function Loans() {
         contractPhase || undefined
 
   });
+
+
     return (
       <div className="p-8 bg-slate-100 min-h-screen flex flex-col gap-7">
         {/* HEADER */}
@@ -116,7 +121,7 @@ export default function Loans() {
                 </p>
   
                 <h2 className="text-3xl font-bold text-slate-800 mt-3">
-                  1,245
+                  {formatNumber(total)}
                 </h2>
               </div>
   
@@ -137,7 +142,7 @@ export default function Loans() {
               </p>
   
               <h2 className="text-3xl font-bold text-slate-800 mt-3">
-                982
+                {formatNumber(summary.activeLoans)}
               </h2>
             </div>
           </div>
@@ -150,7 +155,7 @@ export default function Loans() {
               </p>
   
               <h2 className="text-3xl font-bold text-red-600 mt-3">
-                32
+                {formatNumber(summary.pastDueLoans)}
               </h2>
             </div>
           </div>
@@ -163,7 +168,7 @@ export default function Loans() {
               </p>
   
               <h2 className="text-3xl font-bold text-slate-800 mt-3">
-                ₱12.5M
+                {formatCompactCurrency(summary.totalLoanAmount)}
               </h2>
             </div>
           </div>

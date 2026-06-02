@@ -5,12 +5,15 @@ import { removeSpecialCharacters } from "../utils/removeSpecialCharacters";
 type GenerateReportParams = {
 
     batchId: string;
+    userId: string;
+    
  
  };
  
 export const generateReportService =
 async ({
-   batchId
+   batchId,
+   userId
 }: GenerateReportParams) => {
 
    /*
@@ -623,6 +626,22 @@ for (
 
    const content =
       rows.join("\n");
+
+      await prisma.cicExport.create({
+         data: {
+            reportingPeriodId: batch.reportingPeriodId,
+      
+            branchId: batch.branchId,
+      
+            generatedById: userId ,
+      
+            fileName:  `PF007980_CSDF_${batch.id}.txt`,
+      
+            totalRecords: totalRecords,
+      
+            status: "Success"
+         }
+      });
 
    return {
 

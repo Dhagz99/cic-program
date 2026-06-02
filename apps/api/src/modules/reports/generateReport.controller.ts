@@ -15,6 +15,21 @@ import { generateReportService, getImportBatchesService, getReportingPeriodsServ
  ) => {
  
     try {
+
+      const user =
+      req.user;
+
+
+      const userId =
+      user?.id;
+
+      if (!userId) {
+            return res.status(400).json({
+               success: false,
+               message: "User ID not found",
+            });
+         }
+
  
        const { batchId } =
           req.params;
@@ -22,7 +37,8 @@ import { generateReportService, getImportBatchesService, getReportingPeriodsServ
        const result =
           await generateReportService({
  
-             batchId
+             batchId,
+             userId: String(userId)
  
           });
  

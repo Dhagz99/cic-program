@@ -84,6 +84,17 @@ export function useClientLoan({
       pageSize:
          loansQuery.data?.pagination?.limit ?? 10,
 
+         summary:
+         loansQuery.data?.summary ?? {
+      
+            activeLoans: 0,
+      
+            pastDueLoans: 0,
+      
+            totalLoanAmount: 0
+      
+         }
+
    };
 
 }

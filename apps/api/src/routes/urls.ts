@@ -11,6 +11,7 @@ import domainRoute from "../modules/cic/routes/domain.route";
 import reportRoutes from "../modules/reports/report.route";
 import clientRoutes from "../modules/clients/client.route";
 import loanRoutes from "../modules/loans/loan.route";
+import dashboardRoutes from "../modules/dashboard/dashboard.route";
 
 
 const router = Router();
@@ -27,6 +28,7 @@ router.use("/domain", domainRoute);
 router.use( "/reports", reportRoutes);
 router.use( "/clients", clientRoutes);
 router.use( "/loans", loanRoutes);
+router.use( "/dashboard", dashboardRoutes);
 
 
 export default router;
