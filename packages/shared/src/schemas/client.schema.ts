@@ -207,7 +207,7 @@ export const updateLoanSchema = z.object({
    financedAmount:
       z
          .number()
-         .optional(),
+         .min(1),
 
    installmentsNumber:
       z

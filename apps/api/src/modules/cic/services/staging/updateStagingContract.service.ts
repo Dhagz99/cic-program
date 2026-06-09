@@ -11,14 +11,60 @@ async ({
 }: any) => {
 
    const updatedContract =
-      await prisma.stagingContract.update({
+   await prisma.stagingContract.update({
 
-         where: {
-            id
-         },
+      where: {
+         id
+      },
 
-         data
-      });
+      data: {
+
+         contractNo:
+            data.contractNo,
+
+         contractType:
+            data.contractType,
+
+         contractPhase:
+            data.contractPhase,
+
+         contractStatus:
+            data.contractStatus,
+
+         currency:
+            data.currency,
+
+         originalCurrency:
+            data.originalCurrency,
+
+         contractStartDate:
+            data.contractStartDate
+               ? new Date(data.contractStartDate)
+               : null,
+
+         contractEndPlannedDate:
+            data.contractEndPlannedDate
+               ? new Date(data.contractEndPlannedDate)
+               : null,
+
+         financedAmount:
+            data.financedAmount,
+
+         installmentsNumber:
+            data.installmentsNumber,
+
+         monthlyPaymentAmount:
+            data.monthlyPaymentAmount,
+
+         outstandingBalance:
+            data.outstandingBalance,
+
+         overduePaymentAmount:
+            data.overduePaymentAmount
+
+      }
+
+   });
 
    /*
    -----------------------------------

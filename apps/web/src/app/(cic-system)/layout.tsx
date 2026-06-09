@@ -2,6 +2,8 @@
 
 import { useAuth } from "@/components/context/UserContext";
 import Sidebar from "@/components/layouts/Sidebar";
+import RequestModal from "@/components/Modal";
+import SettingsModal from "@/components/settings/SettingsModal";
 import SweetAlert from "@/components/Swal";
 
 import {
@@ -316,6 +318,16 @@ export default function CICLayout({
           </div>
         </section>
       </main>
+
+      {openSettings && (
+        <RequestModal
+          title="System Settings"
+          size="xxl"
+          onClose={() => setOpenSettings(false)}
+        >
+          <SettingsModal />
+        </RequestModal>
+      )}
     </div>
   );
 }

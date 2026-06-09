@@ -21,7 +21,7 @@ export async function importDbfService(
         data: {
           accountId: row.ID,
           firstName: parsedName.firstName,
-          lastName: parsedName.lastName,
+        lastName: parsedName.lastName,
           middleName: parsedName.middleName,
         },
       });

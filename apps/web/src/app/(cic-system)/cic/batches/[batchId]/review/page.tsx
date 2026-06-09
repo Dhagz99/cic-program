@@ -14,6 +14,8 @@ from "@/components/cic/review/ClientTable";
 import { useFinalizeBatch } from "@/hooks/cic/useFinalizeBatch";
 import { toast } from "sonner";
 import { CheckCircle2 } from "lucide-react";
+import { useSubmitBatch } from "@/hooks/cic/useSubmitBatch";
+import axios from "axios";
 
 export default function ReviewPage() {
 
@@ -46,6 +48,42 @@ export default function ReviewPage() {
    } = useFinalizeBatch();
 
 
+   const {
+      mutateAsync: submitBatch,
+      isPending: isSubmitting,
+   } = useSubmitBatch();
+   
+   const handleSubmit = async () => {
+      try {
+         await submitBatch(batchId);
+   
+         toast.success(
+            "Batch submitted successfully"
+         );
+   
+         router.push("/reports");
+   
+      } catch (error: unknown) {
+   
+         if (axios.isAxiosError(error)) {
+   
+            toast.error(
+               error.response?.data?.message ??
+               "Failed to submit batch",
+               {
+                  duration: 5000,
+                  className: "!border-red-200",
+               }
+            );
+   
+            return;
+         }
+   
+         toast.error(
+            "An unexpected error occurred"
+         );
+      }
+   };
    const handleFinalize =
    async () => {
 
@@ -76,7 +114,6 @@ export default function ReviewPage() {
    };
 
 
-   console.log("data: ", data )
 
    if (isLoading) {
 
@@ -132,6 +169,30 @@ className="
 }
 
 </button>
+
+   <button
+         onClick={handleSubmit}
+         disabled={isSubmitting}
+         className="
+            inline-flex
+            items-center
+            gap-2
+          bg-green-600
+          hover:bg-green-700
+            disabled:opacity-50
+            text-white 
+            px-5
+            py-3
+            rounded-2xl
+            font-medium
+            transition
+         "
+         >
+         <CheckCircle2 size={18}/>
+         {isSubmitting
+            ? "Submitting..."
+            : "Submit Batch"}
+      </button>
          <ClientTable
 
             clients={data || []}

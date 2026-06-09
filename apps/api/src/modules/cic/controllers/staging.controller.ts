@@ -67,6 +67,12 @@ async (
             data: req.body
          });
 
+         await confirmStagingRecordService({
+            type: "CLIENT",
+            id: req.params.id,
+         });
+   
+
       return res.status(200).json(
          result
       );

@@ -142,17 +142,17 @@ enum ReportingStatus {
 model ReportingPeriod {
   id              String   @id @default(uuid())
 
-  month           Int
-  year            Int
+  month                       Int
+  year                        Int
 
-  status          ReportingStatus
+  status                      ReportingStatus
 
-  batches         ImportBatch[]
-  snapshots       ContractMonthlySnapshot[]
-  cicExports             CicExport[]
+  batches                     ImportBatch[]
+  snapshots                    ContractMonthlySnapshot[]
+  cicExports                   CicExport[]
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime?    @updatedAt
 
   @@unique([month, year])
 }

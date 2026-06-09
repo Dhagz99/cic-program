@@ -35,7 +35,7 @@ async (
          await submitBatchService({
 
             batchId:
-               req.params.batchId,
+               req.params.id,
 
             userId:
             (req as any).user.id

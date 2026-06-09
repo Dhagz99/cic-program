@@ -164,7 +164,7 @@ async (
 
 };
 
-/*
+/* 
 -----------------------------------
 SUBMIT BATCH
 -----------------------------------
@@ -176,8 +176,8 @@ async (
 ) => {
 
    const response =
-      await api.post(
-         `/api/cic/batch/${batchId}/submit`
+      await api.patch(
+         `/cic/batch/${batchId}/submit`
       );
 
    return response.data;

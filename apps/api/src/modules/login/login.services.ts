@@ -219,8 +219,16 @@ export async function getUsersService() {
       username: true,
       name: true,
       email: true,
+      branchId: true,
       isActive: true,
       createdAt: true,
+      
+      branch:{
+        select:{
+          branchCode: true,
+          branchName: true
+        }
+      },
 
       roles: {
         select: {

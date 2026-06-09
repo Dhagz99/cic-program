@@ -30,10 +30,13 @@ export const createUserSchema = z.object({
   export type RegisterSchema= z.infer<typeof createUserSchema >
 
 
-  export const updateUserSchema = updateUserSchema1.partial().extend({
-    roleIds: z.array(z.number().int().positive()).optional()
+  export const updateUserSchema = createUserSchema
+  .omit({ password: true })
+  .extend({
+    password: z.string().min(8).optional()
   })
-
+  
+  export type UpdateUserSchema = z.infer<typeof updateUserSchema>
 
 
   export const loginSchema = z.object({

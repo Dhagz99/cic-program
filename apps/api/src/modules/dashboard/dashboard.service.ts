@@ -81,7 +81,9 @@ export async function DashboardServices({
    */
 
    const totalExportsPromise =
-      prisma.reportingPeriod.count();
+      prisma.cicExport.count({
+         where: branchFilter
+      });
 
    /*
    -----------------------------------

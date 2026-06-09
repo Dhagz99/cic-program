@@ -14,3 +14,22 @@ export async function  createBranchService(data: BranchSchema) {
     return branch
 
 }
+
+export const getBranchesDetailsService = async () => {
+    return prisma.branch.findMany({
+    });
+  };
+
+
+export async function getDomainByTypeService(
+    type: string
+) {
+    return prisma.domain.findMany({
+        where: {
+            type
+        },
+        orderBy:{
+            description: "asc"
+        },
+    });
+}

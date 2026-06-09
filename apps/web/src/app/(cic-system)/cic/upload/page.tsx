@@ -17,6 +17,7 @@ import {
    uploadDBF
 } from "@/services/cic/batch.service";
 import { useReportingPeriods } from "@/hooks/cic/useReports";
+import { useLastImport } from "@/hooks/initialize/useInitialize";
 
 export default function UploadPage() {
 
@@ -43,6 +44,19 @@ export default function UploadPage() {
    reportingPeriodId ||
    periods[0]?.id ||
    "";
+
+
+   
+  const {data: batch } = useLastImport()
+
+   useEffect(() => {
+      if (batch?.id) {
+         router.push(
+            `/cic/batches/${batch.id}/review`
+         );
+      }
+   }, [batch, router]);
+
 
    const handleUpload =
    async () => {

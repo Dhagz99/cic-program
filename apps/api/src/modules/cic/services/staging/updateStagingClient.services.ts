@@ -3,6 +3,7 @@ import prisma from "../../../../lib/prisma";
 import {
    validateClient
 } from "../validation/clientValidation.service";
+import { confirmStagingRecordService } from "./confirmStagingRecord.service";
 
 export const updateStagingClientService =
 async ({
@@ -160,6 +161,8 @@ async ({
       ? "WITH_ERRORS"
       : "COMPLETE";
 
+
+    
    return prisma.stagingClient.update({
 
       where: {

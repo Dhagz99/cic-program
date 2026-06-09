@@ -12,7 +12,7 @@ export interface ValidationError {
     id: string;
  
     fieldName: string;
- 
+  
     errorMessage: string;
  
  }
@@ -131,7 +131,7 @@ export interface ValidationError {
 
 // types/cic/loan.ts
 
-export type UpdateLoanFormValues = {
+export type UpdateLoanFormValues= {
 
    contractNo: string;
 

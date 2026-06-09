@@ -1,7 +1,7 @@
 import { createBranchSchema } from "@repo/shared";
 import { error } from "console";
 import { Request, Response } from "express";
-import { createBranchService } from "./general.service";
+import { createBranchService, getBranchesDetailsService, getDomainByTypeService } from "./general.service";
 
 
 
@@ -34,3 +34,41 @@ export async function createBranchController(
         })
     }
 }
+
+
+export async function getBranchesDetailsController(
+    req: Request,
+    res: Response
+  ) {
+  
+    try{
+      const branches = await getBranchesDetailsService()
+      res.status(200).json({
+        success: true,
+        data: branches
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch branches"
+      });
+    }
+    
+  }
+
+
+  export async function getDomainByTypeController(
+      req: Request,
+      res: Response
+  ) {
+      const { type } = req.query;
+
+      const data = await getDomainByTypeService(
+        String(type)
+      );
+
+      return res.json({
+        success: true,
+        data
+      });
+  }

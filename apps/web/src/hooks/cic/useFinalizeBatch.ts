@@ -1,5 +1,6 @@
 import {
-    useMutation
+    useMutation,
+    useQueryClient
  } from "@tanstack/react-query";
  
  import {
@@ -8,11 +9,17 @@ import {
  
  export const useFinalizeBatch =
  () => {
- 
+   const queryClient =
+      useQueryClient();
     return useMutation({
- 
+      
        mutationFn:
-          finalizeBatch
+          finalizeBatch,
+          onSuccess: () => {
+            queryClient.invalidateQueries({
+               queryKey: ["last-import"]
+             })
+          } 
  
     });
  

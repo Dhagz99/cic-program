@@ -13,8 +13,10 @@ import InputField from "@/components/ui/InputField";
 import SelectField from "@/components/ui/SelectField";
 
 import {
+   DomainItem,
    UpdateLoanFormValues
 } from "@repo/shared";
+import { useDomains } from "@/hooks/useGeneral";
 
 type Props = {
 
@@ -33,19 +35,18 @@ export default function LoanInformationForm({
    errors
 
 }: Props) {
+   const {data: contract_type} = useDomains("CONTRACT_TYPE")
+   const {data: contract_phase} = useDomains("CONTRACT_PHASE")
+
 
    return (
 
-      <div
-         className="
-            space-y-10
-         "
-      >
+      <div className = "space-y-10"  >
 
-         {/* =======================================================
+         {
+         /* =======================================================
             CONTRACT INFORMATION
          ======================================================= */}
-
          <div
             className="
                space-y-4
@@ -95,17 +96,19 @@ export default function LoanInformationForm({
 
                {/* CONTRACT TYPE */}
 
-               <InputField
-                  type="number"
+              
+               <SelectField
                   label="Contract Type"
-                  placeholder="15"
-                  {...register(
-                     "contractType",
-                     {
-                        valueAsNumber: true
-                     }
-                  )}
                   error={errors.contractType}
+                  {...register("contractType")}
+                  options={
+                     contract_type?.map((item: DomainItem) => ({
+                        label:
+                           item.description,
+                        value:
+                           String(item.code)
+                     })) || []
+                  }
                />
 
                {/* CONTRACT STATUS */}
@@ -135,12 +138,19 @@ export default function LoanInformationForm({
                />
 
                {/* CONTRACT PHASE */}
-
-               <InputField
+           
+               <SelectField
                   label="Contract Phase"
-                  placeholder="AC"
-                  {...register("contractPhase")}
                   error={errors.contractPhase}
+                  {...register("contractPhase")}
+                  options={
+                     contract_phase?.map((item: DomainItem) => ({
+                        label:
+                           item.description,
+                        value:
+                           String(item.code)
+                     })) || []
+                  }
                />
 
                {/* CURRENCY */}

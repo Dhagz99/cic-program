@@ -5,6 +5,8 @@ import {
    uploadDbf
 } from "../controllers/upload.controller";
 import { authenticateToken } from "../../auth/auth.middleware";
+import { updateStagingContract } from "../controllers/staging.controller";
+import { submitBatch } from "../controllers/batch.controller";
 
 const router = express.Router();
 
@@ -18,5 +20,17 @@ router.post(
    upload.single("file"),
    uploadDbf
 );
+
+router.patch(
+   "/staging-contracts/:id",
+   updateStagingContract
+)
+
+router.patch(
+   "/batch/:id/submit",
+   authenticateToken,
+   submitBatch
+)
+
 
 export default router;

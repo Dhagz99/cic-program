@@ -43,6 +43,9 @@ import ClientInformationForm from
 "@/components/cic/review/forms/ClientInformationForm";
 import LoanInformationForm from "./forms/LoanInformationForm";
 import { ReviewClient } from "@/types/review.types";
+import { X } from "lucide-react";
+import RequestModal from "@/components/Modal";
+import ErrorValidationModal from "./forms/ErrorValidationModal";
 
 
 
@@ -50,8 +53,7 @@ import { ReviewClient } from "@/types/review.types";
 
 type Props = {
 
-   reviewClient:
-   ReviewClient;
+   reviewClient: ReviewClient;
 
    onClose: () => void;
 
@@ -85,6 +87,9 @@ const existingClient =
    const [activeTab, setActiveTab] =
       useState<ActiveTab>("CLIENT");
 
+   
+   const [errorModal, setErrorModal] = useState(false);
+
    /*
    |--------------------------------------------------------------------------
    | FIRST CONTRACT
@@ -100,6 +105,7 @@ const existingClient =
    |--------------------------------------------------------------------------
    */
 
+   
    const {
 
       mutateAsync: updateClientMutation
@@ -522,10 +528,22 @@ const existingClient =
                <button
                   onClick={onClose}
                   className="
-                     text-2xl
+                     flex
+                     items-center
+                     justify-center
+                     w-9
+                     h-9
+                     rounded-xl
+                     text-slate-500
+                     hover:text-slate-800
+                     hover:bg-slate-100
+                     transition-all
+                     duration-200
+                     cursor-pointer
                   "
+                  aria-label="Close Drawer"
                >
-                  ✕
+                  <X size={28} />
                </button>
 
             </div>
@@ -687,7 +705,10 @@ const existingClient =
                                        px-3
                                        py-1
                                        rounded-full
-                                    ">
+                                       cursor-pointer
+                                    "
+                                    onClick={()=>setErrorModal(true)}
+                                    >
                                        WITH ERRORS
                                     </span>
          
@@ -818,6 +839,10 @@ const existingClient =
             </div>
 
          </div>
+
+         {errorModal && (
+            <ErrorValidationModal onClose={()=>setErrorModal(false)}  open={errorModal} reviewClient={reviewClient} />
+         )}
 
       </div>
 

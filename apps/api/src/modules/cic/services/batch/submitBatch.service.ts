@@ -84,15 +84,15 @@ async ({
 
          }
 
-         if (
-            !contract.isConfirmed
-         ) {
+         // if (
+         //    !contract.isConfirmed
+         // ) {
 
-            throw new Error(
-               "Batch contains unconfirmed contracts"
-            );
+         //    throw new Error(
+         //       "Batch contains unconfirmed contracts"
+         //    );
 
-         }
+         // }
 
       }
 

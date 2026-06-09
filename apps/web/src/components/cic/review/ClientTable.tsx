@@ -22,6 +22,7 @@ import ValidationBadge from "./ValidationBandge";
 import ErrorCountBadge from "./ErrorCountBandge";
 import ClientDrawer from "./ClientDrawer";
 import { ReviewClient } from "@/types/review.types";
+import { AlertTriangle, BadgeCheck, Users } from "lucide-react";
 
 
 
@@ -557,13 +558,13 @@ columnHelper.display({
                   border
                   p-5
                ">
-
                   <p className="
                      text-sm
                      text-gray-500
                   ">
                      Total Clients
                   </p>
+                  <div className="flex items-start justify-between">
 
                   <h3 className="
                      text-3xl
@@ -574,7 +575,11 @@ columnHelper.display({
                         clients.length
                      }
                   </h3>
+                  <div className="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center">
+                       <Users className="text-blue-600" size={28} />
+                  </div>
 
+               </div>
                </div>
 
                <div className="
@@ -591,7 +596,7 @@ columnHelper.display({
                   ">
                      With Errors
                   </p>
-
+                  <div className="flex items-start justify-between">
                   <h3 className="
                      text-3xl
                      font-bold
@@ -612,45 +617,46 @@ columnHelper.display({
                      }
 
                   </h3>
-
+                  <div className="w-14 h-14 rounded-2xl bg-red-100 flex items-center justify-center">
+                       <AlertTriangle className="text-red-600" size={28} />
+                  </div>
+               </div>
                </div>
 
                <div className="
-                  bg-green-50
-                  rounded-2xl
-                  border
-                  border-green-100
-                  p-5
-               ">
+                   bg-green-50
+                     rounded-2xl
+                     border
+                     border-green-100
+                     p-5
+                  ">
 
                   <p className="
                      text-sm
                      text-green-500
-                  ">
-                     Complete
+                      ">
+                      Complete
                   </p>
+                  <div className="flex items-start justify-between">
+                     <h3 className="
+                        text-3xl
+                        font-bold
+                      text-green-600
+                        mt-2
+                     ">
+                        {
+                           clients.filter(
+                              (client) =>
 
-                  <h3 className="
-                     text-3xl
-                     font-bold
-                     text-green-600
-                     mt-2
-                  ">
-
-                     {
-
-                        clients.filter(
-                           (client) =>
-
-                              client.effectiveValidationStatus
-                              === "COMPLETE"
-
-                        ).length
-
-                     }
-
-                  </h3>
-
+                                 client.effectiveValidationStatus
+                                 === "COMPLETE"
+                           ).length
+                        }
+                   </h3>
+                  <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center">
+                      <BadgeCheck className="text-green-600" size={28} />
+                     </div>
+                  </div>
                </div>
 
             </div>

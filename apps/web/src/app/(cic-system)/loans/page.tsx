@@ -3,10 +3,13 @@
 import { useState } from "react";
 
 import {
+  AlertTriangle,
+  BadgeCheck,
    Download,
    Eye,
    Filter,
    Pencil,
+   PhilippinePeso,
    Plus,
    Search,
    Trash2,
@@ -136,41 +139,53 @@ export default function Loans() {
   
           {/* CARD */}
           <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-            <div>
-              <p className="text-slate-500 text-sm">
-                Active Loans
-              </p>
+            <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-slate-500 text-sm">
+                    Active Loans
+                  </p>
+                  <h2 className="text-3xl font-bold text-slate-800 mt-3">
+                    {formatNumber(summary.activeLoans)}
+                  </h2>
+                </div>
+                <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center">
+                 <BadgeCheck className="text-green-600" size={28} />
+              </div>
+              </div>
+          </div>
   
-              <h2 className="text-3xl font-bold text-slate-800 mt-3">
-                {formatNumber(summary.activeLoans)}
-              </h2>
+          {/* CARD */}
+          <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+           <div className="flex items-start justify-between">
+              <div>
+                <p className="text-slate-500 text-sm">
+                  Overdue Loans
+                </p>
+                <h2 className="text-3xl font-bold text-red-600 mt-3">
+                  {formatNumber(summary.pastDueLoans)}
+                </h2>
+              </div>
+              <div className="w-14 h-14 rounded-2xl bg-red-100 flex items-center justify-center">
+                <AlertTriangle className="text-red-600" size={28} />
+              </div>
             </div>
           </div>
   
           {/* CARD */}
           <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-            <div>
-              <p className="text-slate-500 text-sm">
-                Overdue Loans
-              </p>
-  
-              <h2 className="text-3xl font-bold text-red-600 mt-3">
-                {formatNumber(summary.pastDueLoans)}
-              </h2>
-            </div>
-          </div>
-  
-          {/* CARD */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-            <div>
-              <p className="text-slate-500 text-sm">
-                Total Loan Amount
-              </p>
-  
-              <h2 className="text-3xl font-bold text-slate-800 mt-3">
-                {formatCompactCurrency(summary.totalLoanAmount)}
-              </h2>
-            </div>
+            <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-slate-500 text-sm">
+                    Total Loan Amount
+                  </p>
+                  <h2 className="text-3xl font-bold text-slate-800 mt-3">
+                    {formatCompactCurrency(summary.totalLoanAmount)}
+                  </h2>
+                </div>
+                <div className="w-14 h-14 rounded-2xl bg-amber-100 flex items-center justify-center">
+                  <PhilippinePeso className="text-amber-600" size={28} />
+                </div>
+              </div>
           </div>
         </div>
   
