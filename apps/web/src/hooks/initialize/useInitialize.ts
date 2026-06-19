@@ -1,5 +1,5 @@
-import { getLastImportBatchService } from "@/services/initialize.service";
-import { ImportBatchItem } from "@repo/shared";
+import { getInitializePaginationService, getLastImportBatchService } from "@/services/initialize.service";
+import { ImportBatchItem, InitializeParams } from "@repo/shared";
 import { useQuery } from "@tanstack/react-query";
 
 export function useLastImport(){
@@ -15,3 +15,31 @@ export function useLastImport(){
 
         return batch
 }
+
+export function useInitialize({
+    page = 1,
+    limit = 10,
+    search = "",
+  }: InitializeParams) {
+    return useQuery({
+      queryKey: [
+        "initialize",
+        {
+          page,
+          limit,
+          search,
+        },
+      ],
+  
+      queryFn: () =>
+        getInitializePaginationService({
+          page,
+          limit,
+          search,
+        }),
+  
+      staleTime: 1000 * 60 * 5,
+  
+      placeholderData: (previousData) => previousData,
+    });
+  }

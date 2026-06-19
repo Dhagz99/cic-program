@@ -108,6 +108,14 @@ export default async function seedRoles() {
          code: "CIC_EXPORT",
          name: "Export CIC"
       },
+      {
+         code: "APPROVE_CIC",
+         name: "Approve CIC"
+      },
+      {
+         code: "REJECT_CIC",
+         name: "Reject CIC"
+      },
 
       // REPORTS
       {
@@ -166,6 +174,18 @@ export default async function seedRoles() {
       
             "REPORT_VIEW",
             "REPORT_EXPORT"
+         ]
+      },
+
+      {
+         name: "GRCD_MANAGER",
+         permissions: [ 
+            "APPROVE_CIC",
+            "REJECT_CIC",
+            "REPORT_VIEW",
+            "REPORT_EXPORT",
+            "CIC_GENERATE",
+            "CIC_EXPORT",
          ]
       }
 

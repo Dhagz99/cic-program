@@ -58,6 +58,8 @@ export function useClients({
             !!limit,
       });
 
+      
+
    return {
 
       // RAW QUERY
@@ -81,5 +83,17 @@ export function useClients({
 
       pageSize:
          clientsQuery.data?.pagination?.limit || 10,
+
+      totalBorrowers:
+         clientsQuery.data?.summary?.totalBorrowers || 0,
+      
+      totalContracts:
+         clientsQuery.data?.summary?.totalContracts || 0,
+
+      totalFinancedAmount:
+         clientsQuery.data?.summary?.totalFinancedAmount || 0,
+
+      totalOutstandingBalance:
+         clientsQuery.data?.summary?.totalOutstandingBalance || 0,
    };
 }

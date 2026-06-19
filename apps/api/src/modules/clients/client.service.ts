@@ -118,24 +118,27 @@ export async function getClientContractsService(
            }),
         };
      
-        const [clients, total] =
+        const [
+            clients, 
+            total,
+            totalContracts,
+            financedSummary,
+            outstandingSummary,
+          ] =
            await Promise.all([
      
               prisma.client.findMany({
                  where: whereCondition,
-                
-     
                  skip,
-     
                  take: limit,
                  orderBy: {
                     providerSubjectNo: "asc",
                  },
-     
                  include: {
                     gender: true,
                     civilStatus: true,
                      branch: true,
+                     Contracts: true,
 
                  },
               }),
@@ -143,10 +146,44 @@ export async function getClientContractsService(
               prisma.client.count({
                  where: whereCondition,
               }),
+
+              prisma.contract.count({
+                  where: {
+                     client: whereCondition,
+                  },
+                }),
+
+              prisma.contract.aggregate({
+               where:{
+                  client: whereCondition
+               },
+               _sum: {
+                  financedAmount: true
+               }
+              }),
+              
+              prisma.contract.aggregate({
+               where: {
+                  client: whereCondition,
+               },
+               _sum: {
+                  outstandingBalance: true,
+               },
+            }),
+
            ]);
      
         return {
            data: clients,
+
+           summary: {
+            totalBorrowers: total,
+            totalContracts,
+            totalFinancedAmount:
+               financedSummary._sum.financedAmount ?? 0,
+            totalOutstandingBalance:
+               outstandingSummary._sum.outstandingBalance ?? 0,
+         },
      
            pagination: {
               total,

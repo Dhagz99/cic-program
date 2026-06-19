@@ -11,6 +11,8 @@ export interface ImportBatchItem {
 
    completedRecords: number;
 
+   fileName?: string;
+
    errorRecords: number;
 
    createdAt: string;
@@ -19,12 +21,10 @@ export interface ImportBatchItem {
       id: string;
       branchName: string;
    };
-
    reportingPeriod: {
       id: string;
       month: string;
       year: string;
-
    };
 
 };

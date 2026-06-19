@@ -1,16 +1,22 @@
 "use client";
 
+import ClientViewModal from "@/components/clients/ClientViewModal";
+import RequestModal from "@/components/Modal";
+import { SummaryCard } from "@/components/ui/SummaryCard";
 import { useClients } from "@/hooks/clients/useClients";
 import { StagingClient } from "@repo/shared";
 import {
+   BadgeCheck,
    Download,
    Eye,
+   FileText,
    Filter,
    Pencil,
    Plus,
    Search,
    Trash2,
    Users,
+   Wallet,
 } from "lucide-react";
 
 import { useState } from "react";
@@ -30,12 +36,19 @@ export default function Borrowers() {
 
    const [genderCode, setGenderCode] =
       useState("");
+   
+   const [viewClient, setViewClient] = useState<StagingClient | null >(null);
+
 
    const {
       clients,
       pagination,
       total,
       isLoading,
+      totalBorrowers,
+      totalContracts,
+      totalFinancedAmount,
+      totalOutstandingBalance
    } = useClients({
       page,
       limit,
@@ -127,71 +140,43 @@ export default function Borrowers() {
 
          {/* STATS */}
 
-         <div className="
-            grid
-            grid-cols-1
-            md:grid-cols-3
-            gap-6
-         ">
+    <div className="
+   grid
+   grid-cols-1
+   md:grid-cols-2
+   xl:grid-cols-4
+   gap-6
+">
 
-            <div className="
-               bg-white
-               rounded-3xl
-               border border-slate-200
-               p-6
-               shadow-sm
-            ">
+   <SummaryCard
+      title="Total Borrowers"
+      value={ Number(totalBorrowers).toLocaleString()}
+      icon={<Users size={28} />}
+      iconClass="bg-blue-100 text-blue-600"
+   />
 
-               <div className="
-                  flex
-                  items-start
-                  justify-between
-               ">
+   <SummaryCard
+      title="Total Contracts"
+      value={ Number(totalContracts).toLocaleString()}
+      icon={<FileText size={28} />}
+      iconClass="bg-violet-100 text-violet-600"
+   />
 
-                  <div>
+   <SummaryCard
+      title="Financed Amount"
+      value={`₱${ Number(totalFinancedAmount).toLocaleString()}`}
+      icon={<Wallet size={28} />}
+      iconClass="bg-green-100 text-green-600"
+   />
 
-                     <p className="
-                        text-slate-500
-                        text-sm
-                     ">
-                        Total Borrowers
-                     </p>
+   <SummaryCard
+      title="Outstanding Balance"
+      value={`₱${ Number(totalOutstandingBalance).toLocaleString()}`}
+      icon={<BadgeCheck size={28} />}
+      iconClass="bg-orange-100 text-orange-600"
+   />
 
-                     <h2 className="
-                        text-3xl
-                        font-bold
-                        text-slate-800
-                        mt-3
-                     ">
-                        {total}
-                     </h2>
-
-                  </div>
-
-                  <div className="
-                     w-14
-                     h-14
-                     rounded-2xl
-                     bg-blue-100
-                     flex
-                     items-center
-                     justify-center
-                  ">
-
-                     <Users
-                        className="
-                           text-blue-600
-                        "
-                        size={28}
-                     />
-
-                  </div>
-
-               </div>
-
-            </div>
-
-         </div>
+</div>
 
          {/* TABLE SECTION */}
 
@@ -578,6 +563,7 @@ export default function Borrowers() {
                                        justify-center
                                        text-slate-700
                                     "
+                                    onClick={()=>setViewClient(client)}
                                  >
 
                                     <Eye size={18} />
@@ -728,6 +714,16 @@ export default function Borrowers() {
             </div>
 
          </div>
+
+         {viewClient && (
+            <RequestModal
+               size="xxxl"
+               title="Client Details"
+               onClose={() => setViewClient(null)}
+            >
+               <ClientViewModal client={viewClient} />
+            </RequestModal>
+         )}
 
       </div>
 

@@ -22,7 +22,7 @@ export async function DashboardController(
             isAdmin:
                user?.roles?.includes("ADMIN") ?? false
       
-         });
+         }); 
 
       return res.status(200).json({
 

@@ -119,7 +119,8 @@ export interface ValidationError {
     contactType: string | null;
     contactValue: string | null;
 
- 
+    
+    Contracts?: StagingContract[];
     validationStatus: string;
  
     validationErrors: ValidationError[];

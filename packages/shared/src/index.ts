@@ -14,3 +14,4 @@ export * from "./types/cic/dbf.types";
 export * from "./types/client/client.types";
 export * from "./types/dashboard.types";
 export * from "./types/general.types";
+export * from "./types/initialize/initialize.types";

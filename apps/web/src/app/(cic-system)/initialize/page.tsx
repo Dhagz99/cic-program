@@ -1,7 +1,6 @@
 "use client";
 
 import { useImportDbf } from "@/hooks/imports/useImportDbf";
-import { useLastImport } from "@/hooks/initialize/useInitialize";
 import { Upload, FileArchive } from "lucide-react";
 
 import { useState } from "react";
