@@ -1,157 +1,112 @@
-import { detectProvince }
-from "./detectProvince.service";
+import { PSGCReferenceCacheItem } from "./addressReferenceCache.service";
+import { normalizeAddress } from "../../utils/address/normalizeClientAddress";
 
-import { detectMunicipality }
-from "./detectMunicipality.service";
+const normalizeText = (
+   value?: string | null
+) => {
+   return String(value ?? "")
+      .toUpperCase()
+      .replace(/[^A-Z0-9 ]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+};
 
-import { detectBarangay }
-from "./detectBarangay.service";
+export const resolveAddressFromPSGCCache = (
+   rawAddress: string | null | undefined,
+   psgcCache: PSGCReferenceCacheItem[]
+) => {
+   const normalizedAddress =
+      normalizeAddress(rawAddress);
 
-import { normalizeAddress }
-from "../../utils/address/normalizeClientAddress";
+   const searchableAddress =
+      normalizeText(normalizedAddress);
 
-export const resolveAddress =
-   async (
-      rawAddress?: string | null
-   ) => {
-
-      /*
-      --------------------------------
-      NORMALIZE
-      --------------------------------
-      */
-
-      const normalizedAddress =
-         normalizeAddress(
-            rawAddress
-         );
-
-      /*
-      --------------------------------
-      DETECT PROVINCE FIRST
-      --------------------------------
-      */
-
-      const province =
-         await detectProvince(
-            normalizedAddress
-         );
-
-      /*
-      --------------------------------
-      DETECT MUNICIPALITY
-      --------------------------------
-      */
-
-      const municipalityMatch =
-         await detectMunicipality(
-
-            normalizedAddress,
-
-            province
-
-         );
-
-      if (!municipalityMatch) {
-
-         return {
-
-            normalizedAddress,
-
-            province,
-
-            municipality: null,
-
-            barangay: null,
-
-            zipCode: null,
-
-            confidence: 0,
-
-            validationStatus:
-               "WITH_ERRORS",
-
-         };
-
-      }
-
-      /*
-      --------------------------------
-      DETECT BARANGAY
-      --------------------------------
-      */
-
-      const barangayMatch =
-         await detectBarangay(
-
-            normalizedAddress,
-
-            municipalityMatch.municipality
-
-         );
-
-      /*
-      --------------------------------
-      BARANGAY NOT FOUND
-      --------------------------------
-      */
-
-      if (!barangayMatch) {
-
-         return {
-
-            normalizedAddress,
-
-            province:
-               municipalityMatch.province,
-
-            municipality:
-               municipalityMatch.municipality,
-
-            barangay: null,
-
-            zipCode: null,
-
-            confidence:
-               municipalityMatch.confidence,
-
-            validationStatus:
-               "WITH_ERRORS",
-
-         };
-
-      }
-
-      /*
-      --------------------------------
-      SUCCESS
-      --------------------------------
-      */
-
+   if (!searchableAddress) {
       return {
-
          normalizedAddress,
-
-         province:
-            barangayMatch.province,
-
-         municipality:
-            municipalityMatch.municipality,
-
-         barangay:
-            barangayMatch.barangay,
-
-         zipCode:
-            barangayMatch.zipCode,
-
-         confidence:
-            barangayMatch.confidence,
-
-         validationStatus:
-            barangayMatch.confidence >= 0.80
-               ? "COMPLETE"
-               : "WITH_ERRORS",
-
+         province: null,
+         municipality: null,
+         barangay: null,
+         zipCode: null,
+         confidence: 0,
+         validationStatus: "WITH_ERRORS"
       };
+   }
 
+   const matchedBarangay =
+      psgcCache.find((item) => {
+         if (!item.searchableBarangayName) {
+            return false;
+         }
+
+         const hasBarangay =
+            searchableAddress.includes(
+               item.searchableBarangayName
+            );
+
+         const hasMunicipality =
+            item.searchableMunicipalityName
+               ? searchableAddress.includes(
+                    item.searchableMunicipalityName
+                 )
+               : true;
+
+         return hasBarangay && hasMunicipality;
+      });
+
+   if (matchedBarangay) {
+      return {
+         normalizedAddress,
+         province: matchedBarangay.provinceName,
+         municipality: matchedBarangay.municipalityName,
+         barangay: matchedBarangay.barangayName,
+         zipCode: matchedBarangay.zipCode,
+         confidence: 1,
+         validationStatus: "COMPLETE"
+      };
+   }
+
+   const matchedMunicipality =
+      psgcCache.find((item) => {
+         if (!item.searchableMunicipalityName) {
+            return false;
+         }
+
+         return searchableAddress.includes(
+            item.searchableMunicipalityName
+         );
+      });
+
+   if (matchedMunicipality) {
+      return {
+         normalizedAddress,
+         province: matchedMunicipality.provinceName,
+         municipality: matchedMunicipality.municipalityName,
+         barangay: null,
+         zipCode: null,
+         confidence: 0.6,
+         validationStatus: "WITH_ERRORS"
+      };
+   }
+
+   const matchedProvince =
+      psgcCache.find((item) => {
+         if (!item.searchableProvinceName) {
+            return false;
+         }
+
+         return searchableAddress.includes(
+            item.searchableProvinceName
+         );
+      });
+
+   return {
+      normalizedAddress,
+      province: matchedProvince?.provinceName ?? null,
+      municipality: null,
+      barangay: null,
+      zipCode: null,
+      confidence: matchedProvince ? 0.3 : 0,
+      validationStatus: "WITH_ERRORS"
    };
+};

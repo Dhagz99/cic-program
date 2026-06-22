@@ -1,85 +1,35 @@
-import { parseDate }
-from "../utils/parseDate";
-
-import { parseFullName }
-from "../utils/parseFullName";
-
-import { decodeDbfText }
-from "../utils/decodeDbfText";
+import { parseDate } from "../utils/parseDate";
+import { parseFullName } from "../utils/parseFullName";
+import { decodeDbfText } from "../utils/decodeDbfText";
 import { DbfTypes } from "@repo/shared";
-import { resolveAddress } from "../services/address/resolveAddress.service";
 import { normalizeAddressText } from "../utils/address/normalizeAddressText";
 
-export const normalizeClient = async (
-   row: DbfTypes
-): Promise<any> => {
-   /*
-   -----------------------------------
-   DECODE TEXT FIELDS
-   -----------------------------------
-   */
-
+export const normalizeClient = (
+   row: DbfTypes,
+   resolvedAddress: any
+): any => {
    const decodedName =
-      decodeDbfText(
-         row.NAME
-      );
+      decodeDbfText(row.NAME);
 
    const decodedAdd1 =
-      decodeDbfText(
-         row.ADD1
-      );
+      decodeDbfText(row.ADD1);
 
    const decodedAdd2 =
-      decodeDbfText(
-         row.ADD2
-      );
+      decodeDbfText(row.ADD2);
 
    const decodedBranch =
-      decodeDbfText(
-         row.BRANCH
-      );
+      decodeDbfText(row.BRANCH);
 
    const decodedBank =
-      decodeDbfText(
-         row.BANK
-      );
-
-   /*
-   -----------------------------------
-   PARSE NAME
-   -----------------------------------
-   */
+      decodeDbfText(row.BANK);
 
    const parsedName =
-      parseFullName(
-         decodedName
-      );
+      parseFullName(decodedName);
 
-   /*
-   -----------------------------------
-   RETURN NORMALIZED CLIENT
-   -----------------------------------
-   */
-  const rawAddress =
-   [
-      decodedAdd1?.trim(),
-      decodedAdd2?.trim()
-   ]
-      .filter(Boolean)
-      .join(", ");
-
-
-      const resolvedAddress =
-      await resolveAddress(
-         rawAddress
-      );
-
-      const isResolved =
-   resolvedAddress.validationStatus === "COMPLETE";
-
+   const isResolved =
+      resolvedAddress?.validationStatus === "COMPLETE";
 
    return {
-
       providerSubjectNo:
          String(row.ID),
 
@@ -99,9 +49,7 @@ export const normalizeClient = async (
          parsedName.suffix,
 
       birthDate:
-         parseDate(
-            row.BIRTH
-         ),
+         parseDate(row.BIRTH),
 
       address1:
          decodedAdd1,
@@ -110,43 +58,33 @@ export const normalizeClient = async (
          isResolved
             ? resolvedAddress.zipCode
             : null,
-      
+
       addressBarangay:
          isResolved
             ? resolvedAddress.barangay
             : null,
-      
+
       addressCity:
          isResolved
             ? resolvedAddress.municipality
             : null,
-      
+
       addressProvince:
          isResolved
             ? resolvedAddress.province
             : null,
-      
-    
 
       address2:
          decodedAdd2,
 
-         address:
+      address:
          [
-            normalizeAddressText(
-               decodedAdd1
-            ),
-      
-            normalizeAddressText(
-               decodedAdd2
-            ),
-      
+            normalizeAddressText(decodedAdd1),
+            normalizeAddressText(decodedAdd2),
             "PH",
-      
             isResolved
                ? resolvedAddress.zipCode
                : "6004"
-      
          ]
             .filter(Boolean)
             .join(", "),
@@ -159,7 +97,7 @@ export const normalizeClient = async (
 
       pensionAmount:
          row.PENSION,
- 
+
       pensionType:
          row.PTYPE,
 
@@ -171,8 +109,6 @@ export const normalizeClient = async (
             ? 11
             : row.GROUPING === "GSIS"
             ? 12
-            : 10,
-
+            : 10
    };
-
 };
