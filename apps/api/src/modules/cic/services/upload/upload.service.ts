@@ -12,11 +12,14 @@ import { validateClient } from "../validation/clientValidation.service";
 import { validateContract } from "../validation/contractValidation.service";
 
 
-
-import { loadPSGCReferenceCache } from "../address/addressReferenceCache.service";
+import {
+   loadPSGCReferenceCache
+} from "../address/addressReferenceCache.service";
 import { getRawAddressFromDbfRow } from "../address/getRawAddressFromDbfRow";
 import { resolveAddressFromPSGCCache } from "../address/resolveAddress.service";
 import { buildStagingClientData, buildStagingContractData } from "../staging/buildStagingBulkData";
+
+
 
 
 export const uploadDbfService = async ({
@@ -330,6 +333,10 @@ export const uploadDbfService = async ({
                      item.rowNo
                   );
 
+               if (!stagingClientId) {
+                  continue;
+               }
+
                for (const err of item.validationErrors) {
                   validationErrorsToCreate.push({
                      stagingClientId,
@@ -348,6 +355,10 @@ export const uploadDbfService = async ({
                   contractIdByRowNo.get(
                      item.rowNo
                   );
+
+               if (!stagingContractId) {
+                  continue;
+               }
 
                for (const err of item.validationErrors) {
                   validationErrorsToCreate.push({
