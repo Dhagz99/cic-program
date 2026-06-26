@@ -364,6 +364,8 @@ export default function Borrowers() {
                            Full Name
                         </th>
 
+                        
+
                         <th className="
                            text-left
                            px-6
@@ -372,7 +374,7 @@ export default function Borrowers() {
                            font-semibold
                            text-slate-600
                         ">
-                           Gender
+                           Branch
                         </th>
 
                         <th className="
@@ -394,7 +396,7 @@ export default function Borrowers() {
                            font-semibold
                            text-slate-600
                         ">
-                           Branch
+                           Gender
                         </th>
 
                         <th className="
@@ -509,8 +511,7 @@ export default function Borrowers() {
                               text-slate-700
                            ">
                               {
-                                 client.gender
-                                    ?.description || "-"
+                                 client.branch.branchName || "-"
                               }
                            </td>
 
@@ -533,8 +534,9 @@ export default function Borrowers() {
                               text-sm
                               text-slate-700
                            ">
-                              {
-                                 client.branch.branchName || "-"
+                               {
+                                 client.gender
+                                    ?.description || "-"
                               }
                            </td>
 
@@ -586,25 +588,6 @@ export default function Borrowers() {
                                  >
 
                                     <Pencil size={18} />
-
-                                 </button>
-
-                                 <button
-                                    className="
-                                       w-10
-                                       h-10
-                                       rounded-xl
-                                       bg-red-100
-                                       hover:bg-red-200
-                                       transition
-                                       flex
-                                       items-center
-                                       justify-center
-                                       text-red-700
-                                    "
-                                 >
-
-                                    <Trash2 size={18} />
 
                                  </button>
 

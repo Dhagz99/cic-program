@@ -41,4 +41,5 @@ export interface DbfTypes {
     NBT: number;
     PAYAMT: number;
     ACCTNO: number;
+    CPD: string;
 }

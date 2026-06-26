@@ -216,13 +216,14 @@ model ImportBatch {
   rejectedBy User?  @relation( "BatchRejectedBy", fields: [rejectedById],  references: [id] )
 
   
-  stagingClients      StagingClient[]
-  stagingContracts    StagingContract[]
-  contracts            Contract[]  
-  cleints            Client[]  
+  stagingClients          StagingClient[]
+  stagingContracts        StagingContract[]
+  contracts               Contract[]  
+  cleints                 Client[]  
+  cicExports              CicExport[]  
 
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
 
   @@unique([branchId, reportingPeriodId])
 }
@@ -708,6 +709,8 @@ model CicExport {
 
   branchId          String
 
+  importBatchId     String
+
   generatedById     String
 
   fileName          String
@@ -719,10 +722,12 @@ model CicExport {
   createdAt         DateTime @default(now())
 
   
-   branch                     Branch @relation( fields: [branchId],references: [id])
+  branch                     Branch @relation( fields: [branchId],references: [id])
 
   reportingPeriod            ReportingPeriod @relation(fields: [reportingPeriodId], references: [id] )
 
   generatedBy                 User @relation(fields: [generatedById], references: [id])
+
+  importBatch                 ImportBatch @relation(fields: [importBatchId], references: [id])
 
 }

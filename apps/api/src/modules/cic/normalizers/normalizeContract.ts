@@ -156,7 +156,10 @@ export const normalizeContract = (
 
   
       branch:
-         row.BRANCH
+         row.BRANCH,
+
+      contractPhase:
+         row.CPD
    };
 
 };

@@ -21,7 +21,16 @@ export interface DashboardResponse {
             totalBorrowers: number;
             totalActiveLoans: number;
             totalLoanAmount: number;
-        }
+        },
+        recentCicExports: {
+            id: string;
+            branchName: string;
+            importBatchId: string;
+            reportingPeriod: string;
+            status: string;
+            totalRecords: number;
+            createdAt: string;
+        }[];
 
     }
 }

@@ -86,32 +86,30 @@ import {
         .optional(),
 
 
-        identificationType:
-        z
-        .coerce
-        .number()
-        .int()
-        .positive(
-           "Identification type is required"
-        ),
+   identificationType:
+      z
+         .coerce
+         .number()
+         .int()
+         .positive("Identification type is required"),
       
-      identificationNumber:
-         z
-          .string()
-          .trim()
-          .min(1, "Identification number is required"),
+   identificationNumber:
+      z
+         .string()
+         .trim()
+         .min(1, "Identification number is required"),
 
-      contactType:
-          z
-            .string()
-            .trim()
-            .optional(),
+   contactType:
+         z
+         .string()
+         .trim()
+         .min(1, "Contact type is required"),
       
-      contactValue:
-           z
-            .string()
-            .trim()
-            .optional(),
+   contactValue:
+         z
+         .string()
+         .trim()
+         .min(1, "Contact value is required"),
        
 });
  

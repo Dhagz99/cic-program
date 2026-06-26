@@ -124,7 +124,7 @@ export default function Loans() {
                 </p>
   
                 <h2 className="text-3xl font-bold text-slate-800 mt-3">
-                  {formatNumber(total)}
+                  {formatNumber(summary.totalLoans)}
                 </h2>
               </div>
   
@@ -503,18 +503,6 @@ export default function Loans() {
                      "
                   >
                      <Pencil size={18} />
-                  </button>
-
-                  <button
-                     className="
-                        w-10 h-10 rounded-xl
-                        bg-red-100 hover:bg-red-200
-                        transition
-                        flex items-center justify-center
-                        text-red-700
-                     "
-                  >
-                     <Trash2 size={18} />
                   </button>
 
                </div>

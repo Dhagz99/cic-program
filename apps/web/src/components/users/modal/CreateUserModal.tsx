@@ -43,11 +43,12 @@ export default function CreateUserModal({
   })
 
   const branchOptions =
-  branches?.map((branch: Branch) => ({
-    value: branch.id,
-    label: `${branch.branchCode} - ${branch.branchName}`,
-  })) ?? [];
-
+  branches
+    ?.filter((branch) => branch.id)
+    .map((branch) => ({
+      value: branch.id as string,
+      label: `${branch.branchCode} - ${branch.branchName}`,
+    })) ?? [];
 
 console.log("Initial ", initialData )
 

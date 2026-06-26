@@ -116,6 +116,7 @@ export interface ValidationError {
       DomainOption<number> | null;
     identificationNumber: string;
 
+
     contactType: string | null;
     contactValue: string | null;
 
@@ -131,57 +132,3 @@ export interface ValidationError {
 
 
 // types/cic/loan.ts
-
-export type UpdateLoanFormValues= {
-
-   contractNo: string;
-
-   contractType?: number;
-
-   contractPhase?: string;
-
-   contractStatus?: string;
-
-   currency?: string;
-
-   originalCurrency?: string;
-
-   contractStartDate?: string;
-
-   contractRequestDate?: string;
-
-   contractEndPlannedDate?: string;
-
-   contractEndActualDate?: string;
-
-   lastPaymentDate?: string;
-
-   financedAmount?: number;
-
-   installmentsNumber?: number;
-
-   transactionType?: string;
-
-   paymentPeriodicity?: string;
-
-   paymentMethod?: string;
-
-   monthlyPaymentAmount?: number;
-
-   firstPaymentDate?: string;
-
-   lastPaymentAmount?: number;
-
-   nextPaymentDate?: string;
-
-   nextPaymentAmount?: number;
-
-   outstandingPaymentNumber?: number;
-
-   outstandingBalance?: number;
-
-   overduePaymentNumber?: number;
-
-   overduePaymentAmount?: number;
-
-};

@@ -36,11 +36,9 @@ async ({
       });
 
    if (!batch) {
-
       throw new Error(
          "Batch not found"
       );
-
    }
 
    /*
@@ -60,26 +58,25 @@ async ({
          continue;
       }
 
-//FIND EXISTING CLIENT
-const existingClient =
-   await prisma.client.findUnique({
+   //FIND EXISTING CLIENT
+   const existingClient =
+      await prisma.client.findUnique({
 
-      where: {
+         where: {
 
-         branchId_providerSubjectNo: {
+            branchId_providerSubjectNo: {
 
-            branchId:
-               batch.branchId,
+               branchId:
+                  batch.branchId,
 
-            providerSubjectNo:
-               stagingClient.providerSubjectNo || ""
+               providerSubjectNo:
+                  stagingClient.providerSubjectNo || ""
+
+            }
 
          }
 
-      }
-
-   });
-
+      });
 
    const mergedClient = {
 
@@ -201,9 +198,7 @@ const existingClient =
 
       const client =
          await prisma.client.upsert({
-
                where: {
-
                     branchId_providerSubjectNo: {
                
                      branchId:
@@ -211,7 +206,6 @@ const existingClient =
                      providerSubjectNo:
                         stagingClient.providerSubjectNo || ""
                   }
-               
             },
 
             update: {
@@ -286,10 +280,10 @@ const existingClient =
                   stagingClient.identificationNumber,
 
                contactType:
-                  stagingClient.contactType,
+                   mergedClient.contactType,
 
                contactValue:
-                  stagingClient.contactValue,
+                   mergedClient.contactValue,
             },
 
             create: {
@@ -375,8 +369,6 @@ const existingClient =
 
                contactValue:
                   stagingClient.contactValue,
-
-
             }
 
          });
@@ -397,6 +389,41 @@ const existingClient =
          ) {
             continue;
          }
+
+         const existingContract =
+         await prisma.contract.findUnique({
+            where: {
+               branchId_contractNo: {
+                  branchId:
+                     batch.branchId,
+      
+                  contractNo:
+                     stagingContract.contractNo
+               }
+            },
+            select: {
+               id: true,
+               contractNo: true,
+               outstandingBalance: true
+            }
+         });
+   
+      const existingBalance =
+         Number(existingContract?.outstandingBalance ?? 0);
+   
+      const stagingBalance =
+         Number(stagingContract.outstandingBalance ?? 0);
+   
+      if (
+         existingContract &&
+         existingBalance === 0 &&
+         stagingBalance === 0
+      ) {
+         continue;
+      }
+   
+
+         
 
          /*
          |--------------------------------------------------------------------------

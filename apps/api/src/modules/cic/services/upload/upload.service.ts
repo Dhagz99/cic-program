@@ -20,8 +20,6 @@ import { resolveAddressFromPSGCCache } from "../address/resolveAddress.service";
 import { buildStagingClientData, buildStagingContractData } from "../staging/buildStagingBulkData";
 
 
-
-
 export const uploadDbfService = async ({
    file,
    reportingPeriodId,
@@ -92,14 +90,13 @@ export const uploadDbfService = async ({
 
    console.time("NORMALIZE_VALIDATE");
 
-   let completedRecords = 0;
-   let errorRecords = 0;
+   const clientMap =
+      new Map<string, any>();
+
+   const contractsTemp: any[] = [];
 
    const previewClients: any[] = [];
    const previewContracts: any[] = [];
-
-   const clientsTemp: any[] = [];
-   const contractsTemp: any[] = [];
 
    const resolvedAddressCache =
       new Map<string, any>();
@@ -114,6 +111,9 @@ export const uploadDbfService = async ({
 
       const rowNo =
          index + 1;
+
+      const providerSubjectNo =
+         String(row.ID);
 
       const rawAddress =
          getRawAddressFromDbfRow(row);
@@ -149,42 +149,67 @@ export const uploadDbfService = async ({
       const contractValidationErrors =
          validateContract(normalizedContract);
 
-      const totalErrors =
-         clientValidationErrors.length +
-         contractValidationErrors.length;
+      /**
+       * Save client only once per DBF ID
+       */
+      if (!clientMap.has(providerSubjectNo)) {
+         clientMap.set(providerSubjectNo, {
+            rowNo,
+            providerSubjectNo,
+            client:
+               normalizedClient,
+            validationErrors:
+               clientValidationErrors
+         });
 
-      if (totalErrors > 0) {
-         errorRecords++;
-      } else {
-         completedRecords++;
+         if (previewClients.length < 5) {
+            previewClients.push(
+               normalizedClient
+            );
+         }
       }
 
-      clientsTemp.push({
-         rowNo,
-         client:
-            normalizedClient,
-         validationErrors:
-            clientValidationErrors
-      });
-
+      /**
+       * Save every contract row
+       */
       contractsTemp.push({
          rowNo,
+         providerSubjectNo,
          contract:
             normalizedContract,
          validationErrors:
             contractValidationErrors
       });
 
-      if (previewClients.length < 5) {
-         previewClients.push(
-            normalizedClient
-         );
-      }
-
       if (previewContracts.length < 5) {
          previewContracts.push(
             normalizedContract
          );
+      }
+   }
+
+   const clientsTemp =
+      Array.from(
+         clientMap.values()
+      );
+
+   let completedRecords = 0;
+   let errorRecords = 0;
+
+   for (const contractItem of contractsTemp) {
+      const clientItem =
+         clientMap.get(
+            contractItem.providerSubjectNo
+         );
+
+      const totalErrors =
+         (clientItem?.validationErrors.length ?? 0) +
+         contractItem.validationErrors.length;
+
+      if (totalErrors > 0) {
+         errorRecords++;
+      } else {
+         completedRecords++;
       }
    }
 
@@ -255,15 +280,15 @@ export const uploadDbfService = async ({
                   select: {
                      id:
                         true,
-                     rowNo:
+                     providerSubjectNo:
                         true
                   }
                });
 
-            const clientIdByRowNo =
+            const clientIdByProviderSubjectNo =
                new Map(
                   createdClients.map((client) => [
-                     client.rowNo,
+                     client.providerSubjectNo,
                      client.id
                   ])
                );
@@ -271,13 +296,13 @@ export const uploadDbfService = async ({
             const contractsToCreate =
                contractsTemp.map((item) => {
                   const stagingClientId =
-                     clientIdByRowNo.get(
-                        item.rowNo
+                     clientIdByProviderSubjectNo.get(
+                        item.providerSubjectNo
                      );
 
                   if (!stagingClientId) {
                      throw new Error(
-                        `Missing staging client for row ${item.rowNo}`
+                        `Missing staging client for subject ${item.providerSubjectNo}`
                      );
                   }
 
@@ -329,8 +354,8 @@ export const uploadDbfService = async ({
 
             for (const item of clientsTemp) {
                const stagingClientId =
-                  clientIdByRowNo.get(
-                     item.rowNo
+                  clientIdByProviderSubjectNo.get(
+                     item.providerSubjectNo
                   );
 
                if (!stagingClientId) {
@@ -409,11 +434,14 @@ export const uploadDbfService = async ({
       batchId:
          result.id,
 
-      totalClients:
+      totalRecords:
          records.length,
 
+      totalClients:
+         clientsTemp.length,
+
       totalContracts:
-         records.length,
+         contractsTemp.length,
 
       completedRecords,
 

@@ -1,5 +1,6 @@
 
 import prisma from "../../lib/prisma";
+import { formatReportingPeriod, formatShortDate } from "../utils/dateFormatter";
 
 type DashboardParams = {
    branchId?: string;
@@ -137,6 +138,44 @@ export async function DashboardServices({
          }
 
       });
+
+
+      /*
+   -----------------------------------
+   TOTAL BORROWERS
+   -----------------------------------
+   */
+
+   const recentCicExportsPromise =
+   prisma.cicExport.findMany({
+      where: branchFilter,
+      select:{
+         id: true,
+         branch: {
+            select: {
+               branchName: true
+            }
+         },
+         totalRecords: true,
+         status: true,
+         importBatchId: true,
+         reportingPeriod:{
+            select:{
+               month: true,
+               year: true
+            }
+         },
+         createdAt: true
+         
+      },
+      orderBy:{
+         createdAt: "desc"
+      },
+      
+      take: 10
+   });
+
+   
 
 
 
@@ -317,7 +356,10 @@ const monthlyContracts =
       totalExports,
 
       branches,
+
       monthlyLoanTrends,
+
+      recentCicExports
       
    
 
@@ -334,6 +376,8 @@ const monthlyContracts =
       branchesPromise,
 
       monthlyLoanTrendPromise,
+
+      recentCicExportsPromise
 
   
 
@@ -400,7 +444,25 @@ const monthlyContracts =
 
          activeLoanGrowth,
       
-         loanAmountGrowth,
+         loanAmountGrowth,     
+
+         recentCicExports:
+            recentCicExports.map( 
+               (cic) => ({
+                  id: cic.id,
+                  branchName: cic.branch.branchName,
+                  totalRecords: cic.totalRecords,
+                  status: cic.status,
+                  importBatchId: cic.importBatchId,
+                  createdAt: formatShortDate(cic.createdAt),
+                  reportingPeriod: formatReportingPeriod(
+                     cic.reportingPeriod.month,
+                     cic.reportingPeriod.year
+                  ),
+            })
+         )
+           
+        
 
    };
 

@@ -80,8 +80,10 @@ export type LoanTypeResponse = string[];
 
 
 export type BranchesType = {
+  id?: string
   branchCode: string;
   Location: string;
+  branchName?: string;
   company_id: string;
   position: number;
   Company?: string
@@ -120,5 +122,10 @@ export interface DomainItem {
   id: string;
   type: string;
   code: string;
+  description: string;
+}
+
+export interface DomainSimpleItem {
+  code: number;
   description: string;
 }

@@ -3,6 +3,7 @@
 import GrowthIndicator from "@/components/dashboard/GrowthIndicatorProps";
 import LoanAnalyticsChart from "@/components/dashboard/LoanAnalyticsChart";
 import { useDashboard } from "@/hooks/dashboard/useDashboard";
+import { useExportReport } from "@/hooks/reports/useRepots";
 import { getCurrentDate } from "@/utils/date/getCurrentDate";
 import { formatCompactCurrency } from "@/utils/value/formatCompactCurrency";
 import { formatNumber } from "@/utils/value/formatNumber";
@@ -16,10 +17,17 @@ import {
   
   export default function Dashboard() {
 
-    const {data} = useDashboard();
+    const {data, isLoading} = useDashboard();
     const borrowerGrowth  = data?.data.borrowerGrowth ?? 0;
     const activeLoanGrowth  = data?.data.activeLoanGrowth ?? 0;
     const loanAmountGrowth  = data?.data.loanAmountGrowth ?? 0;
+    const cicRecent  = data?.data.recentCicExports ?? [];
+
+    const exportReportMutation = useExportReport();
+
+    const handleExport = (batchId: string) => {
+      exportReportMutation.mutate(batchId);
+   };
     
     return (
       <div className="p-8 bg-slate-100 min-h-screen flex flex-col gap-7">
@@ -228,6 +236,10 @@ import {
                   <th className="text-left py-4 text-sm font-semibold text-slate-600">
                     Branch
                   </th>
+
+                  <th className="text-left py-4 text-sm font-semibold text-slate-600">
+                    Reporting Period
+                  </th>
   
                   <th className="text-left py-4 text-sm font-semibold text-slate-600">
                     Records
@@ -244,57 +256,83 @@ import {
               </thead>
   
               <tbody>
-                <tr className="border-b border-slate-100">
-                  <td className="py-4 text-sm text-slate-700">
-                    Aug 11, 2025
-                  </td>
+              {
+                isLoading ? (
+                    <tr>
+
+                      <td
+                          colSpan={8}
+                          className="
+                            text-center
+                            py-10
+                          "
+                      >
+
+                          Loading...
+
+                      </td>
+
+                    </tr>
+
+   ) : cicRecent.length === 0 ? (
+
+      <tr>
+
+         <td
+            colSpan={8}
+            className="
+               text-center
+               py-10
+            "
+         >
+
+            No loans found
+
+         </td>
+
+      </tr>
+
+   ) : (
+
+    cicRecent.map((items) => (
+      <tr key={items.id} className="border-b border-slate-100">
+      <td className="py-4 text-sm text-slate-700">
+            {items.createdAt}
+      </td>
   
-                  <td className="py-4 text-sm text-slate-700">
-                    Main Branch
-                  </td>
+      <td className="py-4 text-sm text-slate-700">
+        {items.branchName}
+      </td>
+
+      <td className="py-4 text-sm text-slate-700">
+        {items.reportingPeriod}
+      </td>
   
-                  <td className="py-4 text-sm text-slate-700">
-                    1,200
-                  </td>
   
-                  <td className="py-4">
-                    <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
-                      Success
-                    </span>
-                  </td>
+      <td className="py-4 text-sm text-slate-700">
+       {items.totalRecords}
+      </td>
   
-                  <td className="py-4">
-                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                      Download
-                    </button>
-                  </td>
-                </tr>
+      <td className="py-4">
+        <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
+          {items.status}
+        </span>
+      </td>
   
-                <tr className="border-b border-slate-100">
-                  <td className="py-4 text-sm text-slate-700">
-                    Aug 10, 2025
-                  </td>
+      <td className="py-4">
+        <button onClick={()=>handleExport(items.importBatchId)} className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+          Download
+        </button>
+      </td>
+    </tr>
+    ))
+
+
+    )
+   }
+               
   
-                  <td className="py-4 text-sm text-slate-700">
-                    Main Branch
-                  </td>
-  
-                  <td className="py-4 text-sm text-slate-700">
-                    980
-                  </td>
-  
-                  <td className="py-4">
-                    <span className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-medium">
-                      Pending
-                    </span>
-                  </td>
-  
-                  <td className="py-4">
-                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                      View
-                    </button>
-                  </td>
-                </tr>
+            
               </tbody>
             </table>
           </div>

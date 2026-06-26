@@ -8,6 +8,7 @@ import {
 } from "react-hook-form";
 
 import {
+   DomainItem,
    DomainOption,
  
    UpdateClientFormValues
@@ -15,6 +16,7 @@ import {
 
 import InputField from "@/components/ui/InputField";
 import SelectField from "@/components/ui/SelectField";
+import { useDomains } from "@/hooks/useGeneral";
 
 type Props = {
 
@@ -49,6 +51,9 @@ export default function ClientInformationForm({
    identificationTypes,
 
 }: Props) {
+
+
+   const {data: contact_type} = useDomains("CONTACT_TYPE")
 
    return (
 
@@ -252,11 +257,19 @@ export default function ClientInformationForm({
                         />
       
                         {/* Contact Type */}
-                        <InputField
-                           label="Contact Type"
-                           {...register("contactType")}
-                           error={errors.contactType}
-                        />
+                            <SelectField
+                                         label="Contract Type"
+                                         error={errors.contactType}
+                                         {...register("contactType")}
+                                         options={
+                                          contact_type?.map((item: DomainItem) => ({
+                                               label:
+                                                  item.description,
+                                               value:
+                                                  String(item.code)
+                                            })) || []
+                                         }
+                                      />
                         {/* Contact Value */}
                         <InputField
                            label="Contact Value"

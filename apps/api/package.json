@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
     "create:user": "tsx factory/createUser.ts",
     "seed:zip": "tsx factory/seeds/zipCodes.seed.ts"
   },

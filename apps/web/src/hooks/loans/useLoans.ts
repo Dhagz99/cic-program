@@ -91,7 +91,9 @@ export function useClientLoan({
       
             pastDueLoans: 0,
       
-            totalLoanAmount: 0
+            totalLoanAmount: 0,
+
+            totalLoans: 0
       
          }
 

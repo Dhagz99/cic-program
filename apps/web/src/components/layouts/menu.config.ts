@@ -22,25 +22,25 @@ export const MENU_SECTIONS: MenuSection[] = [
           label: "Borrowers",
           path: "/borrowers",
           icon: Users,
-          permission:"ADMIN_MANAGE"
+          permission:"CLIENT_VIEW"
         },
         {
           label: "Loans",
           path: "/loans",
           icon: WalletCards,
-          permission:"ADMIN_MANAGE"
+          permission:"CONTRACT_VIEW"
         },
         {
           label: "Initialize",
           path: "/cic/upload",
           icon: FolderPlus,
-          permission:"ADMIN_MANAGE"
+          permission:"STAGING_UPLOAD"
         },
         {
           label: "Reports",
           path: "/reports",
           icon: FileText,
-          permission:"ADMIN_MANAGE"
+          permission:"REPORT_VIEW"
         },
         // {
         //   label: "Payroll",

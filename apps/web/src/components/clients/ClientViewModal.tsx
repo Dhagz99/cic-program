@@ -1,14 +1,18 @@
 "use client";
 
-import { StagingClient, StagingContract } from "@repo/shared";
+import { useIdentificationTypeDomain } from "@/hooks/cic/useDomain";
+import { useDomains } from "@/hooks/useGeneral";
+import { DomainItem, DomainOption, DomainSimpleItem, StagingClient, StagingContract } from "@repo/shared";
 import {
    BadgeCheck,
    BriefcaseBusiness,
    CalendarDays,
+   ContactRound,
    CreditCard,
    FileText,
    Landmark,
    MapPin,
+   Phone,
    User,
 } from "lucide-react";
 
@@ -17,6 +21,16 @@ type Props = {
 };
 
 export default function ClientViewModal({ client }: Props) {
+
+    const {data: contact_type} = useDomains("CONTACT_TYPE");
+     
+
+const contactTypeDescription =
+      contact_type?.find(
+            (item: DomainOption) =>
+               item.code === client.contactType
+         )?.description ?? client.contactType;
+
    const fullName = [
       client.firstName,
       client.middleName,
@@ -29,7 +43,6 @@ export default function ClientViewModal({ client }: Props) {
    const contracts =
       client.Contracts ?? [];
 
-      console.log(client)
 
    const totalFinanced = contracts.reduce(
       (sum, contract) =>
@@ -66,8 +79,8 @@ export default function ClientViewModal({ client }: Props) {
                   </div>
                </div>
 
-               <span className="rounded-full bg-blue-50 px-4 py-2 text-xs font-semibold text-blue-700">
-                  {client.contactType ?? "CLIENT"}
+               <span className="rounded-full bg-blue-50 uppercase px-4 py-2 text-xs font-semibold text-blue-700">
+                  {client.identificationType?.description ?? "CLIENT"}
                </span>
             </div>
          </div>
@@ -129,6 +142,18 @@ export default function ClientViewModal({ client }: Props) {
                   label="Address"
                   value={client.address}
                />
+
+               <Info
+                  icon={<ContactRound size={18} />}
+                  label="Contact Type"
+                  value={contactTypeDescription}
+               />
+               
+               <Info
+                     icon={<Phone size={18} />}
+                     label="Contact Value"
+                     value={client.contactValue}
+                  />
             </div>
          </Section>
 
@@ -138,10 +163,15 @@ export default function ClientViewModal({ client }: Props) {
                   <thead>
                      <tr className="bg-slate-50 border-b border-slate-200">
                         <Th>Contract No</Th>
-                        <Th>Status</Th>
-                        <Th>Start Date</Th>
-                        <Th>Monthly</Th>
                         <Th>Financed</Th>
+                        <Th>Monthly</Th>
+                        <Th>Installment</Th>
+                        <Th>Start Date</Th>
+                        <Th>End Date</Th>
+                        <Th>Status</Th>
+                        <Th>Last Payment Date</Th>
+                        <Th>Last Payment</Th>
+                        <Th>Outstanding Payment</Th>
                         <Th>Balance</Th>
                      </tr>
                   </thead>
@@ -160,22 +190,22 @@ export default function ClientViewModal({ client }: Props) {
                         contracts.map((contract: StagingContract) => (
                            <tr
                               key={contract.id}
-                              className="border-b border-slate-100 hover:bg-slate-50"
+                              className="border-b border-slate-100 hover:bg-slate-50 cursor-pointer"
                            >
                               <Td strong>{contract.contractNo}</Td>
-
+                              <Td>{formatMoney(contract.financedAmount)}</Td>
+                              <Td>{formatMoney(contract.monthlyPaymentAmount)}</Td>
+                              <Td>{contract.installmentsNumber}</Td>
+                              <Td>{formatDate(contract.contractStartDate)}</Td>
+                              <Td>{formatDate(contract.contractEndPlannedDate)}</Td>
                               <Td>
                                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                                    {contract.contractStatus ?? "-"}
+                                    {contract.contractPhase ?? "-"}
                                  </span>
                               </Td>
-
-                              <Td>{formatDate(contract.contractStartDate)}</Td>
-
-                              <Td>{formatMoney(contract.monthlyPaymentAmount)}</Td>
-
-                              <Td>{formatMoney(contract.financedAmount)}</Td>
-
+                              <Td>{formatDate(contract.lastPaymentDate)}</Td>
+                              <Td>{formatMoney(contract.lastPaymentAmount)}</Td>
+                              <Td>{contract.outstandingPaymentNumber}</Td>
                               <Td>{formatMoney(contract.outstandingBalance)}</Td>
                            </tr>
                         ))

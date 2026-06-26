@@ -1,20 +1,13 @@
 "use client";
 
-import { useParams }
-from "next/navigation";
 
-;
+
+
 
 export default function FinalizePage() {
 
-   const params =
-      useParams();
 
-   const batchId =
-      params.batchId as string;
 
-   const finalizeBatch =
-      useFinalizeBatch();
 
    return (
 
@@ -30,11 +23,11 @@ export default function FinalizePage() {
 
          <button
 
-            onClick={() =>
-               finalizeBatch.mutate(
-                  batchId
-               )
-            }
+            // onClick={() =>
+            //    finalizeBatch.mutate(
+            //       batchId
+            //    )
+            // }
 
             className="
                bg-purple-600

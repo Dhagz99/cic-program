@@ -6,7 +6,8 @@ export async function getClientLoansServices({
    page = 1,
    limit = 10,
    search = "",
-   contractPhase
+   contractPhase,
+   isAdmin
 }: GetClientLoansParams) {
 
    /*
@@ -15,9 +16,18 @@ export async function getClientLoansServices({
    -----------------------------------
    */
 
+   const branchFilter =
+   isAdmin
+      ? {}
+      : {
+           branchId
+        };
+
+
+ 
    const whereCondition = {
 
-      branchId,
+      ...branchFilter,
 
       ...(contractPhase && {
          contractPhase
@@ -38,6 +48,24 @@ export async function getClientLoansServices({
                providerSubjectNo: {
                   contains: search,
                   mode: "insensitive" as const
+               }
+            },
+
+            {
+               client: {
+                  firstName:{
+                     contains: search,
+                     mode: "insensitive" as const
+                  }
+               }
+            },
+
+            {
+               client: {
+                  lastName:{
+                     contains: search,
+                     mode: "insensitive" as const
+                  }
                }
             }
 
@@ -99,7 +127,7 @@ export async function getClientLoansServices({
    -----------------------------------
    */
 
-   const total =
+   const totalLoan =
       latestContracts.length;
 
    /*
@@ -112,7 +140,8 @@ export async function getClientLoansServices({
       contracts,
       totalLoanAmount,
       activeLoans,
-      pastDueLoans
+      pastDueLoans,
+      totalLoans
    ] = await Promise.all([
 
       prisma.contract.findMany({
@@ -150,11 +179,7 @@ export async function getClientLoansServices({
 
       prisma.contract.aggregate({
 
-         where: {
-
-            branchId
-
-         },
+        where: branchFilter,
 
          _sum: {
 
@@ -173,7 +198,7 @@ export async function getClientLoansServices({
       prisma.contract.count({
         where: {
             AND: [
-               latestWhere,
+               branchFilter,
                {
                   contractPhase:
                      "AC"
@@ -193,9 +218,18 @@ export async function getClientLoansServices({
       prisma.contract.count({
 
          where: {
-            branchId,
+            ...branchFilter,
             contractStatus:
                "PAST_DUE"
+
+         }
+
+      }),
+
+      prisma.contract.count({
+
+         where: {
+            ...branchFilter,
 
          }
 
@@ -210,7 +244,7 @@ export async function getClientLoansServices({
 
       pagination: {
 
-         total,
+         totalLoan,
 
          page,
 
@@ -219,7 +253,7 @@ export async function getClientLoansServices({
          totalPages:
 
             Math.ceil(
-               total / limit
+               totalLoan / limit
             )
 
       },
@@ -238,7 +272,9 @@ export async function getClientLoansServices({
 
          activeLoans,
 
-         pastDueLoans
+         pastDueLoans,
+
+         totalLoans
 
       }
 

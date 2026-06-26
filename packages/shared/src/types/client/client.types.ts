@@ -5,6 +5,7 @@ export interface GetClientsParams {
     search?: string;
     genderCode?: string;
     civilStatusCode?: number;
+    isAdmin?: boolean;
  }
 
 
@@ -14,10 +15,11 @@ export interface GetClientsParams {
     limit?: number;
     search?: string;
     contractPhase?: string;
+    isAdmin?: boolean;
  }
 
 
- // types/client-loan.ts
+ // types/client-loan.ts   
 
 export interface ClientLoan {
 
@@ -144,6 +146,8 @@ export interface ClientLoanPaginationResponse {
       activeLoans: number;
       pastDueLoans: number;
       totalLoanAmount: number;
+      totalLoans: number;
+
    }
 
 }

@@ -616,6 +616,57 @@ export async function generalDomain() {
 
    ];
 
+
+      /*
+   |--------------------------------------------------------------------------
+   | CONTACT TYPE DOMAIN
+   |--------------------------------------------------------------------------
+   */
+
+   const contactType: DomainSeedItem[] = [
+
+      {
+         code: "1",
+         description: "Main phone"
+      },
+
+      {
+         code: "2",
+         description: "Additional phone"
+      },
+
+      {
+         code: "3",
+         description: "Mobile phone"
+      },
+      {
+         code: "4",
+         description: "Additional Mobile phone"
+      },
+      {
+         code: "5",
+         description: "Fax"
+      },
+      {
+         code: "6",
+         description: "Additional Fax"
+      },
+      {
+         code: "7",
+         description: "E-mail"
+      },
+      {
+         code: "8",
+         description: "Additional e-mail"
+      },
+      {
+         code: "9",
+         description: "Social Network Link"
+      },
+    
+
+   ];
+
    /*
    |--------------------------------------------------------------------------
    | RUN SEEDS
@@ -646,6 +697,12 @@ export async function generalDomain() {
       "TRANSACTION_TYPE",
       transactionTypes
    );
+
+
+   await seedDomain(
+      "CONTACT_TYPE",
+       contactType
+   )
 
    console.log(
       "General domain seed completed."

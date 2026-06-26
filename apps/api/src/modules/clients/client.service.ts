@@ -72,14 +72,21 @@ export async function getClientContractsService(
         search = "",
         genderCode,
         civilStatusCode,
+        isAdmin
      }: GetClientsParams) {
+
+      const branchFilter =
+      isAdmin
+         ? {}
+         : {
+              branchId
+           };
      
         const skip =
            (page - 1) * limit;
      
         const whereCondition: any = {
-           branchId,
-     
+          ...branchFilter,
            ...(genderCode && {
               genderCode,
            }),
@@ -138,24 +145,29 @@ export async function getClientContractsService(
                     gender: true,
                     civilStatus: true,
                      branch: true,
-                     Contracts: true,
+                     identificationType: true,
+                     Contracts: {
+                        orderBy:{
+                           createdAt: "desc"
+                        }
+                     },
 
                  },
               }),
      
               prisma.client.count({
-                 where: whereCondition,
+                 where: branchFilter,
               }),
 
               prisma.contract.count({
                   where: {
-                     client: whereCondition,
+                     client: branchFilter,
                   },
                 }),
 
               prisma.contract.aggregate({
                where:{
-                  client: whereCondition
+                  client: branchFilter
                },
                _sum: {
                   financedAmount: true
@@ -164,7 +176,7 @@ export async function getClientContractsService(
               
               prisma.contract.aggregate({
                where: {
-                  client: whereCondition,
+                  client: branchFilter,
                },
                _sum: {
                   outstandingBalance: true,

@@ -102,15 +102,21 @@ export async function getClientContractsController(
        const user =
           req.user;
  
-       const branchId =
-          user?.branchId;
- 
-       if (!branchId) {
-          return res.status(400).json({
-             success: false,
-             message: "Branch ID not found",
-          });
+   
+          const isAdmin =
+          user?.roles?.includes("ADMIN") ?? false;
+       
+          const branchId =
+          isAdmin
+             ? undefined
+             : user?.branchId ?? undefined;
+       
+       if (!isAdmin && !branchId) {
+          throw new Error("Branch user has no assigned branch");
        }
+       
+
+
  
        const page =
           Number(req.query.page) || 1;
@@ -139,6 +145,7 @@ export async function getClientContractsController(
              search,
              genderCode,
              civilStatusCode,
+             isAdmin
           });
  
        return res.status(200).json({

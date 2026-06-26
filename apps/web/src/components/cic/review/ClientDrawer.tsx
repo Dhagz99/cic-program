@@ -90,6 +90,8 @@ const existingClient =
    
    const [errorModal, setErrorModal] = useState(false);
 
+   
+
    /*
    |--------------------------------------------------------------------------
    | FIRST CONTRACT

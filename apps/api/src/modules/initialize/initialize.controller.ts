@@ -13,23 +13,22 @@ export async function getLastImportBatchController(
 
       const user = req.user;
 
-      if (!user) {
-         return res.status(401).json({
-            success: false,
-            message: "Unauthorized"
-         });
-      }
-
-      if (!user.branchId) {
-         return res.status(400).json({
-            success: false,
-            message: "User is not assigned to a branch"
-         });
-      }
+      const isAdmin =
+      user?.roles?.includes("ADMIN") ?? false;
+   
+      const branchId =
+      isAdmin
+         ? undefined
+         : user?.branchId ?? undefined;
+   
+   if (!isAdmin && !branchId) {
+      throw new Error("Branch user has no assigned branch");
+   }
+   
 
       const result =
          await getLastImportBatchService(
-            user.branchId
+            branchId
          );
 
       return res.status(200).json({
@@ -63,23 +62,21 @@ export async function getInitializeController(
 
       const user = req.user;
 
-      if (!user) {
-         return res.status(401).json({
-            success: false,
-            message: "Unauthorized"
-         });
-      }
-
-      if (!user.branchId) {
-         return res.status(400).json({
-            success: false,
-            message: "User is not assigned to a branch"
-         });
-      }
-
+      const isAdmin =
+      user?.roles?.includes("ADMIN") ?? false;
+   
+      const branchId =
+      isAdmin
+         ? undefined
+         : user?.branchId ?? undefined;
+   
+   if (!isAdmin && !branchId) {
+      throw new Error("Branch user has no assigned branch");
+   }
+   
       const result = await getInitializeService({
-         branchId: user.branchId,
-         isAdmin: user.roles?.includes("ADMIN") ?? false,
+         branchId,
+         isAdmin,
          page: Number(req.query.page) || 1,
          limit: Number(req.query.limit) || 10,
          search: String(req.query.search || ""),

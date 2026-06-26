@@ -10,12 +10,12 @@ import {
 } from "react";
 
 import {
-   useExportReport,
    useImportBatches
 } from "@/hooks/cic/useReports";
 import { ImportBatchItem } from "@repo/shared";
 import { getTimestamp } from "@/utils/date/getTimestamp";
 import { formatReportingPeriod } from "@/utils/date/formatReportingPerion";
+import { useExportReport } from "@/hooks/reports/useRepots";
 
 
 export default function Reports() {
@@ -30,9 +30,9 @@ export default function Reports() {
       isLoading
    } = useImportBatches();
 
-   const {
-      mutateAsync: exportReport
-   } = useExportReport();
+  
+   const exportReportMutation = useExportReport();
+
 
    /*
    |--------------------------------------------------------------------------
@@ -87,57 +87,10 @@ export default function Reports() {
    |--------------------------------------------------------------------------
    */
 
-   const handleExport =
-   async (
-      batchId: string,
-    
-   ) => {
 
-      try {
-
-         const timestamp =
-         getTimestamp();
-
-         const blob =
-            await exportReport(
-               batchId
-            );
-
-         const url =
-            window.URL.createObjectURL(
-               new Blob([blob])
-            );
-
-         const link =
-            document.createElement("a");
-
-         link.href =
-            url;
-
-         link.setAttribute(
-
-            "download",
-
-            `PF007980_CSDF_${timestamp}.txt`
-
-         );
-
-         document.body.appendChild(
-            link
-         );
-
-         link.click();
-
-         link.remove();
-
-      } catch (error) {
-
-         console.error(error);
-
-      }
-
+    const handleExport = (batchId: string) => {
+      exportReportMutation.mutate(batchId);
    };
-
    if (isLoading) {
 
       return (

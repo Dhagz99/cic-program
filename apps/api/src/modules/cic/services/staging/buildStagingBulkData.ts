@@ -62,6 +62,7 @@ export const buildStagingClientData = ({
       identificationNumber:
          client.sssNo,
 
+
       validationStatus:
          getValidationStatus(validationErrors)
    };
@@ -129,6 +130,9 @@ export const buildStagingContractData = ({
 
       contractStatus:
          contract.contractStatus,
+
+      contractPhase:
+         contract.contractPhase,
 
       validationStatus:
          getValidationStatus(validationErrors)

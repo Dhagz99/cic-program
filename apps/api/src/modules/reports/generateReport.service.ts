@@ -629,6 +629,9 @@ for (
 
       await prisma.cicExport.create({
          data: {
+
+            importBatchId: batch.id,
+
             reportingPeriodId: batch.reportingPeriodId,
       
             branchId: batch.branchId,

@@ -3,7 +3,7 @@ import { Prisma } from "../../../generated/prisma";
 import prisma from "../../lib/prisma";
 
 export async function getLastImportBatchService(
-  branchId: string
+  branchId?: string
 ) {
   return await prisma.importBatch.findFirst({
     where: {
