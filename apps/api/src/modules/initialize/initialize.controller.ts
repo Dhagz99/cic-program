@@ -8,50 +8,51 @@ import {
 export async function getLastImportBatchController(
    req: Request,
    res: Response
-) {
+ ) {
    try {
-
-      const user = req.user;
-
-      const isAdmin =
-      user?.roles?.includes("ADMIN") ?? false;
-   
-      const branchId =
-      isAdmin
+     const user = req.user;
+ 
+     const canViewAllBranches =
+          user?.permissions?.includes("STAGING_ADMIN") ?? false;
+     const branchId =
+      canViewAllBranches
          ? undefined
          : user?.branchId ?? undefined;
-   
-   if (!isAdmin && !branchId) {
-      throw new Error("Branch user has no assigned branch");
-   }
-   
 
-      const result =
-         await getLastImportBatchService(
-            branchId
-         );
+         console.log("View", canViewAllBranches)
 
-      return res.status(200).json({
-         success: true,
-         data: result
-      });
-     
-
-   } catch (error) {
-
-      console.error(
-         "getLastImportBatchController:",
-         error
-      );
-
-      return res.status(500).json({
+ 
+     if (!canViewAllBranches && !branchId) {
+       return res.status(400).json({
          success: false,
-         message:
-            "Failed to get import batch"
-      });
+         message: "User has no assigned branch",
+       });
+     }
 
+     console.log("Auth", user?.permissions)
+
+     if (canViewAllBranches) {
+      return res.status(200).json({
+        success: true,
+        data: null,
+      });
+    }
+ 
+     const result = await getLastImportBatchService(branchId);
+ 
+     return res.status(200).json({
+       success: true,
+       data: result,
+     });
+   } catch (error) {
+     console.error("getLastImportBatchController:", error);
+ 
+     return res.status(500).json({
+       success: false,
+       message: "Failed to get import batch",
+     });
    }
-}
+ }
 
 
 export async function getInitializeController(
@@ -63,9 +64,9 @@ export async function getInitializeController(
       const user = req.user;
 
       const isAdmin =
-      user?.roles?.includes("ADMIN") ?? false;
+          user?.permissions?.includes("STAGING_ADMIN") ?? false;
    
-      const branchId =
+      const branchId =  
       isAdmin
          ? undefined
          : user?.branchId ?? undefined;

@@ -1,6 +1,6 @@
 import { InitializeParams } from "@repo/shared";
-import { Prisma } from "../../../generated/prisma";
 import prisma from "../../lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export async function getLastImportBatchService(
   branchId?: string

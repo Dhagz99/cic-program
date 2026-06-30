@@ -13,11 +13,15 @@ import ClientTable
 from "@/components/cic/review/ClientTable";
 import { useFinalizeBatch } from "@/hooks/cic/useFinalizeBatch";
 import { toast } from "sonner";
-import { CheckCircle2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useSubmitBatch } from "@/hooks/cic/useSubmitBatch";
 import axios from "axios";
+import { useAuth } from "@/components/context/UserContext";
+import { useGetBatchById } from "@/hooks/cic/batch/useGetBatch";
 
 export default function ReviewPage() {
+
+   const {hasPermission} = useAuth();
 
    const params =
       useParams();
@@ -36,6 +40,10 @@ export default function ReviewPage() {
 
    } = useBatchReview(batchId);
 
+   const {data: batchDetails} = useGetBatchById(batchId);
+
+   
+
 
    const {
 
@@ -52,7 +60,7 @@ export default function ReviewPage() {
       mutateAsync: submitBatch,
       isPending: isSubmitting,
    } = useSubmitBatch();
-   
+
    const handleSubmit = async () => {
       try {
          await submitBatch(batchId);
@@ -61,7 +69,7 @@ export default function ReviewPage() {
             "Batch submitted successfully"
          );
    
-         router.push("/reports");
+         router.push("/cic/upload");
    
       } catch (error: unknown) {
    
@@ -114,7 +122,6 @@ export default function ReviewPage() {
    };
 
 
-
    if (isLoading) {
 
       return <div>Loading...</div>;
@@ -123,76 +130,82 @@ export default function ReviewPage() {
 
    return (
 
-      <div className="
-         p-6
-         space-y-6
-      ">
+      <div className=" p-6 space-y-6  ">
 
-         {/* FINALIZE BUTTON */}
+<div className="flex items-center justify-between">
+  <button
+    onClick={() => router.push("/cic/upload")}
+    className="
+      inline-flex
+      items-center
+      gap-2
+      px-4
+      py-2
+      rounded-xl
+      border
+      border-slate-300
+      bg-white
+      text-slate-700
+      hover:bg-slate-100
+      transition
+    "
+  >
+    <ArrowLeft size={18} />
+    Back to Initialize
+  </button>
 
-         <button
-
-onClick={
-   handleFinalize
-}
-
-disabled={
-   isFinalizing
-}
-
-className="
-   inline-flex
-   items-center
-   gap-2
-   bg-green-600
-   hover:bg-green-700
-   disabled:opacity-50
-   text-white
-   px-5
-   py-3
-   rounded-2xl
-   font-medium
-   transition
-"
->
-
-<CheckCircle2
-   size={18}
-/>
-
-{
-   isFinalizing
-
-      ? "Finalizing..."
-
-      : "Finalize Batch"
-}
-
-</button>
-
-   <button
-         onClick={handleSubmit}
-         disabled={isSubmitting}
-         className="
-            inline-flex
-            items-center
-            gap-2
+  <div className="flex items-center gap-3">
+    {hasPermission("STAGING_FINALIZE")  && (batchDetails?.status == "FOR_REVIEW") &&  (
+      <button
+        onClick={handleFinalize}
+        disabled={isFinalizing}
+        className="
+          inline-flex
+          items-center
+          gap-2
           bg-green-600
           hover:bg-green-700
-            disabled:opacity-50
-            text-white 
-            px-5
-            py-3
-            rounded-2xl
-            font-medium
-            transition
-         "
-         >
-         <CheckCircle2 size={18}/>
-         {isSubmitting
-            ? "Submitting..."
-            : "Submit Batch"}
+          disabled:opacity-50
+          text-white
+          px-5
+          py-3
+          rounded-2xl
+          font-medium
+          transition
+        "
+      >
+        <CheckCircle2 size={18} />
+        {isFinalizing ? "Finalizing..." : "Finalize Batch"}
       </button>
+    )}
+
+    {hasPermission("STAGING_SUBMIT")  && (batchDetails?.status == "PENDING_COMPLETION") && (
+      <button
+        onClick={handleSubmit}
+        disabled={isSubmitting}
+        className="
+          inline-flex
+          items-center
+          gap-2
+          bg-green-600
+          hover:bg-green-700
+          disabled:opacity-50
+          text-white
+          px-5
+          py-3
+          rounded-2xl
+          font-medium
+          transition
+        "
+      >
+        <CheckCircle2 size={18} />
+        {isSubmitting ? "Submitting..." : "Submit Batch"}
+      </button>
+    )}
+  </div>
+</div>
+
+    
          <ClientTable
 
             clients={data || []}

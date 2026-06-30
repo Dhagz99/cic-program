@@ -4,7 +4,8 @@ import {
    submitBatch,
    approveBatch,
    returnBatch,
-   finalizeBatch
+   finalizeBatch,
+   getBatchByIdController
 } from "../controllers/batch.controller";
 import { authenticateToken } from "../../auth/auth.middleware";
 
@@ -57,5 +58,17 @@ router.post(
    authenticateToken,
    finalizeBatch
 );
+
+/*
+-----------------------------------
+GET BATCH BY ID
+-----------------------------------
+*/
+
+router.get(
+   "/:batchId",
+   authenticateToken,
+   getBatchByIdController
+)
 
 export default router;

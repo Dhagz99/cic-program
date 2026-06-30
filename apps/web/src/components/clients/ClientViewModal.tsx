@@ -2,7 +2,7 @@
 
 import { useIdentificationTypeDomain } from "@/hooks/cic/useDomain";
 import { useDomains } from "@/hooks/useGeneral";
-import { DomainItem, DomainOption, DomainSimpleItem, StagingClient, StagingContract } from "@repo/shared";
+import { DomainOption, StagingClient, StagingContract } from "@repo/shared";
 import {
    BadgeCheck,
    BriefcaseBusiness,

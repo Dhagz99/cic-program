@@ -3,7 +3,12 @@ import z from "zod";
 export const createUserSchema = z.object({
     email: z.string().email().optional(),
     name: z.string().min(1),
-    branchId: z.string().optional(),
+    branchId: z
+    .string()
+    .optional()
+    .nullable()
+    .transform((value) => value === "" ? null : value),
+    
     username: z.string().min(3),
     password: z.string().min(8),
   

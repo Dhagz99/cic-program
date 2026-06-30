@@ -5,6 +5,12 @@ export default async function seedRoles() {
    const permissions = [
 
       {
+         code: "MANAGER_ADMIN",
+         name: "Admin Permission"
+      },
+
+
+      {
          code: "USER_MANAGE",
          name: "Manage Users"
       },
@@ -94,10 +100,29 @@ export default async function seedRoles() {
          code: "STAGING_UPLOAD",
          name: "Upload Staging"
       },
+
       {
          code: "STAGING_VALIDATE",
          name: "Validate Staging"
       },
+
+      {
+         code: "STAGING_SUBMIT",
+         name: "Submit Staging"
+      },
+
+      {
+         code: "STAGING_FINALIZE",
+         name: "Finalize Staging"
+      },
+
+      {
+         code: "STAGING_ADMIN",
+         name: "Admin Staging"
+      },
+      
+      
+
 
       // CIC
       {

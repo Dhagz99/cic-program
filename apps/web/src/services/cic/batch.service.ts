@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { UpdateClientDTO } from "@repo/shared";
+import { GetBatchByIdResponse, ImportBatchDetails, UpdateClientDTO } from "@repo/shared";
 
 /*
 -----------------------------------
@@ -245,3 +245,18 @@ async (
    return response.data;
 
 };
+
+
+/*
+-----------------------------------
+GET BATCH BY ID
+-----------------------------------
+*/
+
+export const getBatchByIdService = 
+   async(
+      batchId: string
+   ) : Promise<ImportBatchDetails> => {
+      const response = await api.get<GetBatchByIdResponse>(`/batch/${batchId}`);
+      return response.data.data;
+   };

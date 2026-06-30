@@ -16,6 +16,7 @@ import {
 import {
    finalizeBatchService
 } from "../services/batch/finalizeBatch.service";
+import { getBatchByIdService } from "../services/batch/viewBatch.service";
 
 /*
 -----------------------------------
@@ -168,3 +169,35 @@ async (
    }
 
 };
+
+
+
+export const getBatchByIdController = async (
+   req: Request,
+   res: Response
+) => {
+   try {
+
+      const {batchId} = req.params;
+      const batch = await getBatchByIdService(batchId);
+
+      return res.status(200).json({
+         success: true,
+         data: batch
+      })
+
+   } catch (error: any){
+      if(error.message === "BATCH_NOT_FOUND"){
+         return res.status(404).json({
+            success: false,
+            message: "Batch not found",
+         });
+      }
+
+      return res.status(500).json({
+         success: false,
+         message: "Failed to get the batch",
+      });
+     
+   }
+}

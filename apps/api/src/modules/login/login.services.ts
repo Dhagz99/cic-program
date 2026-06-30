@@ -105,7 +105,7 @@ export async function createUserService(data: RegisterSchema) {
       data: {
         email,
         name,
-        branchId,
+        branchId: branchId ?? null,
         username,
         password: hashedPassword,
         isActive: true,
@@ -138,6 +138,7 @@ export async function updateUserService(
   data: {
     email?: string
     name?: string
+    branchId?: string | null
     username?: string
     password?: string
     roleIds?: string[]
@@ -153,6 +154,7 @@ export async function updateUserService(
       where: { id: userId },
       data: {
         email: data.email,
+        branchId: data.branchId,
         name: data.name,
         username: data.username,
         password: data.password,

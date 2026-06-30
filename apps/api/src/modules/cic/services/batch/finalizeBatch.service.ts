@@ -1,4 +1,4 @@
-import { ContractStatus } from "../../../../../generated/prisma";
+import { ContractStatus } from "@prisma/client";
 import prisma from "../../../../lib/prisma";
 import { getMergedValue } from "../../utils/value/getMergedValue";
 

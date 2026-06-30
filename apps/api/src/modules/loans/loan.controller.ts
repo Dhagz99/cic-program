@@ -10,7 +10,7 @@ export async function getClientLoansController(
         req.user;
 
         const isAdmin =
-        user?.roles?.includes("ADMIN") ?? false;
+            (user?.roles?.includes("ADMIN") || user?.permissions?.includes("MANAGER_ADMIN") ) ?? false;
      
         const branchId =
         isAdmin

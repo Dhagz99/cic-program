@@ -13,6 +13,7 @@ import { useState } from "react";
 
 import { MENU_SECTIONS } from "./menu.config";
 import { useAuth } from "../context/UserContext";
+import { MenuItem } from "@repo/shared";
 
 interface SidebarProps {
    isOpen: boolean;
@@ -45,6 +46,14 @@ export default function Sidebar({
 
       return hasPermission(permission);
    };
+
+   const isMenuItemActive = (item: MenuItem) => {
+      return (
+        item.activePaths?.some((path) =>
+          pathname.startsWith(path)
+        ) || pathname === item.path
+      );
+    };
 
    return (
       <div className="h-full flex flex-col bg-white">
@@ -127,19 +136,14 @@ export default function Sidebar({
                            const hasChildren =
                               visibleChildren.length > 0;
 
-                           const isActive =
-                              item.path &&
-                              pathname.startsWith(item.path);
-
                            const isChildActive =
                               visibleChildren.some((child) =>
                                  pathname.startsWith(
                                     child.path || ""
                                  )
                               );
-
-                           const active =
-                              isActive || isChildActive;
+                              const active =
+                              isMenuItemActive(item) || isChildActive;
 
                            return (
                               <div key={item.label}>

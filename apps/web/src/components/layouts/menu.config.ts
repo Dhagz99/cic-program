@@ -34,7 +34,11 @@ export const MENU_SECTIONS: MenuSection[] = [
           label: "Initialize",
           path: "/cic/upload",
           icon: FolderPlus,
-          permission:"STAGING_UPLOAD"
+          permission:"STAGING_VIEW",
+          activePaths: [
+            "/cic/upload",
+            "/cic/batches",
+          ],
         },
         {
           label: "Reports",

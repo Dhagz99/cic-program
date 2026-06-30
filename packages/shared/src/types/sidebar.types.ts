@@ -14,6 +14,7 @@ export interface MenuItem {
   icon: LucideIcon
   permission?: string
   children?: MenuItem[]
+  activePaths?: string[];
 }
 
 export interface MenuSection {

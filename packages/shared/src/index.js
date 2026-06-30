@@ -13,4 +13,3 @@ export * from "./types/client/client.types.js";
 export * from "./types/dashboard.types.js";
 export * from "./types/general.types.js";
 export * from "./types/initialize/initialize.types.js";
-export * from "./types/cic/reporting.types.js";

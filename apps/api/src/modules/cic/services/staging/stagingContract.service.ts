@@ -3,6 +3,7 @@ import prisma from "../../../../lib/prisma";
 export const saveStagingContract = async ({
    batchId,
    stagingClientId,
+   rowNo,
    contract,
    validationErrors
 }: any) => {
@@ -21,7 +22,7 @@ export const saveStagingContract = async ({
    const stagingContract =
       await prisma.stagingContract.create({
          data: {
-
+            rowNo,
             batchId,
 
             stagingClientId,

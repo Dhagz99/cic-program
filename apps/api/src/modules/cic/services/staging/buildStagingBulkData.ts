@@ -1,4 +1,4 @@
-import { ValidationStatus } from "../../../../../generated/prisma";
+import { ValidationStatus } from "@prisma/client";
 
 export const getValidationStatus = (
    validationErrors: any[]

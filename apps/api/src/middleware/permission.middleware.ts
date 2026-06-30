@@ -12,7 +12,7 @@ export function requirePermission(permissionCode: string) {
         message: "Unauthorized"
       })
     }
-    const userId = req.user.id
+    const userId = String(req.user.id);
     const permissions = await prisma.userRole.findMany({
       where: { userId },
       select: {

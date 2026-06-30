@@ -6,8 +6,23 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ES2020",
-    "strict": true
+    "strict": true,
+
+    "rootDir": ".",
+    "outDir": "./dist",
+
+    "sourceMap": true,
+    "declaration": false
   },
 
-  "include": ["src",  "factory", "prisma.config.ts"]
+  "include": [
+    "src",
+    "factory"
+  ],
+
+  "exclude": [
+    "dist",
+    "node_modules",
+    "**/*.js"
+  ]
 }

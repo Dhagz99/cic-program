@@ -6,6 +6,7 @@ import {
  import {
     finalizeBatch
  } from "@/services/cic/batch.service";
+import { batchKeys } from "./batch/useGetBatch";
  
  export const useFinalizeBatch =
  () => {
@@ -15,12 +16,28 @@ import {
       
        mutationFn:
           finalizeBatch,
-          onSuccess: () => {
+          onSuccess: (_, batchId) => {
             queryClient.invalidateQueries({
-               queryKey: ["last-import"]
-             })
-          } 
- 
+              queryKey: batchKeys.lastImport(),
+            });
+      
+            queryClient.invalidateQueries({
+              queryKey: batchKeys.initialize(),
+            });
+      
+            queryClient.invalidateQueries({
+              queryKey: batchKeys.list(),
+            });
+      
+            queryClient.invalidateQueries({
+              queryKey: batchKeys.detail(batchId),
+            });
+
+            queryClient.invalidateQueries({
+              queryKey:["initialize"],
+            });
+
+         }
     });
  
  };

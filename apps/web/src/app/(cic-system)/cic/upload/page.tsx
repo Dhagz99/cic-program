@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/components/context/UserContext";
 import UploadDbfModal from "@/components/initialize/UploadDbfModal";
 import RequestModal from "@/components/Modal";
 import { useInitialize } from "@/hooks/initialize/useInitialize";
@@ -33,6 +34,8 @@ export default function UploadPage() {
   const batches = data?.data ?? [];
   const pagination = data?.pagination;
 
+  const {hasPermission} =useAuth()
+
   useEffect(() => {
     if (batch?.id) {
       router.push(`/cic/batches/${batch.id}/review`);
@@ -52,14 +55,19 @@ export default function UploadPage() {
             for CIC processing.
           </p>
         </div>
+        {
+          hasPermission("STAGING_UPLOAD") && (
 
-        <button
-          className="h-11 px-5 rounded-2xl bg-blue-600 hover:bg-blue-700 transition flex items-center gap-2 text-sm font-medium text-white shadow-lg shadow-blue-500/20"
-          onClick={() => setUploadDBF(true)}
-        >
-          <Plus size={18} />
-          Upload DBF
-        </button>
+          <button
+            className="h-11 px-5 rounded-2xl bg-blue-600 hover:bg-blue-700 transition flex items-center gap-2 text-sm font-medium text-white shadow-lg shadow-blue-500/20"
+            onClick={() => setUploadDBF(true)}
+          >
+            <Plus size={18} />
+            Upload DBF
+          </button>
+          )
+        }
+
       </div>
 
       <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
