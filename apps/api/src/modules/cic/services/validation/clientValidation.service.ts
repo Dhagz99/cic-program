@@ -67,7 +67,7 @@ export const validateClient = (
          fieldName: "civilStatusCode",
          errorMessage: "Civil status required"
       });
-   }
+}
 
 
 
@@ -85,6 +85,25 @@ export const validateClient = (
             "Identification code is required"
       });
 
+   }
+
+
+   if(!client.contactType){
+
+      errors.push({
+         fieldName: "contactType",
+         errorMessage:
+            "Contact type is required"
+      })
+   }
+
+   if(!client.contactValue){
+
+      errors.push({
+         fieldName: "contactValue",
+         errorMessage:
+            "Contact value is required"
+      })
    }
 
 

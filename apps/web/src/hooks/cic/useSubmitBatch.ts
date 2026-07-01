@@ -13,6 +13,10 @@ export const useSubmitBatch = () =>{
              queryClient.invalidateQueries({
                 queryKey: ["import-batches"]
             });
+
+            queryClient.invalidateQueries({
+                queryKey: ["initialize"]
+            });
         },
     });
 };

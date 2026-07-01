@@ -18,6 +18,9 @@ import {
 import { useClientLoan } from "@/hooks/loans/useLoans";
 import { formatNumber } from "@/utils/value/formatNumber";
 import { formatCompactCurrency } from "@/utils/value/formatCompactCurrency";
+import RequestModal from "@/components/Modal";
+import ClientViewLoanModal from "@/components/clients/ClientViewLoanModal";
+import { ClientLoan } from "@repo/shared";
 
 
   
@@ -61,7 +64,7 @@ export default function Loans() {
         contractPhase || undefined
 
   });
-
+ const [viewLoan, setViewLoan] = useState<ClientLoan | null >(null);
 
     return (
       <div className="p-8 bg-slate-100 min-h-screen flex flex-col gap-7">
@@ -363,8 +366,7 @@ export default function Loans() {
 
    ) : (
 
-      loans.map((loan) => (
-
+    loans.map((loan: ClientLoan) => (
          <tr
             key={loan.id}
             className="
@@ -489,6 +491,7 @@ export default function Loans() {
                         flex items-center justify-center
                         text-slate-700
                      "
+                     onClick={()=>setViewLoan(loan)}
                   >
                      <Eye size={18} />
                   </button>
@@ -568,6 +571,16 @@ export default function Loans() {
             </div>
           </div>
         </div>
+
+             {viewLoan && (
+                    <RequestModal
+                       size="xxxl"
+                       title="Client Details"
+                       onClose={() => setViewLoan(null)}
+                    >
+                       <ClientViewLoanModal loan={viewLoan} />
+                    </RequestModal>
+                 )}
       </div>
     );
   }

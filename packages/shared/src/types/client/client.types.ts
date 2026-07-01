@@ -122,6 +122,8 @@ export interface ClientLoanClient {
    identificationTypeCode: number | null;
 
    identificationNumber: string | null;
+   
+   contactValue: string | null;
 
 }
 

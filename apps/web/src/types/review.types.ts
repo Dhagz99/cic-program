@@ -33,6 +33,8 @@ import { StagingClient, StagingContract, ValidationError } from "@repo/shared";
  
        address2: string;
  
+       contactType: string;
+
        contactValue: string;
 
        civilStatusCode: string;

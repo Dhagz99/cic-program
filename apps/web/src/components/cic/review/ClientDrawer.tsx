@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
    useForm
@@ -147,6 +147,7 @@ const existingClient =
    const {
 
       register,
+      reset,
 
       handleSubmit,
 
@@ -179,11 +180,7 @@ const existingClient =
             mergedPreview.genderCode || "",
 
          civilStatus:
-            mergedPreview.civilStatusCode
-               ? Number(
-                    mergedPreview.civilStatusCode
-                 )
-               : undefined,
+             mergedPreview.civilStatusCode || "",
 
          birthDate:
             client.birthDate
@@ -211,24 +208,61 @@ const existingClient =
               mergedPreview.address || "",
 
          identificationType:
-               mergedPreview.identificationTypeCode
-               ? Number(
-                    mergedPreview.identificationTypeCode
-                 )
-               : undefined,
+              mergedPreview.identificationTypeCode || "",
 
          identificationNumber:
             client.identificationNumber || "",
 
          contactType:
-            client.contactType || "",
+            mergedPreview.contactType || "",
 
          contactValue:
-            client.contactValue || ""
+            mergedPreview.contactValue || ""
 
       }
 
    });
+
+
+   useEffect(() => {
+      if (!client || !genders || !civilStatuses || !identificationTypes) {
+         return;
+      }
+   
+      reset({
+         firstName: client.firstName || "",
+         middleName: client.middleName || "",
+         lastName: client.lastName || "",
+         suffix: client.suffix || "",
+   
+         gender: String(mergedPreview.genderCode || ""),
+         civilStatus: String(mergedPreview.civilStatusCode || ""),
+         identificationType: String(mergedPreview.identificationTypeCode || ""),
+   
+         birthDate: client.birthDate
+            ? new Date(client.birthDate).toISOString().split("T")[0]
+            : "",
+   
+         placeOfBirth: client.placeOfBirth || "",
+         numberOfDependents: client.numberOfDependents || 0,
+   
+         addressType: client.addressType || "",
+         address: mergedPreview.address || "",
+   
+         addressType2: client.addressType2 || "",
+         address2: mergedPreview.address || "",
+   
+         contactType: String(mergedPreview.contactType || ""),
+         contactValue: mergedPreview.contactValue || "",
+      });
+   }, [
+      client,
+      genders,
+      civilStatuses,
+      identificationTypes,
+      mergedPreview,
+      reset,
+   ]);
 
    /*
    |--------------------------------------------------------------------------

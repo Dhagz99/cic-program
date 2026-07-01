@@ -49,10 +49,9 @@ import {
             
       civilStatus:
          z
-            .coerce
-            .number()
-            .int()
-            .positive(
+            .string()
+            .trim()
+            .min(1,
                "Civil status is required"
             ),
    numberOfDependents:
@@ -88,10 +87,9 @@ import {
 
    identificationType:
       z
-         .coerce
-         .number()
-         .int()
-         .positive("Identification type is required"),
+      .string()
+      .trim()
+      .min(1, "Identification type is required"),
       
    identificationNumber:
       z

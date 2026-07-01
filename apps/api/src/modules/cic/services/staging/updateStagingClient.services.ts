@@ -57,7 +57,7 @@ async ({
          civilStatus: {
 
             connect: {
-               code: data.civilStatus
+               code: Number(data.civilStatus)
             }
 
          },
@@ -80,10 +80,7 @@ async ({
          identificationType: {
 
             connect: {
-
-               code:
-                  data.identificationType
-
+               code: Number(data.identificationType)
             }
 
          },

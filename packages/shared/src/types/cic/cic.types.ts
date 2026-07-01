@@ -72,6 +72,8 @@ export interface ValidationError {
     overduePaymentAmount?: number;
  
     validationStatus: string;
+
+    client?: StagingClient[];
  
     validationErrors: ValidationError[];
  

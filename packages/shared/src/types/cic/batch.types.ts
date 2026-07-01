@@ -7,7 +7,8 @@ export type BatchStatus =
   | "FOR_REVIEW"
   | "APPROVED"
   | "RETURNED"
-  | "REJECTED";
+  | "REJECTED"
+  | "FINALIZED";
 
 
 export interface ImportBatchItem {

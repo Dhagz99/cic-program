@@ -103,23 +103,23 @@ export async function getClientLoansServices({
    -----------------------------------
    */
 
-   const latestWhere = {
+   // const latestWhere = {
 
-      OR:
+   //    OR:
 
-         latestContracts.map(
-            (item) => ({
+   //       latestContracts.map(
+   //          (item) => ({
 
-               providerSubjectNo:
-                  item.providerSubjectNo,
+   //             providerSubjectNo:
+   //                item.providerSubjectNo,
 
-               createdAt:
-                  item._max.createdAt!
+   //             createdAt:
+   //                item._max.createdAt!
 
-            })
-         )
+   //          })
+   //       )
 
-   };
+   // };
 
    /*
    -----------------------------------
@@ -147,7 +147,7 @@ export async function getClientLoansServices({
       prisma.contract.findMany({
 
          where:
-            latestWhere,
+            whereCondition,
 
          skip:
             (page - 1) * limit,

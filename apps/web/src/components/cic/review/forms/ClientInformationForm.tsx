@@ -35,7 +35,6 @@ type Props = {
    identificationTypes:
       DomainOption[];
   
-
 };
 
 export default function ClientInformationForm({

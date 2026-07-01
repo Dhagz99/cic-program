@@ -1,12 +1,13 @@
 "use client";
 
+import { batchStatusConfig } from "@/components/batch/BatchStatus";
 import { useAuth } from "@/components/context/UserContext";
 import UploadDbfModal from "@/components/initialize/UploadDbfModal";
 import RequestModal from "@/components/Modal";
 import { useInitialize } from "@/hooks/initialize/useInitialize";
 import { useLastImport } from "@/hooks/initialize/useInitialize";
 import { formatReportingPeriod } from "@/utils/date/formatReportingPerion";
-import { ImportBatchItem } from "@repo/shared";
+import { BatchStatus, ImportBatchItem } from "@repo/shared";
 import { Eye, Filter, Plus, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -41,6 +42,8 @@ export default function UploadPage() {
       router.push(`/cic/batches/${batch.id}/review`);
     }
   }, [batch, router]);
+
+  
 
   return (
     <div className="p-8 bg-slate-100 min-h-screen flex flex-col gap-7">
@@ -144,8 +147,17 @@ export default function UploadPage() {
                   </td>
                 </tr>
               ) : (
-                batches.map((batch: ImportBatchItem) => (
-                  <tr
+                batches.map((batch: ImportBatchItem) => {
+
+                  const statusConfig =
+                      batchStatusConfig[batch.status as BatchStatus] ?? {
+                        label: batch.status ?? "Unknown",
+                        className:
+                            "bg-slate-100 text-slate-700 border border-slate-200",
+                      };
+
+                  return (
+                    <tr
                     key={batch.id}
                     className="border-t border-slate-100 hover:bg-slate-50 transition"
                   >
@@ -168,9 +180,15 @@ export default function UploadPage() {
                     </td>
 
                     <td className="px-6 py-4">
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">
-                        {batch.status}
-                      </span>
+                        <span
+                          className={`
+                              inline-flex items-center rounded-full px-3 py-1
+                              text-xs font-medium
+                              ${statusConfig.className}
+                          `}
+                        >
+                          {statusConfig.label}
+                        </span>
                     </td>
 
                     <td className="px-6 py-4 text-sm text-slate-700">
@@ -192,7 +210,8 @@ export default function UploadPage() {
                       </div>
                     </td>
                   </tr>
-                ))
+                  )
+})
               )}
             </tbody>
           </table>
