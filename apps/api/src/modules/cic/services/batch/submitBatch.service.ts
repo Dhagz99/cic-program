@@ -35,68 +35,98 @@ async ({
 
    }
 
+/*
+--------------------------------
+CHECK CLIENTS
+--------------------------------
+*/
+
+const providerSubjectNos =
+   batch.stagingClients
+      .map((client) => client.providerSubjectNo)
+      .filter((value): value is string =>
+         typeof value === "string" &&
+         value.trim() !== ""
+      );
+
+const existingClients =
+   await prisma.client.findMany({
+      where: {
+         branchId:
+            batch.branchId,
+
+         providerSubjectNo: {
+            in:
+               providerSubjectNos
+         }
+      }
+   });
+
+const existingClientMap =
+   new Map(
+      existingClients.map((client) => [
+         client.providerSubjectNo,
+         client
+      ])
+   );
+
+for (const client of batch.stagingClients) {
+
+   const existingClient =
+      existingClientMap.get(
+         client.providerSubjectNo
+      );
+
+   const hasExistingCleanClient =
+      Boolean(existingClient);
+
+   if (
+      client.validationStatus !== "COMPLETE" &&
+      !hasExistingCleanClient
+   ) {
+
+      throw new Error(
+         "Batch contains invalid clients"
+      );
+
+   }
+
+   if (
+      !client.isConfirmed &&
+      !hasExistingCleanClient
+   ) {
+
+      throw new Error(
+         "Batch contains unconfirmed clients"
+      );
+
+   }
+
    /*
-   --------------------------------
-   CHECK CLIENTS
-   --------------------------------
+   -----------------------------
+   CONTRACTS
+   -----------------------------
    */
 
-   for (const client of batch.stagingClients) {
+   for (
+      const contract of
+      client.stagingContracts
+   ) {
 
       if (
-         client.validationStatus !==
+         contract.validationStatus !==
          "COMPLETE"
       ) {
 
          throw new Error(
-            "Batch contains invalid clients"
+            "Batch contains invalid contracts"
          );
-
-      }
-
-      if (!client.isConfirmed) {
-
-         throw new Error(
-            "Batch contains unconfirmed clients"
-         );
-
-      }
-
-      /*
-      -----------------------------
-      CONTRACTS
-      -----------------------------
-      */
-
-      for (
-         const contract of
-         client.stagingContracts
-      ) {
-
-         if (
-            contract.validationStatus !==
-            "COMPLETE"
-         ) {
-
-            throw new Error(
-               "Batch contains invalid contracts"
-            );
-
-         }
-
-         // if (
-         //    !contract.isConfirmed
-         // ) {
-
-         //    throw new Error(
-         //       "Batch contains unconfirmed contracts"
-         //    );
-
-         // }
 
       }
 
    }
+
+}
 
    /*
    --------------------------------
