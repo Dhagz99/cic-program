@@ -13,6 +13,7 @@ import clientRoutes from "../modules/clients/client.route";
 import loanRoutes from "../modules/loans/loan.route";
 import dashboardRoutes from "../modules/dashboard/dashboard.route";
 import initializeRoutes from "../modules/initialize/initialize.route";
+import external from "../modules/external/routes/external.routes";
 
 
 const router = Router();
@@ -31,6 +32,7 @@ router.use( "/clients", clientRoutes);
 router.use( "/loans", loanRoutes);
 router.use( "/dashboard", dashboardRoutes);
 router.use( "/initialize", initializeRoutes);
+router.use( "/external", external);
 
 
 export default router;
