@@ -54,6 +54,8 @@ export default function ClientInformationForm({
 
    const {data: contact_type} = useDomains("CONTACT_TYPE")
 
+   
+
    return (
 
          <div>
