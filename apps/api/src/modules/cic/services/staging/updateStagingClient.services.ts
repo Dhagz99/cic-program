@@ -88,11 +88,16 @@ async ({
          identificationNumber:
             data.identificationNumber,
 
-         secondaryIdentificationType: {
-            connect:{
-               code: Number(data.secondaryIdentificationType)
-            }
-         },
+         secondaryIdentificationType:
+            data.secondaryIdentificationTypeCode
+               ? {
+                    connect: {
+                       code: Number(data.secondaryIdentificationTypeCode)
+                    }
+                 }
+               : {
+                    disconnect: true
+                 },
 
       secondaryIdentificationNumber:
          data.secondaryIdentificationNumber,
