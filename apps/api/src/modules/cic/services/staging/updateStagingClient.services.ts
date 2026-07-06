@@ -89,10 +89,10 @@ async ({
             data.identificationNumber,
 
          secondaryIdentificationType:
-            data.secondaryIdentificationTypeCode
+            data.secondaryIdentificationType
                ? {
                     connect: {
-                       code: Number(data.secondaryIdentificationTypeCode)
+                       code: Number(data.secondaryIdentificationType)
                     }
                  }
                : {
