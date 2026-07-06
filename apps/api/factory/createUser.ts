@@ -7,11 +7,11 @@ async function main() {
   const Password = "12345678";
 
   const user = await createUserService({
-      email: "financial@example.com",
-      name: "Trial User",
-      username: "admin1234",
+      email: "admindhagz@example.com",
+      name: "ADMIN DHAZG",
+      username: "ADMIN-DHAGZ",
       password: Password,
-      roleIds: ["dwad"],
+      roleIds: ["39aeb242-4e4e-41c0-956f-58210aeb1c41"],
   });
 
 }

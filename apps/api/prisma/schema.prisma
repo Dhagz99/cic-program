@@ -334,6 +334,10 @@ model StagingClient {
   identificationTypeCode            Int?
   identificationNumber              String?
 
+
+  secondaryIdentificationTypeCode            Int?
+  secondaryIdentificationNumber              String?
+
   contactType                       String?
   contactValue                      String?
 
@@ -490,6 +494,10 @@ model Client {
 
   identificationTypeCode            Int?
   identificationNumber              String?
+
+  secondaryIdentificationTypeCode            Int?
+  secondaryIdentificationNumber              String?
+
 
   contactType                       String?
   contactValue                      String?

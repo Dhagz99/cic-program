@@ -254,6 +254,32 @@ export default function ClientInformationForm({
                            {...register("identificationNumber")}
                            error={errors.identificationNumber}
                         />
+
+
+                           {/* Identification Type */}
+      
+                           <SelectField
+                           label="Secondary Identification Type"
+                           error={errors.secondaryIdentificationTypeCode}
+                           {...register("secondaryIdentificationTypeCode")}
+                           options={
+                             identificationTypes?.map((item: DomainOption) => ({
+                                 label:
+                                    item.description,
+      
+                                 value:
+                                 String(item.code)
+      
+                              })) || []
+                           }
+                        />
+                      
+                        {/* Identification Number */}
+                        <InputField
+                           label="Secondary Identification Number"
+                           {...register("secondaryIdentificationNumber")}
+                           error={errors.secondaryIdentificationNumber}
+                        />
       
                         {/* Contact Type */}
                             <SelectField

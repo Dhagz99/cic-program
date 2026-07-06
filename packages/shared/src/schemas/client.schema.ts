@@ -97,6 +97,18 @@ import {
          .trim()
          .min(1, "Identification number is required"),
 
+secondaryIdentificationTypeCode:
+   z
+   .string()
+   .trim()
+   .optional(),
+   
+   secondaryIdentificationNumber:
+   z
+      .string()
+      .trim()
+      .optional(),     
+
    contactType:
          z
          .string()
