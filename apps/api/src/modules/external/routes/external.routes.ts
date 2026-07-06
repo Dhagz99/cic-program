@@ -2,7 +2,7 @@
 
 import express from "express";
 import { externalApiAuth } from "../../../middleware/externalApiAuth.middleware";
-import { getExternalClientsController } from "../controller/externalClient.controller";
+import { getExternalClientByAccountController, getExternalClientsController } from "../controller/externalClient.controller";
 
 
 const router = express.Router();
@@ -12,5 +12,12 @@ router.get(
    externalApiAuth,
    getExternalClientsController
 );
+
+
+router.get(
+   "/clients/by-account/:accountNo",
+   externalApiAuth,
+   getExternalClientByAccountController
+)
 
 export default router;

@@ -40,7 +40,7 @@ export const normalizeClient = (
          parsedName.firstName,
 
       middleName:
-         "",
+        parsedName.middleName,
 
       lastName:
          parsedName.lastName,
