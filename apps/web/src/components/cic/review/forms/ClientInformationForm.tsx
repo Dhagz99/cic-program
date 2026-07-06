@@ -262,8 +262,8 @@ export default function ClientInformationForm({
       
                            <SelectField
                            label="Secondary Identification Type"
-                           error={errors.secondaryIdentificationTypeCode}
-                           {...register("secondaryIdentificationTypeCode")}
+                           error={errors.secondaryIdentificationType}
+                           {...register("secondaryIdentificationType")}
                            options={
                              identificationTypes?.map((item: DomainOption) => ({
                                  label:

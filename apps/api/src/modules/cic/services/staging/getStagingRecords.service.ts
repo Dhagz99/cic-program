@@ -212,6 +212,19 @@ async (
                   stagingClient.identificationNumber ||
                   "",
 
+
+            secondaryIdentificationTypeCode:
+
+                  existingClient?.secondaryIdentificationTypeCode ||
+                  stagingClient.secondaryIdentificationTypeCode ||
+                  null,
+
+            secondaryIdentificationNumber:
+
+                  existingClient?.secondaryIdentificationNumber ||
+                  stagingClient.secondaryIdentificationNumber ||
+                  "",
+
                /*
                |--------------------------------------------------------------------------
                | CONTACT

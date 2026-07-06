@@ -88,6 +88,15 @@ async ({
          identificationNumber:
             data.identificationNumber,
 
+         secondaryIdentificationType: {
+            connect:{
+               code: Number(data.secondaryIdentificationType)
+            }
+         },
+
+      secondaryIdentificationNumber:
+         data.secondaryIdentificationNumber,
+
          contactType:
             data.contactType,
 

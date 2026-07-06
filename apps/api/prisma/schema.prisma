@@ -257,7 +257,10 @@ model CivilStatusDomain {
   code          Int      @id
   description   String
 
-   stagingCLients       StagingClient[]
+   
+ 
+    stagingClient       StagingClient[] 
+  
      clients         Client[] 
 
   @@map("civil_status_domain")
@@ -269,8 +272,12 @@ model IdentificationTypeDomain {
   code          Int      @id
   description   String
 
-   stagingCLients       StagingClient[]
-     clients         Client[]
+  stagingClientsPrimary   StagingClient[] @relation("PrimaryIdentificationType")
+  stagingClientsSecondary StagingClient[] @relation("SecondaryIdentificationType")
+
+  clientsPrimary   Client[] @relation("ClientPrimaryIdentificationType")
+  clientsSecondary Client[] @relation("ClientSecondaryIdentificationType")
+
 
   @@map("identification_type_domain")
 
@@ -354,7 +361,8 @@ model StagingClient {
   validationErrors      ValidationError[]
 
   civilStatus            CivilStatusDomain? @relation( fields: [civilStatusCode], references: [code])
-  identificationType    IdentificationTypeDomain? @relation( fields: [identificationTypeCode], references: [code])
+  identificationType    IdentificationTypeDomain? @relation("PrimaryIdentificationType", fields: [identificationTypeCode], references: [code])
+  secondaryIdentificationType    IdentificationTypeDomain? @relation("SecondaryIdentificationType", fields: [secondaryIdentificationTypeCode], references: [code])
   gender                 GenderDomain? @relation( fields: [genderCode], references: [code])
 
   createdAt             DateTime @default(now())
@@ -510,7 +518,8 @@ model Client {
   Contracts                          Contract[]
 
   civilStatus                        CivilStatusDomain? @relation( fields: [civilStatusCode], references: [code])
-  identificationType    IdentificationTypeDomain? @relation( fields: [identificationTypeCode], references: [code])
+  identificationType    IdentificationTypeDomain? @relation("ClientPrimaryIdentificationType", fields: [identificationTypeCode], references: [code])
+  secondaryidentificationType    IdentificationTypeDomain? @relation("ClientSecondaryIdentificationType", fields: [secondaryIdentificationTypeCode], references: [code])
   gender                 GenderDomain? @relation( fields: [genderCode], references: [code])
 
   createdAt             DateTime @default(now())

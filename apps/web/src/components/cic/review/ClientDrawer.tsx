@@ -216,6 +216,13 @@ const existingClient =
          identificationNumber:
             client.identificationNumber || "",
 
+
+       secondaryIdentificationType:
+            mergedPreview.secondaryIdentificationTypeCode || "",
+
+         secondaryIdentificationNumber:
+            mergedPreview.secondaryIdentificationNumber || "",
+
          contactType:
             mergedPreview.contactType || "",
 
@@ -241,6 +248,7 @@ const existingClient =
          gender: String(mergedPreview.genderCode || ""),
          civilStatus: String(mergedPreview.civilStatusCode || ""),
          identificationType: String(mergedPreview.identificationTypeCode || ""),
+         secondaryIdentificationType: String(mergedPreview.secondaryIdentificationTypeCode || ""),
    
          birthDate: client.birthDate
             ? new Date(client.birthDate).toISOString().split("T")[0]

@@ -41,6 +41,11 @@ import { StagingClient, StagingContract, ValidationError } from "@repo/shared";
 
        identificationTypeCode: string;
 
+       secondaryIdentificationTypeCode: string;
+
+       secondaryIdentificationNumber: string;
+       
+
  
     };
  

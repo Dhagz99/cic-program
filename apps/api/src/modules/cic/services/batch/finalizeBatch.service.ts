@@ -177,6 +177,23 @@ async ({
       identificationNumber:
          stagingClient.identificationNumber
          || existingClient?.identificationNumber,
+
+
+         // secondary 
+
+        secondaryIdentificationTypeCode:
+         (
+            stagingClient.secondaryIdentificationTypeCode ||
+            !stagingClient.secondaryIdentificationTypeCode
+         )
+         ? existingClient?.secondaryIdentificationTypeCode
+         : stagingClient.secondaryIdentificationTypeCode,
+   
+      secondaryIdentificationNumber:
+         stagingClient.secondaryIdentificationNumber
+         || existingClient?.secondaryIdentificationNumber,
+
+
    
       contactType:
          stagingClient.contactType
@@ -279,6 +296,12 @@ async ({
                identificationNumber:
                   stagingClient.identificationNumber,
 
+               secondaryIdentificationTypeCode:
+                  mergedClient.secondaryIdentificationTypeCode,
+
+              secondaryIdentificationNumber:
+                 stagingClient.secondaryIdentificationNumber,
+
                contactType:
                    mergedClient.contactType,
 
@@ -363,6 +386,12 @@ async ({
 
                identificationNumber:
                   stagingClient.identificationNumber,
+
+               secondaryIdentificationTypeCode:
+                  stagingClient.secondaryIdentificationTypeCode,
+
+               secondaryIdentificationNumber:
+                  stagingClient.secondaryIdentificationNumber,
 
                contactType:
                   stagingClient.contactType,

@@ -118,6 +118,10 @@ export interface ValidationError {
       DomainOption<number> | null;
     identificationNumber: string;
 
+    secondaryIdentificationType:
+    DomainOption<number> | null;
+    secondaryIdentificationNumber: string;
+
 
     contactType: string | null;
     contactValue: string | null;

@@ -122,6 +122,36 @@ export default async function seedDomains() {
             code: 19,
             description:
                "CooperativeId"
+         },
+         {
+            code: 20,
+            description:
+               "Passport"
+         },
+         {
+            code: 21,
+            description:
+               "LTO Driver License"
+         },
+         {
+            code: 22,
+            description:
+               "PWD ID"
+         },
+         {
+            code: 23,
+            description:
+               "National ID"
+         },
+         {
+            code: 24,
+            description:
+               "Voter ID"
+         },
+         {
+            code: 25,
+            description:
+               "Voters Certification"
          }
 
       ],

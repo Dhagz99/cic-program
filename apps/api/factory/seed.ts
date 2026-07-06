@@ -7,9 +7,9 @@ async function main() {
 
    await seedDomains();
 
-   await seedRoles();
+   // await seedRoles();
 
-   await generalDomain();
+   // await generalDomain();
    // await seedPSGC();
 
 
