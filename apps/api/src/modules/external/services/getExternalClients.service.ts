@@ -73,12 +73,26 @@ export const getExternalClientByAccountService = async (
          firstName: true,
          middleName: true,
          lastName: true,
+         suffix: true,
          providerSubjectNo: true,
          address: true,
          contactValue: true,
          genderCode: true,
          identificationTypeCode: true,
+         identificationType:{
+            select:{
+               description: true
+            }
+         },
          identificationNumber: true,
+
+         secondaryIdentificationTypeCode: true,
+         secondaryidentificationType:{
+            select:{
+               description: true
+            }
+         },
+         secondaryIdentificationNumber: true,
          birthDate: true,
          placeOfBirth: true,
 
@@ -94,14 +108,17 @@ export const getExternalClientByAccountService = async (
       accountNo: client.providerSubjectNo,
       fullName: [
          client.firstName,
-         client.middleName,
+         client.middleName ? client.middleName.charAt(0) + "." : "",
          client.lastName,
-      ],
+         client.suffix
+     ]
+     .filter(Boolean)
+     .join(" "),
       address: client.address,
       contactNumber: client.contactValue,
       gender: client.genderCode,
-      idType: client.identificationTypeCode,
-      idNumber: client.identificationNumber,
+      idType: client.secondaryIdentificationTypeCode ? client.secondaryidentificationType?.description : client.identificationType?.description,
+      idNumber: client.secondaryIdentificationNumber ?? client.identificationNumber,
       birthDate: client.birthDate,
       birthPlace: client.placeOfBirth
    }

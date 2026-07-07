@@ -32,6 +32,7 @@ try{
 
    const result = await getExternalClientByAccountService(accountNo);
 
+
    return res.json({
       data: result
    });
