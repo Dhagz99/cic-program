@@ -15,9 +15,9 @@ router.get(
 
 
 router.get(
-   "/clients/by-account/:accountNo",
+   "/clients/:branchId/by-account/:accountNo",
    externalApiAuth,
    getExternalClientByAccountController
-)
+);
 
 export default router;

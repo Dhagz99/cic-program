@@ -22,7 +22,14 @@ export const getExternalClientByAccountController = async (
    res: Response
 ) => {
 try{
-   const {accountNo} = req.params;
+   const { branchId, accountNo } = req.params;
+
+   if (!branchId) {
+      return res.status(400).json({
+         message: "Branch ID is required",
+      });
+   }
+
 
    if(!accountNo) {
       return res.status(400).json({
@@ -30,7 +37,10 @@ try{
       });
    }
 
-   const result = await getExternalClientByAccountService(accountNo);
+   const result = await getExternalClientByAccountService(
+      branchId,
+      accountNo
+   );
 
 
    return res.json({

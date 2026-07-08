@@ -62,10 +62,12 @@ export const getExternalClientsService = async ({
 };
 
 export const getExternalClientByAccountService = async (
+   branchId:string,
    accountNo: string
 ) => {
    const client  = await prisma.client.findFirst({
       where: {
+         branchId,
          providerSubjectNo: accountNo
       },
       select:{
