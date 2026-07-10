@@ -285,7 +285,7 @@ export default function ClientInformationForm({
       
                         {/* Contact Type */}
                             <SelectField
-                                         label="Contract Type"
+                                         label="Contact Type"
                                          error={errors.contactType}
                                          {...register("contactType")}
                                          options={

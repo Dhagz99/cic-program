@@ -120,7 +120,10 @@ export const getExternalClientByAccountService = async (
       contactNumber: client.contactValue,
       gender: client.genderCode,
       idType: client.secondaryIdentificationTypeCode ? client.secondaryidentificationType?.description : client.identificationType?.description,
-      idNumber: client.secondaryIdentificationNumber ?? client.identificationNumber,
+      idNumber:
+      client.secondaryIdentificationNumber?.trim()
+         ? client.secondaryIdentificationNumber
+         : client.identificationNumber,
       birthDate: client.birthDate,
       birthPlace: client.placeOfBirth
    }
