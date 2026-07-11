@@ -1,7 +1,8 @@
 // controllers/client.controller.ts
 
 import { Request, Response } from "express";
-import { getClientContractsService, getClientsPaginationService, getClientsService } from "./client.service";
+import { getClientContractsService, getClientsPaginationService, getClientsService, updateClientService } from "./client.service";
+import { UpdateClientFormValues } from "@repo/shared";
 
 
 export async function getClientsController(
@@ -166,4 +167,56 @@ export async function getClientContractsController(
        });
  
     }
+ }
+
+
+ export async function updateClientController(
+   req: Request<{ id: string }>,
+   res: Response
+ ) {
+   try {
+     const { id } = req.params;
+ 
+     if (!id) {
+       return res.status(400).json({
+         success: false,
+         message: "Client ID is required."
+       });
+     }
+ 
+     const data =
+       req.body as UpdateClientFormValues;
+ 
+     const updatedClient =
+       await updateClientService(id, data);
+ 
+     return res.status(200).json({
+       success: true,
+       message: "Client updated successfully.",
+       data: updatedClient
+     });
+   } catch (error) {
+     console.error(
+       "Update client error:",
+       error
+     );
+ 
+     if (
+       error instanceof Error &&
+       error.message.includes("Invalid")
+     ) {
+       return res.status(400).json({
+         success: false,
+         message: error.message
+       });
+     }
+ 
+     return res.status(500).json({
+       success: false,
+       message:
+         error instanceof Error
+           ? error.message
+           : "Failed to update client."
+     });
+   }
  }

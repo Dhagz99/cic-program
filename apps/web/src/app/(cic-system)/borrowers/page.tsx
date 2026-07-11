@@ -1,10 +1,16 @@
 "use client";
 
+import AddBorrowerModal from "@/components/clients/AddBorrowerModal";
 import ClientViewModal from "@/components/clients/ClientViewModal";
+import EditClientModal from "@/components/clients/EditClientModal";
 import RequestModal from "@/components/Modal";
 import { SummaryCard } from "@/components/ui/SummaryCard";
-import { useClients } from "@/hooks/clients/useClients";
-import { StagingClient } from "@repo/shared";
+import { useCivilStatusDomain, useGenderDomain, useIdentificationTypeDomain } from "@/hooks/cic/useDomain";
+import { useClients, useUpdateClient } from "@/hooks/clients/useClients";
+import { useUploadDailyClient } from "@/hooks/clients/useUploadDailyClient";
+import { useDomains } from "@/hooks/useGeneral";
+import api from "@/lib/axios";
+import { StagingClient, UpdateClientFormValues } from "@repo/shared";
 import {
    BadgeCheck,
    Download,
@@ -38,6 +44,126 @@ export default function Borrowers() {
       useState("");
    
    const [viewClient, setViewClient] = useState<StagingClient | null >(null);
+
+   const [isOpenAddBorrower, setIsOpenAddBorrower] = useState(false);
+
+   const uploadDailyClient = useUploadDailyClient();
+
+   /*
+      |--------------------------------------------------------------------------
+      | DOMAINS
+      |--------------------------------------------------------------------------
+      */
+   
+      const {
+         data: genders
+      } = useGenderDomain();
+   
+      const {
+         data: civilStatuses
+      } = useCivilStatusDomain();
+   
+      const {
+         data: identificationTypes
+      } = useIdentificationTypeDomain();
+
+         const {data: contact_type} = useDomains("CONTACT_TYPE")
+
+   const handleUpload = async (
+      file: File
+    ) => {
+      await uploadDailyClient.mutateAsync(file);
+  
+      setIsOpenAddBorrower(false);
+    };
+
+    const updateClientMutation = useUpdateClient();
+
+      const handleUpdateClient = async (
+         values: UpdateClientFormValues
+      ) => {
+         if (!editClient) {
+         throw new Error(
+            "No client was selected."
+         );
+         }
+      
+         await updateClientMutation.mutateAsync({
+         id: editClient.id,
+         data: values
+         });
+      };
+
+  
+      const toEditFormValues = (
+         client: StagingClient & {
+           secondaryIdentificationTypeCode?: number | string | null;
+         }
+       ): UpdateClientFormValues => {
+         const secondaryCode =
+           client.secondaryIdentificationType?.code ??
+           client.secondaryIdentificationTypeCode ??
+           "";
+       
+         const values: UpdateClientFormValues = {
+           firstName: client.firstName ?? "",
+           middleName: client.middleName ?? "",
+           lastName: client.lastName ?? "",
+           suffix: client.suffix ?? "",
+       
+           gender: String(client.gender?.code ?? ""),
+       
+           birthDate: client.birthDate
+             ? String(client.birthDate).slice(0, 10)
+             : "",
+       
+           placeOfBirth: client.placeOfBirth ?? "",
+       
+           civilStatus: String(
+             client.civilStatus?.code ?? ""
+           ),
+       
+           numberOfDependents: Number(
+             client.numberOfDependents ?? 0
+           ),
+       
+           addressType: client.addressType ?? "MI",
+           address: client.address ?? "",
+       
+           addressType2: client.addressType2 ?? "AI",
+           address2: client.address2 ?? "",
+       
+           identificationType: String(
+             client.identificationType?.code ?? ""
+           ),
+       
+           identificationNumber:
+             client.identificationNumber ?? "",
+       
+           secondaryIdentificationType:
+             String(secondaryCode),
+       
+           secondaryIdentificationNumber:
+             client.secondaryIdentificationNumber ?? "",
+       
+           contactType: String(
+             client.contactType ?? ""
+           ),
+       
+           contactValue:
+             client.contactValue ?? ""
+         };
+       
+      
+       
+         return values;
+       };
+
+const [editClient, setEditClient] =
+  useState<StagingClient | null>(null);
+
+
+  console.log("selected Client: ", editClient)
 
 
    const {
@@ -126,6 +252,7 @@ export default function Borrowers() {
                      text-sm font-medium text-white
                      shadow-lg shadow-blue-500/20
                   "
+                  onClick={()=>setIsOpenAddBorrower(true)}
                >
 
                   <Plus size={18} />
@@ -585,6 +712,7 @@ export default function Borrowers() {
                                        justify-center
                                        text-blue-700
                                     "
+                                    onClick={() => setEditClient(client)}
                                  >
 
                                     <Pencil size={18} />
@@ -707,6 +835,34 @@ export default function Borrowers() {
                <ClientViewModal client={viewClient} />
             </RequestModal>
          )}
+
+
+      {isOpenAddBorrower && (
+               <RequestModal
+                  size="md"
+                  title="Add Borrowers"
+                  onClose={()=>setIsOpenAddBorrower(false)}>
+
+
+                  <AddBorrowerModal onUpload={handleUpload}/>
+               </RequestModal>
+            )
+
+         }
+
+{editClient && (
+  <EditClientModal
+    isOpen={true}
+    client={toEditFormValues(editClient)}
+    genders={genders ?? []}
+    civilStatuses={civilStatuses ?? []}
+    identificationTypes={
+      identificationTypes ?? []
+    }
+    onClose={() => setEditClient(null)}
+    onSubmit={handleUpdateClient}
+  />
+)}
 
       </div>
 

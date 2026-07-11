@@ -43,3 +43,38 @@ export interface DbfTypes {
     ACCTNO: number;
     CPD: string;
 }
+
+
+  
+
+export interface DailyDbfTypes {
+    ID: number;
+    CTRLNO: number;
+    NAME: string;
+    BANK: string;
+    BANKNO: string;
+    SSSNO: string;
+    ADD1: string;
+    ADD2: string;
+    ADD3: string;
+    ACTPNSN: string;
+    BIRTH: string;
+    PENSION: string;
+    GETALL: boolean;
+    DEPEND: number;
+    COLLAMT: number;
+    PTYPE: string;
+    STATUS: string;
+    COLLDAY: number;
+    GROUPING: string;
+    AGENT: string;
+    INSURED: boolean;
+    INSUREDBY: string;
+    DANNIV: string;
+    ISANNIV: string;
+    INSAMT: number;
+    LLLTYP: string;
+    REFTYPE: string;
+    PDR: number;
+    PDRAMT: number;
+}

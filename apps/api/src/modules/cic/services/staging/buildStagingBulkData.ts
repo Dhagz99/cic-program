@@ -138,3 +138,65 @@ export const buildStagingContractData = ({
          getValidationStatus(validationErrors)
    };
 };
+
+
+
+export const buildDailyStagingClientData = ({
+   dailyId,
+   rowNo,
+   client,
+   validationErrors
+}: any) => {
+   return {
+      dailyId,
+      rowNo,
+
+      providerSubjectNo:
+         client.providerSubjectNo,
+
+      firstName:
+         client.firstName,
+
+      middleName:
+         client.middleName,
+
+      lastName:
+         client.lastName,
+
+      suffix:
+         client.suffix,
+
+      birthDate:
+         client.birthDate
+            ? client.birthDate
+            : null,
+
+      address:
+         client.address,
+
+      addressCity:
+         client.addressCity,
+
+      addressBarangay:
+         client.addressBarangay,
+
+      addressProvince:
+         client.addressProvince,
+
+      addressPostalCode:
+         client.addressPostalCode,
+
+      address2:
+         client.address,
+
+      identificationTypeCode:
+         client.grouping ?? null,
+
+      identificationNumber:
+         client.sssNo,
+
+
+      validationStatus:
+         getValidationStatus(validationErrors)
+   };
+};

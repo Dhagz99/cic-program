@@ -2,14 +2,16 @@
 
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type {
-   GetClientsParams
+   GetClientsParams,
+   UpdateClientFormValues
 } from "@repo/shared";
 
 import {
-   getClientsPaginationService
+   getClientsPaginationService,
+   updateClient
 } from "@/services/client.service";
 
 export function useClients({
@@ -97,3 +99,38 @@ export function useClients({
          clientsQuery.data?.summary?.totalOutstandingBalance || 0,
    };
 }
+
+export type UpdateClientPayload = {
+   id: string;
+   data: UpdateClientFormValues;
+ };
+
+export function useUpdateClient() {
+   const queryClient = useQueryClient();
+ 
+   return useMutation({
+     mutationFn: ({
+       id,
+       data
+     }: UpdateClientPayload) => {
+       return updateClient(id, data);
+     },
+ 
+     onSuccess: async (_, variables) => {
+       /*
+        * Refresh every client list query.
+        */
+       await queryClient.invalidateQueries({
+         queryKey: ["clients"]
+       });
+ 
+    
+       await queryClient.invalidateQueries({
+         queryKey: [
+           "client",
+           variables.id
+         ]
+       });
+     }
+   });
+ }

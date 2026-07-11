@@ -128,3 +128,90 @@ export const getExternalClientByAccountService = async (
       birthPlace: client.placeOfBirth
    }
 }
+
+
+export const getExternalClientsByBranchService = async (
+   branchId: string
+ ) => {
+   const clients = await prisma.client.findMany({
+     where: {
+       branchId,
+     },
+ 
+     select: {
+       id: true,
+       providerSubjectNo: true,
+ 
+       firstName: true,
+       middleName: true,
+       lastName: true,
+       suffix: true,
+ 
+       address: true,
+       contactValue: true,
+       genderCode: true,
+ 
+       identificationTypeCode: true,
+       identificationType: {
+         select: {
+           description: true,
+         },
+       },
+ 
+       identificationNumber: true,
+ 
+       secondaryIdentificationTypeCode: true,
+       secondaryidentificationType: {
+         select: {
+           description: true,
+         },
+       },
+ 
+       secondaryIdentificationNumber: true,
+ 
+       birthDate: true,
+       placeOfBirth: true,
+     },
+   });
+ 
+   return clients.map((client) => ({
+     id: client.id,
+ 
+     accountNo: client.providerSubjectNo,
+ 
+     fullName: [
+       client.firstName,
+       client.middleName
+         ? `${client.middleName.charAt(0)}.`
+         : "",
+       client.lastName,
+       client.suffix,
+     ]
+       .filter(Boolean)
+       .join(" "),
+ 
+     address: client.address,
+ 
+     contactNumber:
+       client.contactValue,
+ 
+     gender:
+       client.genderCode,
+ 
+     idType:
+       client.secondaryIdentificationNumber?.trim()
+         ? client.secondaryidentificationType?.description
+         : client.identificationType?.description,
+ 
+     idNumber:
+       client.secondaryIdentificationNumber?.trim()
+         ? client.secondaryIdentificationNumber
+         : client.identificationNumber,
+ 
+     birthDate:
+       client.birthDate,
+ 
+     birthPlace:
+       client.placeOfBirth,
+   }));
+ };

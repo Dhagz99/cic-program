@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { GetClientsParams } from "@repo/shared";
+import { GetClientsParams, UpdateClientFormValues, UploadDailyClientResponse } from "@repo/shared";
 
 export async function getClientsPaginationService({ 
             page,
@@ -21,3 +21,42 @@ export async function getClientsPaginationService({
             return response.data;
     
 }
+
+
+export const uploadDailyClientFile = async (
+  file: File
+): Promise<UploadDailyClientResponse> => {
+  const formData = new FormData();
+
+  formData.append("file", file);
+
+  const response = await api.post<UploadDailyClientResponse>(
+    "/import/daily-import",
+    formData,
+    {
+      withCredentials: true,
+    }
+  );
+
+  return response.data;
+}
+
+
+type UpdateClientResponse<TClient = unknown> = {
+    success: boolean;
+    message: string;
+    data: TClient;
+  };
+
+export async function updateClient(
+    id: string,
+    data: UpdateClientFormValues
+  ) {
+    const response =
+      await api.put<UpdateClientResponse>(
+        `/clients/update-clients/${id}`,
+        data
+      );
+  
+    return response.data;
+  }

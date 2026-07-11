@@ -14,6 +14,7 @@ import loanRoutes from "../modules/loans/loan.route";
 import dashboardRoutes from "../modules/dashboard/dashboard.route";
 import initializeRoutes from "../modules/initialize/initialize.route";
 import external from "../modules/external/routes/external.routes";
+import imports from "../modules/import/import.route";
 
 
 const router = Router();
@@ -33,6 +34,7 @@ router.use( "/loans", loanRoutes);
 router.use( "/dashboard", dashboardRoutes);
 router.use( "/initialize", initializeRoutes);
 router.use( "/external", external);
+router.use("/import", imports );
 
 
 export default router;

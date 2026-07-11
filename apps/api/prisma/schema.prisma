@@ -42,6 +42,8 @@ model User{
 
   rejectedBatches ImportBatch[]  @relation("BatchRejectedBy")
 
+  createdByDaily         DailyImportBatch[]
+
   @@map("user")
 }
 
@@ -242,11 +244,13 @@ enum AddressType {
 
 model GenderDomain {
 
-  code          String   @id
-  description   String
+  code                  String   @id
+  description           String
 
-  stagingCLients       StagingClient[]
-  clients         Client[]
+  stagingCLients        StagingClient[]
+  dailyStagingCLients   DailyStagingClient[]     
+  clients               Client[]
+
 
   @@map("gender_domain")
 
@@ -261,8 +265,9 @@ model CivilStatusDomain {
  
     stagingClient       StagingClient[] 
   
-     clients         Client[] 
+    clients         Client[] 
 
+    dailyStagingClients    DailyStagingClient[]
   @@map("civil_status_domain")
 
 }
@@ -275,8 +280,14 @@ model IdentificationTypeDomain {
   stagingClientsPrimary   StagingClient[] @relation("PrimaryIdentificationType")
   stagingClientsSecondary StagingClient[] @relation("SecondaryIdentificationType")
 
+  dailyStagingClientsPrimary   DailyStagingClient[] @relation("DailyPrimaryIdentificationType")
+  dailyStagingClientsSecondary DailyStagingClient[] @relation("DailySecondaryIdentificationType")
+
   clientsPrimary   Client[] @relation("ClientPrimaryIdentificationType")
   clientsSecondary Client[] @relation("ClientSecondaryIdentificationType")
+
+
+  
 
 
   @@map("identification_type_domain")
@@ -442,7 +453,9 @@ model StagingContract {
 model ValidationError {
   id                    String   @id @default(uuid())
 
+
   stagingClientId       String?
+  dailyStagingClientId       String?
   stagingContractId     String?
 
   fieldName             String
@@ -451,6 +464,8 @@ model ValidationError {
   stagingClient         StagingClient?  @relation(fields: [stagingClientId], references: [id])
 
   stagingContract       StagingContract?  @relation(fields: [stagingContractId], references: [id])
+
+  dailyStagingClient    DailyStagingClient? @relation(fields: [dailyStagingClientId], references: [id])
 
   createdAt             DateTime @default(now())
 }
@@ -746,4 +761,112 @@ model CicExport {
 
   importBatch                 ImportBatch @relation(fields: [importBatchId], references: [id])
 
+}
+
+enum  DailyBatchStatus {
+    PENDING
+    PROCESSING
+    COMPLETED
+    FAILED
+}
+
+
+model DailyImportBatch {
+  id              String           @id @default(uuid())
+  branchId        String
+  createdById     String
+
+  fileName        String?
+  totalRecords    Int              @default(0)
+  completedRecords Int             @default(0)
+  errorRecords    Int              @default(0)
+
+  status          DailyBatchStatus @default(PENDING)
+
+  dailyClients    DailyStagingClient[]
+
+  createdBy          User  @relation(fields: [createdById], references: [id])
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+
+
+
+
+
+model DailyStagingClient {
+  id                                String    @id @default(uuid())
+  recordType                        String    @default("ID")
+  dailyId                           String
+  rowNo     Int
+  providerCode                      String?   @default("PF007980")
+  branchCode                        String?
+  subjectRefeerenceDate             DateTime?
+  providerSubjectNo                 String?
+  title                             String?
+
+  firstName                         String?
+  middleName                        String?
+  lastName                          String?
+  suffix                            String?
+  nickname                          String?
+  
+  prevLastName                      String?
+  genderCode                        String?
+  birthDate                         DateTime? 
+  placeOfBirth                      String?
+  countryOfBirthCode                String?   @default("PH")
+  nationality                       String?   @default("PH")
+  resident                          Boolean?   @default(true)
+  civilStatusCode                   Int?
+  numberOfDependents                Int    @default(0)
+
+  addressType                       AddressType    @default(MI)
+  address                           String?
+
+  //Additional Address
+  addressStreetNo                         String?
+  addressPostalCode                       String?
+  addressSubdivision                      String?
+  addressBarangay                         String?
+  addressCity                             String?
+  addressProvince                         String?
+  addressCountry                          String? @default("PH")
+
+
+  addressType2                          AddressType    @default(AI)
+  address2                              String?
+
+  identificationTypeCode                Int?
+  identificationNumber                  String?
+
+
+  secondaryIdentificationTypeCode         Int?
+  secondaryIdentificationNumber           String?
+
+  contactType                       String?
+  contactValue                      String?
+
+  addressConfidence                  Decimal? @db.Decimal(5,2)
+
+  validationStatus                   ValidationStatus
+
+  isConfirmed                         Boolean @default(false)
+
+  daily                               DailyImportBatch  @relation(fields: [dailyId], references: [id])
+
+
+  validationErrors                    ValidationError[]
+
+  civilStatus                         CivilStatusDomain? @relation( fields: [civilStatusCode], references: [code])
+  identificationType                  IdentificationTypeDomain? @relation("DailyPrimaryIdentificationType", fields: [identificationTypeCode], references: [code])
+  secondaryIdentificationType         IdentificationTypeDomain? @relation("DailySecondaryIdentificationType", fields: [secondaryIdentificationTypeCode], references: [code])
+  gender                              GenderDomain? @relation( fields: [genderCode], references: [code])
+
+  createdAt                          DateTime @default(now())
+  updatedAt                           DateTime @updatedAt
+
+  @@unique([dailyId, rowNo])
 }

@@ -1,7 +1,7 @@
 // src/modules/external/controllers/externalClient.controller.ts
 
 import { Request, Response } from "express";
-import { getExternalClientByAccountService, getExternalClientsService } from "../services/getExternalClients.service";
+import { getExternalClientByAccountService, getExternalClientsByBranchService, getExternalClientsService } from "../services/getExternalClients.service";
 
 export const getExternalClientsController = async (
    req: Request,
@@ -58,3 +58,36 @@ catch(error){
 }
 
 }
+
+
+export const getExternalClientsByBranch = async (
+   req: Request,
+   res: Response
+ ) => {
+   try {
+     const { branchId } = req.params;
+ 
+     if (!branchId) {
+       return res.status(400).json({
+         message: "Branch ID is required",
+       });
+     }
+ 
+     const clients =
+       await getExternalClientsByBranchService(
+         branchId
+       );
+ 
+     return res.json({
+       data: clients,
+       total: clients.length,
+     });
+   } catch (error) {
+     return res.status(500).json({
+       message:
+         error instanceof Error
+           ? error.message
+           : "Failed to get branch clients",
+     });
+   }
+ };

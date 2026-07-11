@@ -154,6 +154,17 @@ export interface ClientLoanPaginationResponse {
 
 }
 
+
+export type UploadDailyClientResponse = {
+   message: string;
+   batchId: string;
+   totalRecords: number;
+   totalClients: number;
+   completedRecords: number;
+   errorRecords: number;
+   previewClients: unknown[];
+ };
+
  
 
  
