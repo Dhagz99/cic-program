@@ -89,7 +89,7 @@ export const getExternalClientByAccountService = async (
          identificationNumber: true,
 
          secondaryIdentificationTypeCode: true,
-         secondaryidentificationType:{
+         secondaryIdentificationType:{
             select:{
                description: true
             }
@@ -119,7 +119,7 @@ export const getExternalClientByAccountService = async (
       address: client.address,
       contactNumber: client.contactValue,
       gender: client.genderCode,
-      idType: client.secondaryIdentificationTypeCode ? client.secondaryidentificationType?.description : client.identificationType?.description,
+      idType: client.secondaryIdentificationTypeCode ? client.secondaryIdentificationType?.description : client.identificationType?.description,
       idNumber:
       client.secondaryIdentificationNumber?.trim()
          ? client.secondaryIdentificationNumber
@@ -161,7 +161,7 @@ export const getExternalClientsByBranchService = async (
        identificationNumber: true,
  
        secondaryIdentificationTypeCode: true,
-       secondaryidentificationType: {
+       secondaryIdentificationType: {
          select: {
            description: true,
          },
@@ -200,7 +200,7 @@ export const getExternalClientsByBranchService = async (
  
      idType:
        client.secondaryIdentificationNumber?.trim()
-         ? client.secondaryidentificationType?.description
+         ? client.secondaryIdentificationType?.description
          : client.identificationType?.description,
  
      idNumber:
