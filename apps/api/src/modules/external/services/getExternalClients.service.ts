@@ -116,6 +116,14 @@ export const getExternalClientByAccountService = async (
      ]
      .filter(Boolean)
      .join(" "),
+      fullMiddleName: [
+            client.firstName,
+            client.middleName ? client.middleName : "",
+            client.lastName,
+            client.suffix
+      ]
+      .filter(Boolean)
+      .join(" "),
       address: client.address,
       contactNumber: client.contactValue,
       gender: client.genderCode,
@@ -189,6 +197,15 @@ export const getExternalClientsByBranchService = async (
      ]
        .filter(Boolean)
        .join(" "),
+
+       fullMiddleName: [
+         client.firstName,
+         client.middleName ? client.middleName : "",
+         client.lastName,
+         client.suffix
+      ]
+         .filter(Boolean)
+         .join(" "),
  
      address: client.address,
  
