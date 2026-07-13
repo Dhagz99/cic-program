@@ -142,7 +142,6 @@ export default function EditClientModal({
   }
 
 
-  console.log("client: ", client)
 
   return (
     <div

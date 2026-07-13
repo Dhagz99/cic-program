@@ -22,7 +22,7 @@ import {
    Wallet,
 } from "lucide-react";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 
 
@@ -155,11 +155,17 @@ export default function Borrowers() {
          return values;
        };
 
-const [editClient, setEditClient] =
+
+
+  const [editClient, setEditClient] =
   useState<StagingClient | null>(null);
 
-
-  console.log("selected Client: ", editClient)
+const editClientFormValues = useMemo(() => {
+  if (!editClient) {
+    return null;
+  }
+  return toEditFormValues(editClient);
+}, [editClient]);
 
 
    const {
@@ -849,7 +855,7 @@ const [editClient, setEditClient] =
 {editClient && (
   <EditClientModal
     isOpen={true}
-    client={toEditFormValues(editClient)}
+    client={editClientFormValues}
     genders={genders ?? []}
     civilStatuses={civilStatuses ?? []}
     identificationTypes={

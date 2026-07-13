@@ -169,7 +169,7 @@ async ({
       identificationTypeCode:
          (
             existingClient?.identificationTypeCode === 10 ||
-            !stagingClient.identificationTypeCode
+            existingClient?.identificationTypeCode
          )
          ? existingClient?.identificationTypeCode
          : stagingClient.identificationTypeCode,
