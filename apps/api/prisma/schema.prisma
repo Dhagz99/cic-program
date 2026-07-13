@@ -534,7 +534,7 @@ model Client {
 
   civilStatus                        CivilStatusDomain? @relation( fields: [civilStatusCode], references: [code])
   identificationType    IdentificationTypeDomain? @relation("ClientPrimaryIdentificationType", fields: [identificationTypeCode], references: [code])
-  secondaryidentificationType    IdentificationTypeDomain? @relation("ClientSecondaryIdentificationType", fields: [secondaryIdentificationTypeCode], references: [code])
+  secondaryIdentificationType    IdentificationTypeDomain? @relation("ClientSecondaryIdentificationType", fields: [secondaryIdentificationTypeCode], references: [code])
   gender                 GenderDomain? @relation( fields: [genderCode], references: [code])
 
   createdAt             DateTime @default(now())

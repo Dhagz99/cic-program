@@ -81,29 +81,29 @@ async ({
    const mergedClient = {
 
       providerCode:
-         stagingClient.providerCode
-         || existingClient?.providerCode,
+          existingClient?.providerCode
+         || stagingClient?.providerCode,
    
       branchCode:
-         stagingClient.branchCode
-         || existingClient?.branchCode,
+          existingClient?.branchCode
+         || stagingClient?.branchCode,
    
       title:
-         stagingClient.title
-         || existingClient?.title,
+          existingClient?.title
+         || stagingClient?.title,
    
       firstName:
-         stagingClient.firstName
-         || existingClient?.firstName
+          existingClient?.firstName
+         || stagingClient?.firstName
          || "",
    
       middleName:
-         stagingClient.middleName
-         || existingClient?.middleName,
+         existingClient?.middleName
+         || stagingClient?.middleName,
    
       lastName:
-         stagingClient.lastName
-         || existingClient?.lastName
+         existingClient?.lastName
+         || stagingClient?.lastName
          || "",
    
       suffix:
@@ -111,72 +111,72 @@ async ({
          || existingClient?.suffix,
    
       nickname:
-         stagingClient.nickname
-         || existingClient?.nickname,
+         existingClient?.nickname
+         || stagingClient?.nickname,
    
       prevLastName:
-         stagingClient.prevLastName
-         || existingClient?.prevLastName,
+         existingClient?.prevLastName
+         || stagingClient?.prevLastName,
    
       genderCode:
-         stagingClient.genderCode
-         || existingClient?.genderCode,
+         existingClient?.genderCode
+         || stagingClient?.genderCode,
    
       birthDate:
-         stagingClient.birthDate
-         || existingClient?.birthDate,
+         existingClient?.birthDate
+         || stagingClient?.birthDate,
    
       placeOfBirth:
-         stagingClient.placeOfBirth
-         || existingClient?.placeOfBirth,
+         existingClient?.placeOfBirth
+         || stagingClient?.placeOfBirth,
    
       countryOfBirthCode:
-         stagingClient.countryOfBirthCode
-         || existingClient?.countryOfBirthCode,
+         existingClient?.countryOfBirthCode
+         || stagingClient?.countryOfBirthCode,
    
       nationality:
-         stagingClient.nationality
-         || existingClient?.nationality,
+         existingClient?.nationality
+         || stagingClient?.nationality,
    
       resident:
-         stagingClient.resident
-         ?? existingClient?.resident,
+         existingClient?.resident
+         ?? stagingClient?.resident,
    
       civilStatusCode:
-         stagingClient.civilStatusCode
-         || existingClient?.civilStatusCode,
+         existingClient?.civilStatusCode
+         || stagingClient?.civilStatusCode,
    
       numberOfDependents:
-         stagingClient.numberOfDependents
-         || existingClient?.numberOfDependents,
+         existingClient?.numberOfDependents
+         || stagingClient?.numberOfDependents,
    
       addressType:
-         stagingClient.addressType
-         || existingClient?.addressType,
+         existingClient?.addressType
+         || stagingClient?.addressType,
    
       address:
-         stagingClient.address
-         || existingClient?.address,
+         existingClient?.address
+         || stagingClient?.address,
    
       addressType2:
-         stagingClient.addressType2
-         || existingClient?.addressType2,
+         existingClient?.addressType2
+         || stagingClient?.addressType2,
    
       address2:
-         stagingClient.address2
-         || existingClient?.address2,
+         existingClient?.address2
+         || stagingClient?.address2,
    
       identificationTypeCode:
          (
-            stagingClient.identificationTypeCode === 10 ||
+            existingClient?.identificationTypeCode === 10 ||
             !stagingClient.identificationTypeCode
          )
          ? existingClient?.identificationTypeCode
          : stagingClient.identificationTypeCode,
    
       identificationNumber:
-         stagingClient.identificationNumber
-         || existingClient?.identificationNumber,
+         existingClient?.identificationNumber
+         || stagingClient?.identificationNumber,
 
 
          // secondary 
@@ -190,18 +190,18 @@ async ({
          : stagingClient.secondaryIdentificationTypeCode,
    
       secondaryIdentificationNumber:
-         stagingClient.secondaryIdentificationNumber
-         || existingClient?.secondaryIdentificationNumber,
+         existingClient?.secondaryIdentificationNumber
+         || stagingClient?.secondaryIdentificationNumber,
 
 
    
       contactType:
-         stagingClient.contactType
-         || existingClient?.contactType,
+         existingClient?.contactType
+         || stagingClient?.contactType,
    
       contactValue:
-         stagingClient.contactValue
-         || existingClient?.contactValue
+         existingClient?.contactValue
+         || stagingClient?.contactValue
    
    };
 
@@ -234,16 +234,16 @@ async ({
                   stagingClient.branchCode,
 
                title:
-                  stagingClient.title,
+                   mergedClient.title,
 
                firstName:
-                  stagingClient.firstName || "",
+                 mergedClient.firstName || "",
 
                middleName:
                    mergedClient.middleName,
 
                lastName:
-                  stagingClient.lastName || "",
+                 mergedClient.lastName || "",
 
                suffix:
                      mergedClient.suffix,
@@ -252,22 +252,22 @@ async ({
                   stagingClient.nickname,
 
                prevLastName:
-                  stagingClient.prevLastName,
+                  mergedClient.prevLastName,
 
                genderCode:
                   mergedClient.genderCode,
 
                birthDate:
-                  stagingClient.birthDate,
+                  mergedClient.birthDate,
 
                placeOfBirth:
-                  stagingClient.placeOfBirth,
+                   mergedClient.placeOfBirth,
 
                countryOfBirthCode:
                   stagingClient.countryOfBirthCode,
 
                nationality:
-                  stagingClient.nationality,
+                mergedClient.nationality,
 
                resident:
                   stagingClient.resident,
@@ -276,7 +276,7 @@ async ({
                   mergedClient.civilStatusCode,
 
                numberOfDependents:
-                  stagingClient.numberOfDependents,
+                  mergedClient.numberOfDependents,
 
                addressType:
                   stagingClient.addressType,
@@ -294,13 +294,13 @@ async ({
                    mergedClient.identificationTypeCode,
 
                identificationNumber:
-                  stagingClient.identificationNumber,
+                  mergedClient.identificationNumber,
 
                secondaryIdentificationTypeCode:
                   mergedClient.secondaryIdentificationTypeCode,
 
               secondaryIdentificationNumber:
-                 stagingClient.secondaryIdentificationNumber,
+                 mergedClient.secondaryIdentificationNumber,
 
                contactType:
                    mergedClient.contactType,

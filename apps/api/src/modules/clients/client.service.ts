@@ -147,7 +147,7 @@ export async function getClientContractsService(
                     civilStatus: true,
                      branch: true,
                      identificationType: true,
-                     secondaryidentificationType: true,
+                     secondaryIdentificationType: true,
                      Contracts: {
                         orderBy:{
                            createdAt: "desc"
@@ -298,7 +298,7 @@ export async function getClientContractsService(
             identificationNumber:
               data.identificationNumber || null,
     
-            secondaryidentificationType:
+            secondaryIdentificationType:
               data.secondaryIdentificationType
                 ? {
                     connect: {

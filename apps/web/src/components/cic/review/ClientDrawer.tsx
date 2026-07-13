@@ -93,6 +93,9 @@ const existingClient =
    
    const [errorModal, setErrorModal] = useState(false);
 
+
+
+   console.log("mergedPreview: ",mergedPreview)
    
 
    /*
@@ -168,16 +171,16 @@ const existingClient =
       defaultValues: {
 
          firstName:
-            client.firstName || "",
+            mergedPreview.firstName || "",
 
          middleName:
-            client.middleName || "",
+            mergedPreview.middleName|| "",
 
          lastName:
-            client.lastName || "",
+           mergedPreview.lastName || "",
 
          suffix:
-            client.suffix || "",
+           mergedPreview.suffix || "",
 
          gender:
             mergedPreview.genderCode || "",
@@ -240,10 +243,10 @@ const existingClient =
       }
    
       reset({
-         firstName: client.firstName || "",
-         middleName: client.middleName || "",
-         lastName: client.lastName || "",
-         suffix: client.suffix || "",
+         firstName: mergedPreview.firstName || "",
+         middleName: mergedPreview.middleName || "",
+         lastName: mergedPreview.lastName || "",
+         suffix: mergedPreview.suffix || "",
    
          gender: String(mergedPreview.genderCode || ""),
          civilStatus: String(mergedPreview.civilStatusCode || ""),
@@ -254,7 +257,7 @@ const existingClient =
             ? new Date(client.birthDate).toISOString().split("T")[0]
             : "",
    
-         placeOfBirth: client.placeOfBirth || "",
+         placeOfBirth: mergedPreview.placeOfBirth || "",
          numberOfDependents: client.numberOfDependents || 0,
    
          addressType: client.addressType || "",

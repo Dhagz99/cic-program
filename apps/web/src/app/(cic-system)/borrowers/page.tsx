@@ -8,8 +8,6 @@ import { SummaryCard } from "@/components/ui/SummaryCard";
 import { useCivilStatusDomain, useGenderDomain, useIdentificationTypeDomain } from "@/hooks/cic/useDomain";
 import { useClients, useUpdateClient } from "@/hooks/clients/useClients";
 import { useUploadDailyClient } from "@/hooks/clients/useUploadDailyClient";
-import { useDomains } from "@/hooks/useGeneral";
-import api from "@/lib/axios";
 import { StagingClient, UpdateClientFormValues } from "@repo/shared";
 import {
    BadgeCheck,
@@ -20,7 +18,6 @@ import {
    Pencil,
    Plus,
    Search,
-   Trash2,
    Users,
    Wallet,
 } from "lucide-react";
@@ -34,7 +31,7 @@ export default function Borrowers() {
    const [page, setPage] =
       useState(1);
 
-   const [limit, setLimit] =
+   const [limit] =
       useState(10);
 
    const [search, setSearch] =
@@ -67,7 +64,6 @@ export default function Borrowers() {
          data: identificationTypes
       } = useIdentificationTypeDomain();
 
-         const {data: contact_type} = useDomains("CONTACT_TYPE")
 
    const handleUpload = async (
       file: File

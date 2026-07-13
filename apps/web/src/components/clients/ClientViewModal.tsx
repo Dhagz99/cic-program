@@ -9,7 +9,9 @@ import {
    CalendarDays,
    ContactRound,
    CreditCard,
+   CreditCardIcon,
    FileText,
+   IdCard,
    Landmark,
    MapPin,
    Phone,
@@ -23,6 +25,8 @@ type Props = {
 export default function ClientViewModal({ client }: Props) {
 
     const {data: contact_type} = useDomains("CONTACT_TYPE");
+
+    console.log("client: ", client)
      
 
 const contactTypeDescription =
@@ -106,7 +110,7 @@ const contactTypeDescription =
          </div>
 
          <Section title="Client Information">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                <Info
                   icon={<BriefcaseBusiness size={18} />}
                   label="Branch"
@@ -132,18 +136,30 @@ const contactTypeDescription =
                />
 
                <Info
-                  icon={<CreditCard size={18} />}
+                     icon={<IdCard size={18} />}
+                     label="Identification Type."
+                     value={client.identificationType?.description}
+                  />
+
+               <Info
+                  icon={<CreditCardIcon size={18} />}
                   label="Identification No."
                   value={client.identificationNumber}
                />
 
                <Info
-                  icon={<MapPin size={18} />}
-                  label="Address"
-                  value={client.address}
-               />
+                     icon={<IdCard size={18} />}
+                     label=" Secondary Identification Type."
+                     value={client.secondaryIdentificationType?.description}
+                  />
 
                <Info
+                  icon={<CreditCardIcon size={18} />}
+                  label="Secondary Identification No."
+                  value={client?.secondaryIdentificationNumber}
+               />  
+
+                <Info
                   icon={<ContactRound size={18} />}
                   label="Contact Type"
                   value={contactTypeDescription}
@@ -153,7 +169,18 @@ const contactTypeDescription =
                      icon={<Phone size={18} />}
                      label="Contact Value"
                      value={client.contactValue}
+                  />     
+              
+               <div className="col-span-2">
+                  <Info
+                     icon={<MapPin size={18} />}
+                     label="Address"
+                     value={client.address}
                   />
+               </div>
+             
+
+              
             </div>
          </Section>
 

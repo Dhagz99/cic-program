@@ -109,36 +109,30 @@ async (
             */
 
             const mergedPreview = {
-
                /*
                |--------------------------------------------------------------------------
                | BASIC INFO
                |--------------------------------------------------------------------------
                */
-
                firstName:
-
-                  stagingClient.firstName ||
                   existingClient?.firstName ||
+                  stagingClient?.firstName ||
                   "",
 
                middleName:
-
-                  stagingClient.middleName ||
                   existingClient?.middleName ||
-                  "",
+                  stagingClient?.middleName ||
+                     "",
 
                lastName:
-
-                  stagingClient.lastName ||
                   existingClient?.lastName ||
-                  "",
+                  stagingClient?.lastName ||
+                     "",
 
                suffix:
-
-                  stagingClient.suffix ||
                   existingClient?.suffix ||
-                  "",
+                  stagingClient?.suffix ||
+                     "",
 
                /*
                |--------------------------------------------------------------------------
@@ -241,7 +235,12 @@ async (
 
                   existingClient?.contactValue ||
                   stagingClient.contactValue ||
-                  ""
+                  "",
+
+
+                  placeOfBirth: 
+                     existingClient?.placeOfBirth ||
+                     stagingClient.placeOfBirth || "",
 
             };
 
@@ -292,6 +291,10 @@ async (
             | RETURN REVIEW OBJECT
             |--------------------------------------------------------------------------
             */
+
+
+            console.log("merge: ", mergedPreview)
+            console.log("existing: ", existingClient)
 
 
 
