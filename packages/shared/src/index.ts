@@ -2,6 +2,7 @@
 export * from "./schemas/user.schema.js";
 export * from "./schemas/branch.schema.js";
 export * from "./schemas/client.schema.js";
+export * from "./schemas/reporting.schema.js";
 
 // Types
 export * from "./types/cic/cic.types.js";

@@ -8,6 +8,7 @@ import { SummaryCard } from "@/components/ui/SummaryCard";
 import { useCivilStatusDomain, useGenderDomain, useIdentificationTypeDomain } from "@/hooks/cic/useDomain";
 import { useClients, useUpdateClient } from "@/hooks/clients/useClients";
 import { useUploadDailyClient } from "@/hooks/clients/useUploadDailyClient";
+import { useDomains } from "@/hooks/useGeneral";
 import { StagingClient, UpdateClientFormValues } from "@repo/shared";
 import {
    BadgeCheck,
@@ -22,7 +23,7 @@ import {
    Wallet,
 } from "lucide-react";
 
-import { useMemo, useState } from "react";
+import {useMemo, useState } from "react";
 
 
 
@@ -63,6 +64,9 @@ export default function Borrowers() {
       const {
          data: identificationTypes
       } = useIdentificationTypeDomain();
+
+const { data: contact_type } =
+  useDomains("CONTACT_TYPE");
 
 
    const handleUpload = async (
@@ -861,12 +865,18 @@ const editClientFormValues = useMemo(() => {
     identificationTypes={
       identificationTypes ?? []
     }
+   contactTypes={
+      contact_type ?? []
+    }
     onClose={() => setEditClient(null)}
     onSubmit={handleUpdateClient}
   />
 )}
 
-      </div>
+
+
+
+   </div>
 
    );
 }

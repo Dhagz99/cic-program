@@ -1,7 +1,7 @@
 // controllers/client.controller.ts
 
 import { Request, Response } from "express";
-import { getClientContractsService, getClientsPaginationService, getClientsService, updateClientService } from "./client.service";
+import { getClientContractsService, getClientsPaginationService, getClientsService, getDailyImportService, updateClientService, updateDailyClientService } from "./client.service";
 import { UpdateClientFormValues } from "@repo/shared";
 
 
@@ -219,4 +219,94 @@ export async function getClientContractsController(
            : "Failed to update client."
      });
    }
+ }
+
+
+  export async function updateDailyClientController(
+   req: Request<{ id: string }>,
+   res: Response
+ ) {
+   try {
+     const { id } = req.params;
+ 
+     if (!id) {
+       return res.status(400).json({
+         success: false,
+         message: "Client ID is required."
+       });
+     }
+ 
+     const data =
+       req.body as UpdateClientFormValues;
+ 
+     const updatedClient =
+       await updateDailyClientService(id, data);
+ 
+     return res.status(200).json({
+       success: true,
+       message: "Daily client updated successfully.",
+       data: updatedClient
+     });
+   } catch (error) {
+     console.error(
+       "Update client error:",
+       error
+     );
+ 
+     if (
+       error instanceof Error &&
+       error.message.includes("Invalid")
+     ) {
+       return res.status(400).json({
+         success: false,
+         message: error.message
+       });
+     }
+ 
+     return res.status(500).json({
+       success: false,
+       message:
+         error instanceof Error
+           ? error.message
+           : "Failed to update daily client."
+     });
+   }
+ }
+
+
+
+ export async function getDailyImportController(
+   req: Request,
+   res: Response
+ ) {
+
+   try{
+
+      const user = req.user;
+
+      const branchId = user?.branchId;
+
+      if (!branchId) {
+         return res.status(400).json({
+            success: false,
+            message: "Branch ID not found",
+         });
+      }
+
+      const dailyImport  = await getDailyImportService(branchId);
+
+      return res.status(201).json({
+         success: true,
+         data: dailyImport
+      });
+
+
+   }catch (error) {
+
+      return res.status(500).json({
+         success: false,
+         message: "Failed to fetch daily import",
+      });
+   }
+
  }

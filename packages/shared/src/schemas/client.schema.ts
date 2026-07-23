@@ -121,7 +121,31 @@ secondaryIdentificationType:
          .trim()
          .min(1, "Contact value is required"),
        
-});
+}) .superRefine((data, ctx) => {
+    const hasType =
+      !!data.secondaryIdentificationType?.trim();
+
+    const hasNumber =
+      !!data.secondaryIdentificationNumber?.trim();
+
+    if (hasType && !hasNumber) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["secondaryIdentificationNumber"],
+        message:
+          "Secondary identification number is required.",
+      });
+    }
+
+    if (hasNumber && !hasType) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["secondaryIdentificationType"],
+        message:
+          "Secondary identification type is required.",
+      });
+    }
+  });;
  
  export type UpdateClientDTO =
     z.infer<

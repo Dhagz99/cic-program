@@ -315,7 +315,7 @@ function Info({
             </div>
 
             <div>
-               <p className="text-xs text-slate-500">
+               <p className="text-xs text-slate-500 ">
                   {label}
                </p>
 

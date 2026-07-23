@@ -20,6 +20,10 @@ export const useUploadDailyClient = () => {
       });
 
       await queryClient.invalidateQueries({
+        queryKey: ["import-daily"],
+      });
+
+      await queryClient.invalidateQueries({
         queryKey: ["daily-import-batches"],
       });
     },

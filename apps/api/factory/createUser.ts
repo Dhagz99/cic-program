@@ -11,7 +11,7 @@ async function main() {
       name: "KIM ADMIN",
       username: "ADMIN_KIM",
       password: Password,
-      roleIds: ["a33a63d5-7374-49fc-87c9-7e5bf04cab7a"],
+      roleIds: ["15265dfb-f29f-4bc1-8984-1e3b1f4506d0"],
   });
 
 }

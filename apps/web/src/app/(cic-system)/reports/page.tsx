@@ -1,7 +1,8 @@
 "use client";
 
 import {
-   Download
+   Download,
+   FileText
 } from "lucide-react";
 
 import {
@@ -16,6 +17,8 @@ import { ImportBatchItem } from "@repo/shared";
 import { getTimestamp } from "@/utils/date/getTimestamp";
 import { formatReportingPeriod } from "@/utils/date/formatReportingPerion";
 import { useExportReport } from "@/hooks/reports/useRepots";
+import { CreateReportingPeriodModal } from "@/components/reporting-period/CreateReportingPeriodModal";
+import { Button } from "@/components/ui/button";
 
 
 export default function Reports() {
@@ -29,6 +32,8 @@ export default function Reports() {
       data: batches = [],
       isLoading
    } = useImportBatches();
+
+   const [isOpenReporting, setIsOpenReporting] = useState(false);
 
   
    const exportReportMutation = useExportReport();
@@ -147,29 +152,41 @@ export default function Reports() {
                </p>
 
             </div>
-
-            <input
-               type="text"
-               placeholder="
-                  Search reports...
-               "
-               value={search}
-               onChange={(e) =>
-                  setSearch(
-                     e.target.value
-                  )
-               }
-               className="
-                  border
-                  rounded-2xl
-                  px-4
-                  py-2
-                  w-80
-                  outline-none
-                  focus:ring-2
-                  focus:ring-blue-500
-               "
+            <div className="flex gap-2">
+         <input
+                        type="text"
+                        placeholder="
+                           Search reports...
+                        "
+                        value={search}
+                        onChange={(e) =>
+                           setSearch(
+                              e.target.value
+                           )
+                        }
+                        className="
+                           border
+                           rounded-2xl
+                           px-4
+                           py-2
+                           w-80
+                           outline-none
+                           focus:ring-2
+                           focus:ring-blue-500
+                        "
             />
+               <Button
+                  type="button"
+                  variant="default"
+                  size="lg"
+                  onClick={() => setIsOpenReporting(true)}
+                  className="min-w-32 shadow-sm"
+                  >
+                     <FileText data-icon="inline-start" />
+                     Open Report
+               </Button>
+            </div>
+           
 
          </div>
 
@@ -373,6 +390,10 @@ export default function Reports() {
             </table>
 
          </div>
+
+         {isOpenReporting && (
+            <CreateReportingPeriodModal  isOpen={isOpenReporting} onClose={()=>setIsOpenReporting(false)}/>
+         )}
 
       </div>
 

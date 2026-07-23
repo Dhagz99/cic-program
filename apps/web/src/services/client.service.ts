@@ -60,3 +60,30 @@ export async function updateClient(
   
     return response.data;
   }
+
+
+  export async function updateDailyClient(
+    id: string,
+    data: UpdateClientFormValues
+  ) {
+    const response =
+      await api.put<UpdateClientResponse>(
+        `/clients/daily-clients/${id}`,
+        data
+      );
+  
+    return response.data;
+  }
+
+
+
+  export async function getDailyImportBatchService() {
+
+    const response = await api.get(
+      "/clients/daily-imports"
+    );
+
+    return response.data.data;
+
+  }
+

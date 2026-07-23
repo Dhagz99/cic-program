@@ -1,10 +1,14 @@
 "use client";
 
+import { DailyClientsModal } from "@/components/clients/DailyClientsModal";
+import EditClientModal from "@/components/clients/EditClientModal";
 import { useAuth } from "@/components/context/UserContext";
 import Sidebar from "@/components/layouts/Sidebar";
 import RequestModal from "@/components/Modal";
 import SettingsModal from "@/components/settings/SettingsModal";
 import SweetAlert from "@/components/Swal";
+import { useGetDailyImport } from "@/hooks/clients/useGetDailyImport";
+import { StagingClient } from "@repo/shared";
 
 import {
   Bell,
@@ -17,7 +21,7 @@ import {
 } from "lucide-react";
 
 import { redirect } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 
 export default function CICLayout({
   children,
@@ -36,38 +40,25 @@ export default function CICLayout({
 
   const [userModal, setUserModal] = useState(false);
 
+
   const menuRef = useRef<HTMLDivElement>(null);
 
   const { user, loading, logout, hasPermission } =
     useAuth();
 
-  // CLOSE USER MENU ON OUTSIDE CLICK
-  useEffect(() => {
-    const handleClickOutside = (
-      event: MouseEvent
-    ) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(
-          event.target as Node
-        )
-      ) {
-        setOpenMenu(false);
-      }
-    };
+const { data: dailyImport } = useGetDailyImport();
 
-    document.addEventListener(
-      "mousedown",
-      handleClickOutside
-    );
+const hasDailyImport =
+  (dailyImport?.dailyClients?.length ?? 0) > 0;
 
-    return () => {
-      document.removeEventListener(
-        "mousedown",
-        handleClickOutside
-      );
-    };
-  }, []);
+const isClientsOpen = hasDailyImport;
+
+
+
+
+
+
+
 
   if (loading) {
     return (
@@ -328,6 +319,20 @@ export default function CICLayout({
           <SettingsModal />
         </RequestModal>
       )}
+
+      
+{isClientsOpen && (
+  <DailyClientsModal
+    isOpen
+    batch={dailyImport ?? null}
+    onClose={() => undefined}
+  />
+)}
+
+
+
+
+
     </div>
   );
 }

@@ -11,7 +11,8 @@ import type {
 
 import {
    getClientsPaginationService,
-   updateClient
+   updateClient,
+   updateDailyClient
 } from "@/services/client.service";
 
 export function useClients({
@@ -125,6 +126,42 @@ export function useUpdateClient() {
        });
  
     
+       await queryClient.invalidateQueries({
+         queryKey: [
+           "client",
+           variables.id
+         ]
+       });
+     }
+   });
+ }
+
+
+
+ export function useUpdateDailyClient() {
+   const queryClient = useQueryClient();
+ 
+   return useMutation({
+     mutationFn: ({
+       id,
+       data
+     }: UpdateClientPayload) => {
+       return updateDailyClient(id, data);
+     },
+ 
+     onSuccess: async (_, variables) => {
+       /*
+        * Refresh every client list query.
+        */
+       await queryClient.invalidateQueries({
+         queryKey: ["import-daily"]
+       });
+
+
+         await queryClient.invalidateQueries({
+         queryKey: ["clients"]
+       });
+
        await queryClient.invalidateQueries({
          queryKey: [
            "client",

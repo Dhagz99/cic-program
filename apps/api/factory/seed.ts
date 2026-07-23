@@ -5,12 +5,12 @@ import seedRoles from "./seeds/role.seed";
 
 async function main() {
 
-   // await seedDomains();
+   await seedDomains();
 
-   // await seedRoles();
+   await seedRoles();
 
-   // await generalDomain();
-   // await seedPSGC();
+   await generalDomain();
+   await seedPSGC();
 
 
    console.log(

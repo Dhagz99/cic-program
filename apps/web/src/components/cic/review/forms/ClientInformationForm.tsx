@@ -34,6 +34,8 @@ type Props = {
 
    identificationTypes:
       DomainOption[];
+
+   contactTypes: DomainItem[];
   
 };
 
@@ -49,10 +51,11 @@ export default function ClientInformationForm({
 
    identificationTypes,
 
+   contactTypes
+
 }: Props) {
 
 
-   const {data: contact_type} = useDomains("CONTACT_TYPE")
 
    
 
@@ -291,7 +294,7 @@ export default function ClientInformationForm({
                                          error={errors.contactType}
                                          {...register("contactType")}
                                          options={
-                                          contact_type?.map((item: DomainItem) => ({
+                                          contactTypes?.map((item: DomainItem) => ({
                                                label:
                                                   item.description,
                                                value:

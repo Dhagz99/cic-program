@@ -5,12 +5,15 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { X } from "lucide-react";
 
 import {
+  DomainItem,
   DomainOption,
-  UpdateClientFormValues
+  UpdateClientFormValues,
+  updateClientSchema
 } from "@repo/shared";
 
 import ClientInformationForm from
   "@/components/cic/review/forms/ClientInformationForm";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type Props = {
   isOpen: boolean;
@@ -19,6 +22,7 @@ type Props = {
   genders: DomainOption[];
   civilStatuses: DomainOption[];
   identificationTypes: DomainOption[];
+  contactTypes: DomainItem[];
 
   onClose: () => void;
 
@@ -58,6 +62,7 @@ export default function EditClientModal({
   genders,
   civilStatuses,
   identificationTypes,
+  contactTypes,
   onClose,
   onSubmit
 }: Props) {
@@ -71,12 +76,19 @@ export default function EditClientModal({
       isDirty
     }
   } = useForm<UpdateClientFormValues>({
-    defaultValues: emptyValues
-  });
+  resolver: zodResolver(updateClientSchema),
+  defaultValues: emptyValues,
+  mode: "onSubmit"
+});
 
   /*
    * Populate the form whenever the selected client changes.
+  
    */
+
+
+
+
   useEffect(() => {
     if (!isOpen) {
       return;
@@ -224,6 +236,7 @@ export default function EditClientModal({
               identificationTypes={
                 identificationTypes
               }
+              contactTypes={contactTypes}
             />
           </div>
 

@@ -325,3 +325,391 @@ export async function getClientContractsService(
     
       return updatedClient;
     }
+
+
+    export async function getDailyImportService(
+      branchId: string
+    ) {
+
+      try{
+         const dailyImports = await prisma.dailyImportBatch.findFirst({
+         where:{
+            branchId,
+            status: "PROCESSING"
+         },
+         include:{
+            dailyClients: {
+              where: {
+                isConfirmed: false
+              }
+            }
+         }
+      });
+      return dailyImports;
+
+      }catch(error){
+         console.error(
+            "Get Daily Import Service Error:",
+            error
+         );
+         throw new Error(
+            "Failed to fetch daily imports"
+         );
+      }
+   }
+
+
+
+    export async function updateDailyClientService(
+      id: string,
+      data: UpdateClientFormValues
+    ) {
+      if (
+        data.addressType &&
+        !Object.values(AddressType).includes(
+          data.addressType as AddressType
+        )
+      ) {
+        throw new Error("Invalid primary address type.");
+      }
+    
+      if (
+        data.addressType2 &&
+        !Object.values(AddressType).includes(
+          data.addressType2 as AddressType
+        )
+      ) {
+        throw new Error("Invalid secondary address type.");
+      }
+
+      return prisma.$transaction(async (tx) => {
+
+  const updatedClient =
+        await tx.dailyStagingClient.update({
+          where: {
+            id
+          },
+    
+          data: {
+            firstName: data.firstName,
+            middleName: data.middleName || null,
+            lastName: data.lastName,
+            suffix: data.suffix || null,
+    
+            gender: data.gender
+              ? {
+                  connect: {
+                    code: data.gender
+                  }
+                }
+              : undefined,
+    
+            birthDate: data.birthDate
+              ? new Date(data.birthDate)
+              : undefined,
+    
+            placeOfBirth:
+              data.placeOfBirth || null,
+    
+            civilStatus: data.civilStatus
+              ? {
+                  connect: {
+                    code: Number(data.civilStatus)
+                  }
+                }
+              : undefined,
+    
+            numberOfDependents:
+              Number(data.numberOfDependents ?? 0),
+    
+            addressType: data.addressType
+              ? (data.addressType as AddressType)
+              : undefined,
+    
+            address: data.address || null,
+    
+            addressType2: data.addressType2
+              ? (data.addressType2 as AddressType)
+              : undefined,
+    
+            address2: data.address2 || null,
+    
+            identificationType:
+              data.identificationType
+                ? {
+                    connect: {
+                      code: Number(
+                        data.identificationType
+                      )
+                    }
+                  }
+                : undefined,
+    
+            identificationNumber:
+              data.identificationNumber || null,
+    
+            secondaryIdentificationType:
+              data.secondaryIdentificationType
+                ? {
+                    connect: {
+                      code: Number(
+                        data.secondaryIdentificationType
+                      )
+                    }
+                  }
+                : {
+                    disconnect: true
+                  },
+    
+            secondaryIdentificationNumber:
+              data.secondaryIdentificationNumber ||
+              null,
+    
+            contactType:
+              data.contactType || undefined,
+    
+            contactValue:
+              data.contactValue || null,
+          },
+
+          include:{
+            gender: true,
+            civilStatus: true,
+            identificationType: true,
+            secondaryIdentificationType: true,
+            daily: true,
+          }
+        });
+
+        const providerSubjectNo =
+            updatedClient.providerSubjectNo;
+
+        if (!providerSubjectNo) {
+          throw new Error(
+            "Provider subject number is required."
+          );
+        }
+
+    const branchId =
+      updatedClient.daily.branchId;
+
+        const client =
+          await tx.client.upsert({
+            where: {
+              branchId_providerSubjectNo:{
+                 branchId,
+                 providerSubjectNo
+              }
+          
+            },
+
+        update: {
+          firstName: data.firstName.trim(),
+          middleName:
+            data.middleName?.trim() || null,
+          lastName: data.lastName.trim(),
+          suffix:
+            data.suffix?.trim() || null,
+
+          gender: data.gender
+            ? {
+                connect: {
+                  code: data.gender
+                }
+              }
+            : undefined,
+
+          birthDate: data.birthDate
+            ? new Date(data.birthDate)
+            : null,
+
+          placeOfBirth:
+            data.placeOfBirth?.trim() || null,
+
+          civilStatus: data.civilStatus
+            ? {
+                connect: {
+                  code: Number(data.civilStatus)
+                }
+              }
+            : undefined,
+
+          numberOfDependents: Number(
+            data.numberOfDependents ?? 0
+          ),
+
+         
+
+          address:
+            data.address?.trim() || null,
+
+        
+          address2:
+            data.address2?.trim() || null,
+
+          identificationType:
+            data.identificationType
+              ? {
+                  connect: {
+                    code: Number(
+                      data.identificationType
+                    )
+                  }
+                }
+              : undefined,
+
+          identificationNumber:
+            data.identificationNumber?.trim() ||
+            null,
+
+          secondaryIdentificationType:
+            data.secondaryIdentificationType
+              ? {
+                  connect: {
+                    code: Number(
+                      data.secondaryIdentificationType
+                    )
+                  }
+                }
+              : {
+                  disconnect: true
+                },
+
+          secondaryIdentificationNumber:
+            data.secondaryIdentificationNumber
+              ?.trim() || null,
+
+          contactType:
+            data.contactType || null,
+
+          contactValue:
+            data.contactValue?.trim() || null
+        },
+
+       create: {
+    providerSubjectNo,
+
+    branch: {
+      connect: {
+        id: branchId
+      }
+    },
+
+    dailyBatch: {
+      connect: {
+        id: updatedClient.dailyId
+      }
+    },
+
+    firstName: data.firstName.trim(),
+    middleName:
+      data.middleName?.trim() || null,
+    lastName: data.lastName.trim(),
+    suffix:
+      data.suffix?.trim() || null,
+
+    gender: data.gender
+      ? {
+          connect: {
+            code: data.gender
+          }
+        }
+      : undefined,
+
+    birthDate: data.birthDate
+      ? new Date(data.birthDate)
+      : null,
+
+    placeOfBirth:
+      data.placeOfBirth?.trim() || null,
+
+    civilStatus: data.civilStatus
+      ? {
+          connect: {
+            code: Number(data.civilStatus)
+          }
+        }
+      : undefined,
+
+    numberOfDependents: Number(
+      data.numberOfDependents ?? 0
+    ),
+
+    address:
+      data.address?.trim() || null,
+
+    address2:
+      data.address2?.trim() || null,
+
+    identificationType:
+      data.identificationType
+        ? {
+            connect: {
+              code: Number(
+                data.identificationType
+              )
+            }
+          }
+        : undefined,
+
+    identificationNumber:
+      data.identificationNumber?.trim() ||
+      null,
+
+    secondaryIdentificationType:
+      data.secondaryIdentificationType
+        ? {
+            connect: {
+              code: Number(
+                data.secondaryIdentificationType
+              )
+            }
+          }
+        : undefined,
+
+    secondaryIdentificationNumber:
+      data.secondaryIdentificationNumber
+        ?.trim() || null,
+
+    contactType:
+      data.contactType || null,
+
+    contactValue:
+      data.contactValue?.trim() || null
+  }
+});
+   
+    await tx.dailyStagingClient.update({
+      where: {
+        id
+      },
+      data: {
+        isConfirmed: true
+      }
+    });
+
+    const remainingUnconfirmed = 
+        await tx.dailyStagingClient.count({
+            where: {
+              dailyId: updatedClient.dailyId,
+              isConfirmed: false
+            }
+        });
+
+    if(remainingUnconfirmed === 0){
+      await tx.dailyImportBatch.update({
+        where:{
+          id: updatedClient.dailyId
+        },
+        data:{
+          status: "COMPLETED"
+        }
+      })
+    }
+
+    return {
+      stagingClient: updatedClient,
+      client
+    };
+  });
+}

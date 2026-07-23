@@ -475,7 +475,9 @@ model Client {
   id                                String    @id @default(uuid())
   recordType                        String    @default("ID")
   branchId                          String   
-  batchId                           String            
+  batchId                           String?     
+  dailyBatchId                      String?  
+
   providerCode                      String?   @default("PF007980")
   branchCode                        String?
   subjectRefeerenceDate             DateTime?
@@ -529,7 +531,8 @@ model Client {
 
 
   branch                             Branch  @relation(fields: [branchId], references: [id])
-  batch                       ImportBatch @relation(fields: [batchId], references: [id])
+  batch                       ImportBatch?  @relation(fields: [batchId], references: [id])
+  dailyBatch                       DailyImportBatch?  @relation(fields: [dailyBatchId], references: [id])
   Contracts                          Contract[]
 
   civilStatus                        CivilStatusDomain? @relation( fields: [civilStatusCode], references: [code])
@@ -784,6 +787,8 @@ model DailyImportBatch {
   status          DailyBatchStatus @default(PENDING)
 
   dailyClients    DailyStagingClient[]
+
+  clients   Client[]
 
   createdBy          User  @relation(fields: [createdById], references: [id])
 
