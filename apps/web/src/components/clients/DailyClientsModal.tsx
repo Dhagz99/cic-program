@@ -9,6 +9,7 @@ import EditClientModal from "./EditClientModal";
 import { useCivilStatusDomain, useGenderDomain, useIdentificationTypeDomain } from "@/hooks/cic/useDomain";
 import {useUpdateDailyClient } from "@/hooks/clients/useClients";
 import { useDomains } from "@/hooks/useGeneral";
+import { toast } from "sonner";
 
 export type DailyClient = {
   id: string;
@@ -154,25 +155,32 @@ export function DailyClientsModal({
 
 
       const updateClientMutation = useUpdateDailyClient();
-  
         const handleUpdateClient = async (
             values: UpdateClientFormValues
         ) => {
             if (!editClient) {
-            throw new Error(
-              "No client was selected."
-            );
+              throw new Error(
+                "No client was selected."
+              );
             }
-        
-            await updateClientMutation.mutateAsync({
-            id: editClient.id,
-            data: values
-            });
+            try{
+               await updateClientMutation.mutateAsync({
+                    id: editClient.id,
+                    data: values
+               });
+              toast.success("Client updated successfully.");
+            }catch(error){
+                toast.error(
+                  error instanceof Error
+                    ? error.message
+                      : "Failed to update client"
+                );
+            }
         };
 
-  if (!isOpen) {
-    return null;
-  }
+        if (!isOpen) {
+          return null;
+        }
 
      /*
         |--------------------------------------------------------------------------
@@ -269,10 +277,7 @@ export function DailyClientsModal({
                     Account Number
                   </th>
                   <th className="px-4 py-3 text-left font-medium">
-                    Provider Code
-                  </th>
-                  <th className="px-4 py-3 text-left font-medium">
-                    Record Type
+                    Address
                   </th>
                   <th className="px-4 py-3 text-left font-medium">
                     Birth Date
@@ -315,27 +320,17 @@ export function DailyClientsModal({
                       </td>
 
                       <td className="px-4 py-3">
-                        {client.birthDate ?? "-"}
+                        {client.address ?? ""}
                       </td>
 
                       <td className="px-4 py-3">
                         {client.birthDate ?? "-"}
                       </td>
-
-                      <td className="px-4 py-3">
-                        {client.birthDate
-                          ? new Date(
-                              client.birthDate
-                            ).toLocaleDateString()
-                          : "-"}
-                      </td>
-
                       <td className="px-4 py-3">
                         <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium">
-                          {client.address ?? "Pending"}
+                          {client.isConfirmed ? "True" : "Pending"}
                         </span>
                       </td>
-
                       <td className="px-4 py-3 text-right">
                         <Button
                           type="button"

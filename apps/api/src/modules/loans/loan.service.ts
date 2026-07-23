@@ -81,21 +81,7 @@ export async function getClientLoansServices({
    -----------------------------------
    */
 
-   const latestContracts =
-      await prisma.contract.groupBy({
-
-         by: [
-            "providerSubjectNo"
-         ],
-
-         where:
-            whereCondition,
-
-         _max: {
-            createdAt: true
-         }
-
-      });
+   
 
    /*
    -----------------------------------
@@ -127,8 +113,10 @@ export async function getClientLoansServices({
    -----------------------------------
    */
 
-   const totalLoan =
-      latestContracts.length;
+const totalLoan =
+  await prisma.contract.count({
+    where: whereCondition
+  });
 
    /*
    -----------------------------------
@@ -243,19 +231,10 @@ export async function getClientLoansServices({
          contracts,
 
       pagination: {
-
-         totalLoan,
-
+         total: totalLoan,
          page,
-
          limit,
-
-         totalPages:
-
-            Math.ceil(
-               totalLoan / limit
-            )
-
+         totalPages: Math.ceil(totalLoan / limit)
       },
 
       summary: {

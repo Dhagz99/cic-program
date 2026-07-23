@@ -1,14 +1,13 @@
 "use client";
 
 import { DailyClientsModal } from "@/components/clients/DailyClientsModal";
-import EditClientModal from "@/components/clients/EditClientModal";
 import { useAuth } from "@/components/context/UserContext";
 import Sidebar from "@/components/layouts/Sidebar";
 import RequestModal from "@/components/Modal";
 import SettingsModal from "@/components/settings/SettingsModal";
 import SweetAlert from "@/components/Swal";
 import { useGetDailyImport } from "@/hooks/clients/useGetDailyImport";
-import { StagingClient } from "@repo/shared";
+
 
 import {
   Bell,
@@ -52,12 +51,6 @@ const hasDailyImport =
   (dailyImport?.dailyClients?.length ?? 0) > 0;
 
 const isClientsOpen = hasDailyImport;
-
-
-
-
-
-
 
 
   if (loading) {
@@ -328,9 +321,6 @@ const isClientsOpen = hasDailyImport;
     onClose={() => undefined}
   />
 )}
-
-
-
 
 
     </div>

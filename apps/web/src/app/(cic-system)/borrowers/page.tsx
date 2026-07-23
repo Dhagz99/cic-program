@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 
 import {useMemo, useState } from "react";
+import { toast } from "sonner";
 
 
 
@@ -87,11 +88,22 @@ const { data: contact_type } =
             "No client was selected."
          );
          }
-      
-         await updateClientMutation.mutateAsync({
-         id: editClient.id,
-         data: values
-         });
+
+         try{
+               await updateClientMutation.mutateAsync({
+                  id: editClient.id,
+                  data: values
+               });
+
+               toast.success("Client updated successfully.")
+         }catch(error){
+            toast.error(
+               error instanceof Error
+                  ? error.message
+                  : "Failed to update client"
+            );
+         }
+       
       };
 
   
@@ -850,7 +862,7 @@ const editClientFormValues = useMemo(() => {
                   onClose={()=>setIsOpenAddBorrower(false)}>
 
 
-                  <AddBorrowerModal onUpload={handleUpload}/>
+                  <AddBorrowerModal onCancel={()=>setIsOpenAddBorrower(false)} onUpload={handleUpload}/>
                </RequestModal>
             )
 

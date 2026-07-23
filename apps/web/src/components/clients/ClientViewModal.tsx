@@ -60,6 +60,16 @@ const contactTypeDescription =
       0
    );
 
+const contractPhaseMap: Record<string, string> = {
+  AC: "Active",
+  CL: "Closed",
+};
+
+const contractPhaseStyles: Record<string, string> = {
+  AC: "bg-green-100 text-green-700",
+  CL: "bg-slate-100 text-slate-700",
+};
+
    return (
       <div className="space-y-6">
 
@@ -226,9 +236,27 @@ const contactTypeDescription =
                               <Td>{formatDate(contract.contractStartDate)}</Td>
                               <Td>{formatDate(contract.contractEndPlannedDate)}</Td>
                               <Td>
-                                 <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                                    {contract.contractPhase ?? "-"}
-                                 </span>
+                                    <span
+                                       className={`
+                                          inline-flex
+                                          items-center
+                                          justify-center
+                                          rounded-full
+                                          px-3
+                                          py-1
+                                          text-xs
+                                          font-semibold
+                                          ${
+                                          contractPhaseStyles[
+                                             contract.contractPhase ?? ""
+                                          ] ?? "bg-gray-100 text-gray-700"
+                                          }
+                                       `}
+                                    >
+                                       {contractPhaseMap[
+                                          contract.contractPhase ?? ""
+                                       ] ?? contract.contractPhase ?? "-"}
+                                    </span>
                               </Td>
                               <Td>{formatDate(contract.lastPaymentDate)}</Td>
                               <Td>{formatMoney(contract.lastPaymentAmount)}</Td>

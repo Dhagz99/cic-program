@@ -51,6 +51,8 @@ export default function Loans() {
      totalPages,
 
      isLoading,
+     currentPage,
+     pageSize
 
   } = useClientLoan({
 
@@ -64,7 +66,77 @@ export default function Loans() {
         contractPhase || undefined
 
   });
+
+
  const [viewLoan, setViewLoan] = useState<ClientLoan | null >(null);
+
+
+const getPaginationItems = () => {
+  const items: Array<number | "..."> = [];
+
+  if (totalPages <= 7) {
+    return Array.from(
+      { length: totalPages },
+      (_, index) => index + 1
+    );
+  }
+
+  items.push(1);
+
+  if (page > 4) {
+    items.push("...");
+  }
+
+  const startPage = Math.max(2, page - 1);
+  const endPage = Math.min(
+    totalPages - 1,
+    page + 1
+  );
+
+  for (
+    let pageNumber = startPage;
+    pageNumber <= endPage;
+    pageNumber++
+  ) {
+    items.push(pageNumber);
+  }
+
+  if (page < totalPages - 3) {
+    items.push("...");
+  }
+
+  items.push(totalPages);
+
+  return items;
+};
+
+const startItem =
+  total === 0
+    ? 0
+    : (currentPage - 1) * pageSize + 1;
+
+const endItem =
+  total === 0
+    ? 0
+    : Math.min(
+        currentPage * pageSize,
+        total
+      );
+ 
+
+const paginationItems =
+  getPaginationItems();
+ 
+
+  const contractPhaseMap: Record<string, string> = {
+    AC: "Active",
+    CL: "Closed",
+  };
+
+  const contractPhaseStyles: Record<string, string> = {
+    AC: "bg-green-100 text-green-700",
+    CL: "bg-slate-100 text-slate-700",
+  };
 
     return (
       <div className="p-8 bg-slate-100 min-h-screen flex flex-col gap-7">
@@ -457,20 +529,27 @@ export default function Loans() {
 
             <td className="px-6 py-4">
 
-               <span
-                  className={`
-                     px-3 py-1 rounded-full text-xs font-medium
-                     ${
-                        loan.contractPhase === "AC"
-                           ? "bg-green-100 text-green-700"
-                           : "bg-slate-100 text-slate-700"
-                     }
-                  `}
-               >
-
-                  {loan.contractPhase}
-
-               </span>
+              <span
+                                       className={`
+                                          inline-flex
+                                          items-center
+                                          justify-center
+                                          rounded-full
+                                          px-3
+                                          py-1
+                                          text-xs
+                                          font-semibold
+                                          ${
+                                          contractPhaseStyles[
+                                             loan.contractPhase ?? ""
+                                          ] ?? "bg-gray-100 text-gray-700"
+                                          }
+                                       `}
+                                    >
+                                       {contractPhaseMap[
+                                          loan.contractPhase ?? ""
+                                       ] ?? loan.contractPhase ?? "-"}
+                                    </span>
 
             </td>
 
@@ -521,55 +600,134 @@ export default function Loans() {
 
 </tbody>
             </table>
-          </div>
+      </div>
   
-          {/* PAGINATION */}
-          <div className="p-6 border-t border-slate-200 flex items-center justify-between">
-            <p className="text-sm text-slate-500">
-            Showing {loans.length} of {total.toLocaleString()} loans
-            </p>
-  
-            <div className="flex items-center gap-2">
-                      {
-            Array.from(
-                {
-                  length: totalPages
-                },
-                (_, index) => (
+{/* PAGINATION */}
+<div
+  className="
+    p-6
+    border-t border-slate-200
+    flex flex-col
+    sm:flex-row
+    sm:items-center
+    justify-between
+    gap-4
+  "
+>
+  <p className="text-sm text-slate-500">
+    Showing {startItem} to {endItem} of{" "}
+    {total.toLocaleString()} loans
+  </p>
 
-                  <button
+  {totalPages > 0 && (
+    <div className="flex items-center gap-2">
+      <button
+        type="button"
+        disabled={page === 1}
+        onClick={() =>
+          setPage((currentPage) =>
+            Math.max(1, currentPage - 1)
+          )
+        }
+        className="
+          h-10 px-3
+          rounded-xl
+          border border-slate-200
+          text-sm font-medium
+          transition
+          hover:bg-slate-100
+          disabled:opacity-40
+          disabled:cursor-not-allowed
+          disabled:hover:bg-transparent
+        "
+      >
+        Previous
+      </button>
 
-                      key={index + 1}
-
-                      onClick={() =>
-                        setPage(
-                            index + 1
-                        )
-                      }
-
-                      className={`
-                        w-10 h-10 rounded-xl
-                        border border-slate-200
-                        transition
-                        ${
-                            page === index + 1
-
-                              ? "bg-blue-600 text-white"
-
-                              : "hover:bg-slate-100"
-                        }
-                      `}
-                  >
-
-                      {index + 1}
-
-                  </button>
-
-                )
-            )
+      {paginationItems.map(
+        (item, index) => {
+          if (item === "...") {
+            return (
+              <span
+                key={`ellipsis-${index}`}
+                className="
+                  w-10 h-10
+                  flex items-center justify-center
+                  text-slate-500
+                "
+              >
+                ...
+              </span>
+            );
           }
-            </div>
-          </div>
+
+          return (
+            <button
+              key={item}
+              type="button"
+              onClick={() =>
+                setPage(item)
+              }
+              aria-current={
+                page === item
+                  ? "page"
+                  : undefined
+              }
+              className={`
+                w-10 h-10
+                rounded-xl
+                border
+                text-sm font-medium
+                transition
+                ${
+                  page === item
+                    ? `
+                      bg-blue-600
+                      text-white
+                      border-blue-600
+                    `
+                    : `
+                      border-slate-200
+                      text-slate-700
+                      hover:bg-slate-100
+                    `
+                } 
+              `}
+            >
+              {item}
+            </button>
+          );
+        }
+      )}
+
+      <button
+        type="button"
+        disabled={page === totalPages}
+        onClick={() =>
+          setPage((currentPage) =>
+            Math.min(
+              totalPages,
+              currentPage + 1
+            )
+          )
+        }
+        className="
+          h-10 px-3
+          rounded-xl
+          border border-slate-200
+          text-sm font-medium
+          transition
+          hover:bg-slate-100
+          disabled:opacity-40
+          disabled:cursor-not-allowed
+          disabled:hover:bg-transparent
+        "
+      >
+        Next
+      </button>
+    </div>
+  )}
+</div>
         </div>
 
              {viewLoan && (

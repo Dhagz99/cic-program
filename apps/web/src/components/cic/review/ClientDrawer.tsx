@@ -44,8 +44,9 @@ import ClientInformationForm from
 import LoanInformationForm from "./forms/LoanInformationForm";
 import { ReviewClient } from "@/types/review.types";
 import { X } from "lucide-react";
-import RequestModal from "@/components/Modal";
 import ErrorValidationModal from "./forms/ErrorValidationModal";
+import { useDomains } from "@/hooks/useGeneral";
+import { toast } from "sonner";
 
 
 
@@ -95,7 +96,6 @@ const existingClient =
 
 
 
-   console.log("mergedPreview: ",mergedPreview)
    
 
    /*
@@ -143,6 +143,9 @@ const existingClient =
    const {
       data: identificationTypes
    } = useIdentificationTypeDomain();
+
+   
+   const { data: contact_type } = useDomains("CONTACT_TYPE");
 
    /*
    |--------------------------------------------------------------------------
@@ -425,6 +428,8 @@ const existingClient =
       values: UpdateClientDTO
    ) => {
 
+      try{
+
       await updateClientMutation({
 
          id: client.id,
@@ -436,6 +441,18 @@ const existingClient =
       refresh();
 
       onClose();
+
+        toast.success("Client updated successfully.");
+
+      }catch(error){
+         toast.error(
+            error instanceof Error
+               ? error.message
+               : "Failed to update client"
+         );
+    }
+
+  
 
    };
 
@@ -454,7 +471,9 @@ const existingClient =
          return;
       }
 
-      await updateLoanMutation({
+      try{
+
+           await updateLoanMutation({
 
          id: firstContract.id,
       
@@ -507,6 +526,20 @@ const existingClient =
 
       onClose();
 
+
+      toast.success("Client loan updated successfully.");
+
+      }catch(error){
+         toast.error(
+            error instanceof Error
+               ? error.message
+               : "Failed to update loan client"
+         );
+    }
+
+
+
+    
    };
 
    return (
@@ -803,6 +836,10 @@ const existingClient =
 
                            identificationTypes={
                               identificationTypes || []
+                           }
+
+                            contactTypes={
+                              contact_type || []
                            }
 
                         />
