@@ -217,7 +217,7 @@ const contractPhaseStyles: Record<string, string> = {
                      {contracts.length === 0 ? (
                         <tr>
                            <td
-                              colSpan={6}
+                              colSpan={11}
                               className="py-10 text-center text-sm text-slate-500"
                            >
                               No contracts found

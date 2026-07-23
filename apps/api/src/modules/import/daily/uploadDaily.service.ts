@@ -75,16 +75,19 @@ const providerSubjectNos = records
 
 
 const existingClients =
-   await prisma.client.findMany({
-      where: {
-         providerSubjectNo: {
-            in: providerSubjectNos,
-         },
-      },
-      select: {
-         providerSubjectNo: true,
-      },
-   });
+  await prisma.client.findMany({
+    where: {
+      branchId: user.branchId,
+
+      providerSubjectNo: {
+        in: providerSubjectNos
+      }
+    },
+
+    select: {
+      providerSubjectNo: true
+    }
+  });
 
 const existingProviderSubjectNos =
    new Set(
