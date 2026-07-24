@@ -196,7 +196,9 @@ const isClientsOpen = hasDailyImport;
 
                 {/* MENU ITEMS */}
                 <div className="p-2">
+
                   {/* SETTINGS */}
+                  {hasPermission("MANAGER_ADMIN") && (
                   <button
                     onClick={() =>
                       setOpenSettings(true)
@@ -214,6 +216,8 @@ const isClientsOpen = hasDailyImport;
                       Settings
                     </span>
                   </button>
+                  )}
+              
 
                   {/* USERS */}
                   {hasPermission(

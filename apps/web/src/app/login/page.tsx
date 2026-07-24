@@ -83,7 +83,7 @@ export default function LoginPage() {
           </div>
 
           <div className="text-sm text-blue-100 z-10">
-            © 2025 CIC Reporting System
+            © 2026 CIC Reporting System
           </div>
 
           <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
