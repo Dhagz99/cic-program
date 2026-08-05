@@ -7,8 +7,8 @@
     "start": "node dist/src/server.js",
     "create:user": "tsx factory/createUser.ts",
     "seed:zip": "tsx factory/seeds/zipCodes.seed.ts",
-    "scrape-zip": "tsx scripts/scrape-phlpost-zip-codes.ts",
-    "import-postal": "tsx scripts/import-postal-codes.ts"
+    "scrape-zip": "tsx scripts/postal-code/scrape-phlpost-zip-codes.ts",
+    "import-postal": "tsx scripts/postal-code/import-postal-codes.ts"
   },
   "prisma": {
     "seed": "tsx factory/seed.ts"

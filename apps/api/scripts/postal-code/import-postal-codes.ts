@@ -34,8 +34,9 @@ async function main(): Promise<void> {
   const csvPath = path.resolve(
     process.cwd(),
     "scripts",
+    "postal-code",
     "csv",
-    "postal_codes_visayas.csv"
+    "postal_codes_phlpost.csv"
   );
 
   if (!fs.existsSync(csvPath)) {
