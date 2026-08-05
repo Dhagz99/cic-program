@@ -743,7 +743,16 @@ async ({
                stagingContract.nextPaymentAmount,
       
             nextPaymentDate:
-               stagingContract.nextPaymentDate
+               stagingContract.nextPaymentDate,
+
+            contractPhase:
+               stagingContract.contractPhase,
+
+            contractEndActualDate: 
+               stagingContract.contractEndActualDate,
+
+            outstandingBalance:
+               stagingContract.outstandingBalance
       
          },
       
@@ -789,7 +798,17 @@ async ({
                stagingContract.nextPaymentAmount,
       
             nextPaymentDate:
-               stagingContract.nextPaymentDate
+               stagingContract.nextPaymentDate,
+
+            contractPhase:
+               stagingContract.contractPhase,
+
+            contractEndActualDate: 
+               stagingContract.contractEndActualDate,
+
+            outstandingBalance:
+               stagingContract.outstandingBalance
+            
       
          }
       

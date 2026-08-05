@@ -649,6 +649,14 @@ model ContractMonthlySnapshot {
 
   nextPaymentDate            DateTime?
 
+  contractPhase               String?   
+
+  contractEndActualDate       DateTime?
+
+  outstandingBalance          Decimal? @db.Decimal(18,2)
+
+
+
   /*
   |--------------------------------------------------------------------------
   | RELATIONS
@@ -874,4 +882,33 @@ model DailyStagingClient {
   updatedAt                           DateTime @updatedAt
 
   @@unique([dailyId, rowNo])
+}
+
+
+model PostalCodeReference {
+  id                              String      @id @default(ulid())
+
+
+  regionName                      String
+  provinceName                    String
+  municipalityName                String
+  zipCode                         String
+
+  normalizedProvince              String
+  normalizedMunicipality           String
+
+  municipalityCode                String?
+
+  source                          String      @default("PHLPOST")
+  sourceUrl                       String?
+  importedAt                      DateTime    @default(now())
+  verifiedAt                      DateTime?
+
+  @@unique([normalizedProvince, normalizedMunicipality,  zipCode ])
+
+  @@index([ normalizedProvince, normalizedMunicipality])
+
+  @@index([municipalityCode])
+  @@index([zipCode])
+
 }

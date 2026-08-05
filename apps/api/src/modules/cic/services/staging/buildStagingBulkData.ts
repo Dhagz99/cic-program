@@ -75,6 +75,7 @@ export const buildStagingContractData = ({
    contract,
    validationErrors
 }: any) => {
+
    return {
       batchId,
       stagingClientId,
@@ -96,7 +97,7 @@ export const buildStagingContractData = ({
          contract.contractEndPlannedDate,
 
       contractEndActualDate:
-         contract.contractEndPlannedDate,
+         contract.contractEndActualDate,
 
       lastPaymentDate:
          contract.lastPaymentDate,

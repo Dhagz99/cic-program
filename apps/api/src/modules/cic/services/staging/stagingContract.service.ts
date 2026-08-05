@@ -19,6 +19,8 @@ export const saveStagingContract = async ({
    --------------------------------
    */
 
+
+
    const stagingContract =
       await prisma.stagingContract.create({
          data: {
@@ -42,7 +44,7 @@ export const saveStagingContract = async ({
                contract.contractEndPlannedDate,
 
             contractEndActualDate:
-               contract.contractEndPlannedDate,
+               contract.contractEndActualDate,
 
             lastPaymentDate: 
                contract.lastPaymentDate,

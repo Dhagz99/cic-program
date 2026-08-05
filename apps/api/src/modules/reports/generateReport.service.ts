@@ -377,7 +377,7 @@ for (
 
             contract.contractType || "",
 
-            contract.contractPhase || "",
+            snapshot.contractPhase|| "",
 
             "",//Contract Status
 
@@ -403,17 +403,16 @@ for (
                  )
                : "",
 
-            // contract.contractEndActualDate
-            //    ? formatDate(
-            //         contract.contractEndActualDate
-            //      )
-            //    : "",
-            
-            "", //contractEndActualDate
-
-               contract.lastPaymentDate
+            snapshot.contractEndActualDate
                ? formatDate(
-                    contract.lastPaymentDate
+                    snapshot.contractEndActualDate
+                 )
+               : "",
+            
+
+               snapshot.lastPaymentDate
+               ? formatDate(
+                    snapshot.lastPaymentDate
                  )
                : "",
 
@@ -437,19 +436,19 @@ for (
                  )
                : "",
 
-           contract.lastPaymentAmount || "0",
+           snapshot.lastPaymentAmount?.toString() || "0",
 
-            contract.nextPaymentDate
+            snapshot.nextPaymentDate
                ? formatDate(
-                    contract.nextPaymentDate
+                   snapshot.nextPaymentDate
                  )
                : "",
 
-            contract.nextPaymentAmount?.toString() || "0",
+            snapshot.nextPaymentAmount?.toString() || "0",
 
-            contract.outstandingPaymentNumber || "0",
+            snapshot.outstandingPaymentNumber || "0",
 
-            contract.outstandingBalance?.toString() || "0",
+            snapshot.outstandingBalance?.toString() || "0",
 
             contract.overduePaymentNumber || "0",
 

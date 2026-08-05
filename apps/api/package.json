@@ -6,7 +6,9 @@
     "build": "tsc",
     "start": "node dist/src/server.js",
     "create:user": "tsx factory/createUser.ts",
-    "seed:zip": "tsx factory/seeds/zipCodes.seed.ts"
+    "seed:zip": "tsx factory/seeds/zipCodes.seed.ts",
+    "scrape-zip": "tsx scripts/scrape-phlpost-zip-codes.ts",
+    "import-postal": "tsx scripts/import-postal-codes.ts"
   },
   "prisma": {
     "seed": "tsx factory/seed.ts"
@@ -14,9 +16,13 @@
   "dependencies": {
     "@prisma/client": "^6.10.1",
     "@repo/shared": "workspace:*",
+    "axios": "^1.18.1",
     "bcryptjs": "^3.0.3",
+    "cheerio": "^1.2.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
+    "csv-parse": "^7.0.1",
+    "csv-writer": "^1.6.0",
     "dbffile": "^1.12.0",
     "dotenv": "^17.4.2",
     "express": "^4.19.2",

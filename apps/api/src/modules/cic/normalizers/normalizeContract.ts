@@ -38,6 +38,11 @@ export const normalizeContract = (
             row.EFF,
             Number(row.FATERM), 
          ),
+      contractEndActualDate:
+         row.CPD === "CL" 
+               ?
+            parseDate(row.LPDATE) :
+            null,
 
       lastPaymentDate:
          parseDate(
@@ -73,6 +78,8 @@ export const normalizeContract = (
             row.MPA
          ),
       nextPaymentDate:
+         row.CPD == "CL" ? null 
+              :
          row.LPDATE ?
          addTermToDate(
                row.LPDATE, 1
@@ -80,14 +87,21 @@ export const normalizeContract = (
             addTermToDate(
                row.EFF, 1
             ),  
+
+
+
+
       nextPaymentAmount:
-            (row.MPA != 0) ?
-            parseAmount(
-               row.MPA
-            ) :
-            parseAmount(
-               row.PENSION
-            ) ,
+
+        row.CPD == "CL" ? 0  
+            :
+         (row.MPA != 0) ?
+         parseAmount(
+            row.MPA
+         ) :
+         parseAmount(
+            row.PENSION
+         ) ,
 
 
       outstandingPaymentNumber:
