@@ -56,15 +56,22 @@ async function scrapePostalCodes(): Promise<PostalCodeRow[]> {
       zipCode,
     ] = cells;
 
+    const isCompletelyEmpty =
+  cells.every((cell) => !cell);
+
+if (isCompletelyEmpty) {
+  return;
+}
+
     if (
-      !regionName ||
-      !provinceName ||
-      !municipalityName ||
-      !isValidZipCode(zipCode)
-    ) {
-      console.warn("Skipped invalid row:", cells);
-      return;
-    }
+  !regionName ||
+  !provinceName ||
+  !municipalityName ||
+  !isValidZipCode(zipCode)
+) {
+  console.warn("Skipped invalid row:", cells);
+  return;
+}
 
     records.push({
       regionName,

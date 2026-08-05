@@ -1,0 +1,29 @@
+import api from "@/lib/axios";
+import type {
+  ClientPostalAuditResponse,
+  UpdateClientPostalCodesPayload
+} from "@repo/shared";
+
+
+export async function getBranchPostalCodeAudit(
+  branchId: string
+): Promise<ClientPostalAuditResponse> {
+  const response =
+    await api.get(
+      `/postal-codes/audit/${branchId}`
+    );
+
+  return response.data;
+}
+
+export async function updateClientPostalCodes(
+  payload: UpdateClientPostalCodesPayload
+) {
+  const response =
+    await api.put(
+      "/postal-codes/update",
+      payload
+    );
+
+  return response.data;
+}

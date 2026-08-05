@@ -1,0 +1,412 @@
+﻿regionName,provinceName,municipalityName,zipCode,normalizedProvince,normalizedMunicipality,source
+Negros Island Region,Negros Occidental,Bacolod City,6100,NEGROS OCCIDENTAL,BACOLOD CITY,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Bago City,6101,NEGROS OCCIDENTAL,BAGO CITY,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Pulupandan,6102,NEGROS OCCIDENTAL,PULUPANDAN,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Valladolid,6103,NEGROS OCCIDENTAL,VALLADOLID,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,San Enrique,6104,NEGROS OCCIDENTAL,SAN ENRIQUE,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Pontevedra,6105,NEGROS OCCIDENTAL,PONTEVEDRA,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Hinigaran,6106,NEGROS OCCIDENTAL,HINIGARAN,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Binalbagan,6107,NEGROS OCCIDENTAL,BINALBAGAN,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Himamaylan,6108,NEGROS OCCIDENTAL,HIMAMAYLAN,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Ilog,6109,NEGROS OCCIDENTAL,ILOG,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Candoni,6110,NEGROS OCCIDENTAL,CANDONI,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Kabankalan,6111,NEGROS OCCIDENTAL,KABANKALAN,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Cauayan,6112,NEGROS OCCIDENTAL,CAUAYAN,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Sipalay,6113,NEGROS OCCIDENTAL,SIPALAY,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Hinoba-an,6114,NEGROS OCCIDENTAL,HINOBA AN,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Talisay,6115,NEGROS OCCIDENTAL,TALISAY,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Silay City,6116,NEGROS OCCIDENTAL,SILAY CITY,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Silay Hawaiian Central,6117,NEGROS OCCIDENTAL,SILAY HAWAIIAN CENTRAL,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Enrique Magalona,6118,NEGROS OCCIDENTAL,ENRIQUE MAGALONA,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Victorias,6119,NEGROS OCCIDENTAL,VICTORIAS,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Manapla,6120,NEGROS OCCIDENTAL,MANAPLA,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Cadiz City,6121,NEGROS OCCIDENTAL,CADIZ CITY,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Sagay,6122,NEGROS OCCIDENTAL,SAGAY,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Paraiso (Fabrica),6123,NEGROS OCCIDENTAL,PARAISO,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Escalante,6124,NEGROS OCCIDENTAL,ESCALANTE,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Toboso,6125,NEGROS OCCIDENTAL,TOBOSO,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Calatrava,6126,NEGROS OCCIDENTAL,CALATRAVA,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,San Carlos City,6127,NEGROS OCCIDENTAL,SAN CARLOS CITY,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Isabela,6128,NEGROS OCCIDENTAL,ISABELA,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Murcia,6129,NEGROS OCCIDENTAL,MURCIA,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,La Carlota City,6130,NEGROS OCCIDENTAL,LA CARLOTA CITY,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,La Castellana,6131,NEGROS OCCIDENTAL,LA CASTELLANA,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Moises Padilla,6132,NEGROS OCCIDENTAL,MOISES PADILLA,USE_POSTAL_PH
+Negros Island Region,Negros Occidental,Don Salvador Benedicto,6133,NEGROS OCCIDENTAL,DON SALVADOR BENEDICTO,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Dumaguete City,6200,NEGROS ORIENTAL,DUMAGUETE CITY,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Sibulan,6201,NEGROS ORIENTAL,SIBULAN,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,San Jose,6202,NEGROS ORIENTAL,SAN JOSE,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Amlan,6203,NEGROS ORIENTAL,AMLAN,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Tanjay,6204,NEGROS ORIENTAL,TANJAY,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Pamplona,6205,NEGROS ORIENTAL,PAMPLONA,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Bais City,6206,NEGROS ORIENTAL,BAIS CITY,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Mabinay,6207,NEGROS ORIENTAL,MABINAY,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Manjuyod,6208,NEGROS ORIENTAL,MANJUYOD,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Bindoy,6209,NEGROS ORIENTAL,BINDOY,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Ayungon,6210,NEGROS ORIENTAL,AYUNGON,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Tayasan,6211,NEGROS ORIENTAL,TAYASAN,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Jimalalud,6212,NEGROS ORIENTAL,JIMALALUD,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,La Libertad,6213,NEGROS ORIENTAL,LA LIBERTAD,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Guihulngan,6214,NEGROS ORIENTAL,GUIHULNGAN,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Valencia,6215,NEGROS ORIENTAL,VALENCIA,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Bacung,6216,NEGROS ORIENTAL,BACUNG,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Dauin,6217,NEGROS ORIENTAL,DAUIN,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Zamboanguita,6218,NEGROS ORIENTAL,ZAMBOANGUITA,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Siaton,6219,NEGROS ORIENTAL,SIATON,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Sta. Catalina,6220,NEGROS ORIENTAL,STA CATALINA,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Bayawan,6221,NEGROS ORIENTAL,BAYAWAN,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Basay,6222,NEGROS ORIENTAL,BASAY,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Canlaon City,6223,NEGROS ORIENTAL,CANLAON CITY,USE_POSTAL_PH
+Negros Island Region,Negros Oriental,Valle hermoso,6224,NEGROS ORIENTAL,VALLE HERMOSO,USE_POSTAL_PH
+Negros Island Region,Siquijor,Siquijor,6225,SIQUIJOR,SIQUIJOR,USE_POSTAL_PH
+Negros Island Region,Siquijor,Larena,6226,SIQUIJOR,LARENA,USE_POSTAL_PH
+Negros Island Region,Siquijor,San Juan,6227,SIQUIJOR,SAN JUAN,USE_POSTAL_PH
+Negros Island Region,Siquijor,Lazi,6228,SIQUIJOR,LAZI,USE_POSTAL_PH
+Negros Island Region,Siquijor,Maria,6229,SIQUIJOR,MARIA,USE_POSTAL_PH
+Negros Island Region,Siquijor,Enrique Villanueva,6230,SIQUIJOR,ENRIQUE VILLANUEVA,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Kalibo,5600,AKLAN,KALIBO,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Banga,5601,AKLAN,BANGA,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Libacao,5602,AKLAN,LIBACAO,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Madalag,5603,AKLAN,MADALAG,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Numancia,5604,AKLAN,NUMANCIA,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Lezo,5605,AKLAN,LEZO,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Malinao,5606,AKLAN,MALINAO,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Nabas,5607,AKLAN,NABAS,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Malay,5608,AKLAN,MALAY,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Buruanga,5609,AKLAN,BURUANGA,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,New Washington,5610,AKLAN,NEW WASHINGTON,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Makato,5611,AKLAN,MAKATO,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Tangalan,5612,AKLAN,TANGALAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Ibajay,5613,AKLAN,IBAJAY,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Balete,5614,AKLAN,BALETE,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Batan,5615,AKLAN,BATAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Aklan,Altavas,5616,AKLAN,ALTAVAS,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,San Jose,5700,ANTIQUE,SAN JOSE,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Belison,5701,ANTIQUE,BELISON,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Patnongon,5702,ANTIQUE,PATNONGON,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Valderrama,5703,ANTIQUE,VALDERRAMA,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Bugasong,5704,ANTIQUE,BUGASONG,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Laua-an,5705,ANTIQUE,LAUA AN,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Barbaza,5706,ANTIQUE,BARBAZA,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Tibiao,5707,ANTIQUE,TIBIAO,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Culasi,5708,ANTIQUE,CULASI,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Sebaste,5709,ANTIQUE,SEBASTE,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Libertad,5710,ANTIQUE,LIBERTAD,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Caluya,5711,ANTIQUE,CALUYA,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Pandan,5712,ANTIQUE,PANDAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Sibalom,5713,ANTIQUE,SIBALOM,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,San Remegio,5714,ANTIQUE,SAN REMEGIO,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Hamtic,5715,ANTIQUE,HAMTIC,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Tobias Fornier (Dao),5716,ANTIQUE,TOBIAS FORNIER,USE_POSTAL_PH
+Region 6 (Western Visayas),Antique,Anini-y,5717,ANTIQUE,ANINI Y,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Roxas City,5800,CAPIZ,ROXAS CITY,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Panay,5801,CAPIZ,PANAY,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Pontevedra,5802,CAPIZ,PONTEVEDRA,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Pres. Roxas,5803,CAPIZ,PRES ROXAS,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Pilar,5804,CAPIZ,PILAR,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Ivisan,5805,CAPIZ,IVISAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Sapian,5806,CAPIZ,SAPIAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Mambusao,5807,CAPIZ,MAMBUSAO,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Jamindan,5808,CAPIZ,JAMINDAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Ma-ayon,5809,CAPIZ,MA AYON,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Dao,5810,CAPIZ,DAO,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Cuartero,5811,CAPIZ,CUARTERO,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Dumarao,5812,CAPIZ,DUMARAO,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Dumalag,5813,CAPIZ,DUMALAG,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Tapaz,5814,CAPIZ,TAPAZ,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Panitan,5815,CAPIZ,PANITAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Capiz,Sigma,5816,CAPIZ,SIGMA,USE_POSTAL_PH
+Region 6 (Western Visayas),Guimaras,Buenavista,5044,GUIMARAS,BUENAVISTA,USE_POSTAL_PH
+Region 6 (Western Visayas),Guimaras,Jordan,5045,GUIMARAS,JORDAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Guimaras,Nueva Valencia,5046,GUIMARAS,NUEVA VALENCIA,USE_POSTAL_PH
+Region 6 (Western Visayas),Guimaras,San Lorenzo,5047,GUIMARAS,SAN LORENZO,USE_POSTAL_PH
+Region 6 (Western Visayas),Guimaras,Sibunag,5048,GUIMARAS,SIBUNAG,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Iloilo City,5000,ILOILO,ILOILO CITY,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Pavia,5001,ILOILO,PAVIA,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Santa Barbara,5002,ILOILO,SANTA BARBARA,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Leganes,5003,ILOILO,LEGANES,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Zarraga,5004,ILOILO,ZARRAGA,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,New Lucena,5005,ILOILO,NEW LUCENA,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Dumangas,5006,ILOILO,DUMANGAS,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Barotac Nuevo,5007,ILOILO,BAROTAC NUEVO,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Pototan,5008,ILOILO,POTOTAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Anilao,5009,ILOILO,ANILAO,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Banate,5010,ILOILO,BANATE,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Barotac Viejo,5011,ILOILO,BAROTAC VIEJO,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Ajuy,5012,ILOILO,AJUY,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Concepcion,5013,ILOILO,CONCEPCION,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Sara,5014,ILOILO,SARA,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,San Dionisio,5015,ILOILO,SAN DIONISIO,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Batad,5016,ILOILO,BATAD,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Estancia,5017,ILOILO,ESTANCIA,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Balasan,5018,ILOILO,BALASAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Carles,5019,ILOILO,CARLES,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Oton,5020,ILOILO,OTON,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Tigbauan,5021,ILOILO,TIGBAUAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Guimbal,5022,ILOILO,GUIMBAL,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Miagao,5023,ILOILO,MIAGAO,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,San Joaquin,5024,ILOILO,SAN JOAQUIN,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,San Miguel,5025,ILOILO,SAN MIGUEL,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Leon,5026,ILOILO,LEON,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Tubungan,5027,ILOILO,TUBUNGAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Alimodian,5028,ILOILO,ALIMODIAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Igbaras,5029,ILOILO,IGBARAS,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Maasin,5030,ILOILO,MAASIN,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Cabatuan,5031,ILOILO,CABATUAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Mina,5032,ILOILO,MINA,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Badiangan,5033,ILOILO,BADIANGAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Janiuay,5034,ILOILO,JANIUAY,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Dingle,5035,ILOILO,DINGLE,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,San Enrique,5036,ILOILO,SAN ENRIQUE,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Passi,5037,ILOILO,PASSI,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Dueñas,5038,ILOILO,DUENAS,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,San Rafael,5039,ILOILO,SAN RAFAEL,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Calinog,5040,ILOILO,CALINOG,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Bingawan,5041,ILOILO,BINGAWAN,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Lambunao,5042,ILOILO,LAMBUNAO,USE_POSTAL_PH
+Region 6 (Western Visayas),Iloilo,Lemery,5043,ILOILO,LEMERY,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Tagbilaran City,6300,BOHOL,TAGBILARAN CITY,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Baclayon,6301,BOHOL,BACLAYON,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Alburquerque,6302,BOHOL,ALBURQUERQUE,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Loay,6303,BOHOL,LOAY,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Lila,6304,BOHOL,LILA,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Dimiao,6305,BOHOL,DIMIAO,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Valencia,6306,BOHOL,VALENCIA,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Garcia Hernandez,6307,BOHOL,GARCIA HERNANDEZ,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Jagna,6308,BOHOL,JAGNA,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Duero,6309,BOHOL,DUERO,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Guindulman,6310,BOHOL,GUINDULMAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Anda,6311,BOHOL,ANDA,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Candijay,6312,BOHOL,CANDIJAY,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Mabini,6313,BOHOL,MABINI,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Alicia,6314,BOHOL,ALICIA,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Ubay,6315,BOHOL,UBAY,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Loboc,6316,BOHOL,LOBOC,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Bilar,6317,BOHOL,BILAR,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Batuan,6318,BOHOL,BATUAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Carmen,6319,BOHOL,CARMEN,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Sierra Bullones,6320,BOHOL,SIERRA BULLONES,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Pilar,6321,BOHOL,PILAR,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Dagohoy,6322,BOHOL,DAGOHOY,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,San Miguel,6323,BOHOL,SAN MIGUEL,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Trinidad,6324,BOHOL,TRINIDAD,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Talibon,6325,BOHOL,TALIBON,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Bien Unido,6326,BOHOL,BIEN UNIDO,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Loon,6327,BOHOL,LOON,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Calape,6328,BOHOL,CALAPE,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Tubigon,6329,BOHOL,TUBIGON,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Clarin,6330,BOHOL,CLARIN,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Sagbayan,6331,BOHOL,SAGBAYAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Inabanga,6332,BOHOL,INABANGA,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Buenavista,6333,BOHOL,BUENAVISTA,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Jetafe,6334,BOHOL,JETAFE,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Antequera,6335,BOHOL,ANTEQUERA,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Maribojoc,6336,BOHOL,MARIBOJOC,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Corella,6337,BOHOL,CORELLA,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Sikatuna,6338,BOHOL,SIKATUNA,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Dauis,6339,BOHOL,DAUIS,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Panglao,6340,BOHOL,PANGLAO,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Cortes,6341,BOHOL,CORTES,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Balilihan,6342,BOHOL,BALILIHAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Catigbian,6343,BOHOL,CATIGBIAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Danao,6344,BOHOL,DANAO,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,San Isidro,6345,BOHOL,SAN ISIDRO,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,President Carlos P. Garcia,6346,BOHOL,PRESIDENT CARLOS P GARCIA,USE_POSTAL_PH
+Region 7 (Central Visayas),Bohol,Sevilla,6347,BOHOL,SEVILLA,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Cebu City,6000,CEBU,CEBU CITY,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Consolacion,6001,CEBU,CONSOLACION,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Liloan,6002,CEBU,LILOAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Compostela,6003,CEBU,COMPOSTELA,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Danao City,6004,CEBU,DANAO CITY,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Carmen,6005,CEBU,CARMEN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Catmon,6006,CEBU,CATMON,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Sogod,6007,CEBU,SOGOD,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Borbon,6008,CEBU,BORBON,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Tabogon,6009,CEBU,TABOGON,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Bogo,6010,CEBU,BOGO,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,San Remegio,6011,CEBU,SAN REMEGIO,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Medellin,6012,CEBU,MEDELLIN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Daang-Bantayan,6013,CEBU,DAANG BANTAYAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Mandaue City,6014,CEBU,MANDAUE CITY,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Lapu-Lapu City,6015,CEBU,LAPU LAPU CITY,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Mactan Airport,6016,CEBU,MACTAN AIRPORT,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Cordova,6017,CEBU,CORDOVA,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,San Fernando,6018,CEBU,SAN FERNANDO,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Carcar,6019,CEBU,CARCAR,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Sibonga,6020,CEBU,SIBONGA,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Argao,6021,CEBU,ARGAO,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Dalaguete,6022,CEBU,DALAGUETE,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Alcoy,6023,CEBU,ALCOY,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Boljoon,6024,CEBU,BOLJOON,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Oslob,6025,CEBU,OSLOB,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Santander,6026,CEBU,SANTANDER,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Samboan,6027,CEBU,SAMBOAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Ginatilan,6028,CEBU,GINATILAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Malabuyoc,6029,CEBU,MALABUYOC,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Alegria,6030,CEBU,ALEGRIA,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Badian,6031,CEBU,BADIAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Moalboal,6032,CEBU,MOALBOAL,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Alcantara,6033,CEBU,ALCANTARA,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Ronda,6034,CEBU,RONDA,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Dumanjug,6035,CEBU,DUMANJUG,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Barili,6036,CEBU,BARILI,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Naga,6037,CEBU,NAGA,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Toledo City,6038,CEBU,TOLEDO CITY,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Pinamungajan,6039,CEBU,PINAMUNGAJAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Aloguinsan,6040,CEBU,ALOGUINSAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Balamban,6041,CEBU,BALAMBAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Asturias,6042,CEBU,ASTURIAS,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Tuburan,6043,CEBU,TUBURAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Tabuelan,6044,CEBU,TABUELAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Talisay,6045,CEBU,TALISAY,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Minglanilla,6046,CEBU,MINGLANILLA,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Santa Fe,6047,CEBU,SANTA FE,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Pilar,6048,CEBU,PILAR,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Poro,6049,CEBU,PORO,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,San Francisco,6050,CEBU,SAN FRANCISCO,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Tudela,6051,CEBU,TUDELA,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Bantayan,6052,CEBU,BANTAYAN,USE_POSTAL_PH
+Region 7 (Central Visayas),Cebu,Madridejos,6053,CEBU,MADRIDEJOS,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Biliran,Naval,6543,BILIRAN,NAVAL,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Biliran,Almeria,6544,BILIRAN,ALMERIA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Biliran,Kawayan,6545,BILIRAN,KAWAYAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Biliran,Maripipi,6546,BILIRAN,MARIPIPI,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Biliran,Culaba,6547,BILIRAN,CULABA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Biliran,Caibiran,6548,BILIRAN,CAIBIRAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Biliran,Biliran,6549,BILIRAN,BILIRAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Biliran,Cabucgayan,6550,BILIRAN,CABUCGAYAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Borongan,6800,EASTERN SAMAR,BORONGAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Balangkayan,6801,EASTERN SAMAR,BALANGKAYAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Maydolong,6802,EASTERN SAMAR,MAYDOLONG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Llorente,6803,EASTERN SAMAR,LLORENTE,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Hernani,6804,EASTERN SAMAR,HERNANI,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Gen. MacArthur,6805,EASTERN SAMAR,GEN MACARTHUR,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Can-Avid,6806,EASTERN SAMAR,CAN AVID,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Salcedo,6807,EASTERN SAMAR,SALCEDO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Mercedes,6808,EASTERN SAMAR,MERCEDES,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Guiuan,6809,EASTERN SAMAR,GUIUAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Quinapondan,6810,EASTERN SAMAR,QUINAPONDAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Giporlos,6811,EASTERN SAMAR,GIPORLOS,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Balangiga,6812,EASTERN SAMAR,BALANGIGA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Lawaan,6813,EASTERN SAMAR,LAWAAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,San Julian,6814,EASTERN SAMAR,SAN JULIAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Sulat,6815,EASTERN SAMAR,SULAT,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Taft,6816,EASTERN SAMAR,TAFT,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Dolores,6817,EASTERN SAMAR,DOLORES,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Oras,6818,EASTERN SAMAR,ORAS,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Jipapad,6819,EASTERN SAMAR,JIPAPAD,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Maslog,6820,EASTERN SAMAR,MASLOG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,San Policarpio,6821,EASTERN SAMAR,SAN POLICARPIO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Eastern Samar,Arteche,6822,EASTERN SAMAR,ARTECHE,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Tacloban City,6500,LEYTE,TACLOBAN CITY,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Palo,6501,LEYTE,PALO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Tanauan,6502,LEYTE,TANAUAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Tolosa,6503,LEYTE,TOLOSA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Tabontabon,6504,LEYTE,TABONTABON,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Dulag,6505,LEYTE,DULAG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Julita,6506,LEYTE,JULITA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Mayorga,6507,LEYTE,MAYORGA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,La Paz,6508,LEYTE,LA PAZ,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Macarthur,6509,LEYTE,MACARTHUR,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Abuyog,6510,LEYTE,ABUYOG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Javier,6511,LEYTE,JAVIER,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Mahaplag,6512,LEYTE,MAHAPLAG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Sta. Fe,6513,LEYTE,STA FE,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Pastrana,6514,LEYTE,PASTRANA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Dagami,6515,LEYTE,DAGAMI,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Burauen,6516,LEYTE,BURAUEN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Alangalang,6517,LEYTE,ALANGALANG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,San Miguel,6518,LEYTE,SAN MIGUEL,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Barugo,6519,LEYTE,BARUGO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Babatngon,6520,LEYTE,BABATNGON,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Baybay,6521,LEYTE,BAYBAY,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Inopacan,6522,LEYTE,INOPACAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Hindang,6523,LEYTE,HINDANG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Hilongos,6524,LEYTE,HILONGOS,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Bato,6525,LEYTE,BATO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Matalom,6526,LEYTE,MATALOM,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Jaro,6527,LEYTE,JARO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Tunga,6528,LEYTE,TUNGA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Carigara,6529,LEYTE,CARIGARA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Capoocan,6530,LEYTE,CAPOOCAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Kananga,6531,LEYTE,KANANGA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Matag-ob,6532,LEYTE,MATAG OB,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Leyte,6533,LEYTE,LEYTE,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Calubian,6534,LEYTE,CALUBIAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,San Isidro,6535,LEYTE,SAN ISIDRO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Tabango,6536,LEYTE,TABANGO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Villaba,6537,LEYTE,VILLABA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Palompon,6538,LEYTE,PALOMPON,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Isabel,6539,LEYTE,ISABEL,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Merida,6540,LEYTE,MERIDA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Ormoc City,6541,LEYTE,ORMOC CITY,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Leyte,Albuera,6542,LEYTE,ALBUERA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Catarman,6400,NORTHERN SAMAR,CATARMAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Bobon,6401,NORTHERN SAMAR,BOBON,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,San Jose,6402,NORTHERN SAMAR,SAN JOSE,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Lope de Vega,6403,NORTHERN SAMAR,LOPE DE VEGA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Lavezares,6404,NORTHERN SAMAR,LAVEZARES,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Allen,6405,NORTHERN SAMAR,ALLEN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Victoria,6406,NORTHERN SAMAR,VICTORIA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,San Antonio,6407,NORTHERN SAMAR,SAN ANTONIO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Capul,6408,NORTHERN SAMAR,CAPUL,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,San Isidro,6409,NORTHERN SAMAR,SAN ISIDRO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Biri,6410,NORTHERN SAMAR,BIRI,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Laoang,6411,NORTHERN SAMAR,LAOANG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Mapanas,6412,NORTHERN SAMAR,MAPANAS,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Pambujan,6413,NORTHERN SAMAR,PAMBUJAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Silvino Lobos,6414,NORTHERN SAMAR,SILVINO LOBOS,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,San Roque,6415,NORTHERN SAMAR,SAN ROQUE,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Rosario,6416,NORTHERN SAMAR,ROSARIO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Mondragon,6417,NORTHERN SAMAR,MONDRAGON,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Catubig,6418,NORTHERN SAMAR,CATUBIG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,San Vicente,6419,NORTHERN SAMAR,SAN VICENTE,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Las Navas,6420,NORTHERN SAMAR,LAS NAVAS,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Palapag,6421,NORTHERN SAMAR,PALAPAG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Gamay,6422,NORTHERN SAMAR,GAMAY,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Northern Samar,Lapineg,6423,NORTHERN SAMAR,LAPINEG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Catbalogan,6700,SAMAR,CATBALOGAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Jiabong,6701,SAMAR,JIABONG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Motiong,6702,SAMAR,MOTIONG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Wright,6703,SAMAR,WRIGHT,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Tarangnan,6704,SAMAR,TARANGNAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Pagsanghan,6705,SAMAR,PAGSANGHAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Gandara,6706,SAMAR,GANDARA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,San Jorge,6707,SAMAR,SAN JORGE,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Matuguinao,6708,SAMAR,MATUGUINAO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Sta. Margarita,6709,SAMAR,STA MARGARITA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Calbayog City,6710,SAMAR,CALBAYOG CITY,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Sto. Niño,6711,SAMAR,STO NINO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Tagapul-an,6712,SAMAR,TAGAPUL AN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Hinabangan,6713,SAMAR,HINABANGAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,San Sebastian,6714,SAMAR,SAN SEBASTIAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Calbiga,6715,SAMAR,CALBIGA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Pinabacdao,6716,SAMAR,PINABACDAO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Villareal,6717,SAMAR,VILLAREAL,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Sta. Rita,6718,SAMAR,STA RITA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Talalora,6719,SAMAR,TALALORA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Basey,6720,SAMAR,BASEY,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Marabut,6721,SAMAR,MARABUT,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Daram,6722,SAMAR,DARAM,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,San Jose de Buan,6723,SAMAR,SAN JOSE DE BUAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Almagro,6724,SAMAR,ALMAGRO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Samar,Zumarraga,6725,SAMAR,ZUMARRAGA,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Maasin,6600,SOUTHERN LEYTE,MAASIN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Macrohon,6601,SOUTHERN LEYTE,MACROHON,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Padre Burgos,6602,SOUTHERN LEYTE,PADRE BURGOS,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Malitbog,6603,SOUTHERN LEYTE,MALITBOG,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Bontoc,6604,SOUTHERN LEYTE,BONTOC,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Tomas Oppus,6605,SOUTHERN LEYTE,TOMAS OPPUS,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Sogod,6606,SOUTHERN LEYTE,SOGOD,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Silago,6607,SOUTHERN LEYTE,SILAGO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Hinunangan,6608,SOUTHERN LEYTE,HINUNANGAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Hinundayan,6609,SOUTHERN LEYTE,HINUNDAYAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Anahawan,6610,SOUTHERN LEYTE,ANAHAWAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,San Juan (Cabalian),6611,SOUTHERN LEYTE,SAN JUAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Liloan,6612,SOUTHERN LEYTE,LILOAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,San Francisco,6613,SOUTHERN LEYTE,SAN FRANCISCO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Pintuyan,6614,SOUTHERN LEYTE,PINTUYAN,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Libagon,6615,SOUTHERN LEYTE,LIBAGON,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,St. Bernard,6616,SOUTHERN LEYTE,ST BERNARD,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,San Ricardo,6617,SOUTHERN LEYTE,SAN RICARDO,USE_POSTAL_PH
+Region 8 (Eastern Visayas),Southern Leyte,Limasawa,6618,SOUTHERN LEYTE,LIMASAWA,USE_POSTAL_PH

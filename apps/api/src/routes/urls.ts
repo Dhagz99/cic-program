@@ -16,6 +16,7 @@ import initializeRoutes from "../modules/initialize/initialize.route";
 import external from "../modules/external/routes/external.routes";
 import imports from "../modules/import/import.route";
 import  reportingPeriodRoutes from "../modules/reporting-period/reporting-period.route";
+import  postalCodeRoutes from "../modules/postal-code/postal-code.routes";
 
 
 const router = Router();
@@ -35,6 +36,7 @@ router.use( "/initialize", initializeRoutes);
 router.use( "/external", external);
 router.use("/import", imports );
 router.use("/reporting-periods", reportingPeriodRoutes);
+router.use("/postal-codes", postalCodeRoutes);
 
 
 export default router;

@@ -14,12 +14,13 @@ import {
   ChevronDown,
   Home,
   LogOut,
+  MapPinCheck,
   Settings,
   User,
   User2,
 } from "lucide-react";
 
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import {  useRef, useState } from "react";
 
 export default function CICLayout({
@@ -52,6 +53,7 @@ const hasDailyImport =
 
 const isClientsOpen = hasDailyImport;
 
+  const router = useRouter();
 
   if (loading) {
     return (
@@ -260,6 +262,24 @@ const isClientsOpen = hasDailyImport;
                       Branches
                     </span>
                   </button>
+                  
+                  {/* Postal Code Checker */}
+                  <button
+                   onClick={() => router.push("/postal-codes")}
+                    className="
+                      w-full flex items-center gap-3
+                      px-4 py-3 rounded-2xl
+                      hover:bg-slate-100
+                      transition text-slate-700
+                    "
+                  >
+                    <MapPinCheck size={18} />
+
+                    <span className="text-sm font-medium">
+                      Postal Code Checker
+                    </span>
+                  </button>
+
 
                   {/* LOGOUT */}
                   <button
