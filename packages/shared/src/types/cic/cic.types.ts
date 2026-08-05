@@ -133,6 +133,8 @@ export interface ValidationError {
     validationErrors: ValidationError[];
  
     stagingContracts: StagingContract[];
+
+    isConfirmed?: boolean
  
  }
 

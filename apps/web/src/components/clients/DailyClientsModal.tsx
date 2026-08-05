@@ -51,6 +51,7 @@ export function DailyClientsModal({
   batch,
   onClose,
 }: DailyClientsModalProps) {
+  
   const clients = batch?.dailyClients ?? [];
 
 
