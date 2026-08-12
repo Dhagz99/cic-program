@@ -165,6 +165,19 @@ export type UploadDailyClientResponse = {
    previewClients: unknown[];
  };
 
- 
 
- 
+ export type ContractExportValidationError = {
+  id: string;
+  accountNo: string;
+  providerSubjectNo: string;
+  error: string;
+};
+
+export type ExportValidationResponse = {
+  success: false;
+  message: string;
+  totalErrors: number;
+  validationErrors: ContractExportValidationError[];
+};
+
+

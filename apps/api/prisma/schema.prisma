@@ -365,7 +365,7 @@ model StagingClient {
 
   isConfirmed           Boolean @default(false)
 
-  batch                 ImportBatch  @relation(fields: [batchId], references: [id])
+  batch                 ImportBatch  @relation(fields: [batchId], references: [id], onDelete: Cascade)
 
   stagingContracts      StagingContract[]
 
@@ -436,7 +436,7 @@ model StagingContract {
 
   isConfirmed                 Boolean @default(false)
 
-  batch                       ImportBatch @relation(fields: [batchId], references: [id])
+  batch                       ImportBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
 
   stagingClient               StagingClient @relation(fields: [stagingClientId], references: [id])
   
@@ -531,8 +531,8 @@ model Client {
 
 
   branch                             Branch  @relation(fields: [branchId], references: [id])
-  batch                       ImportBatch?  @relation(fields: [batchId], references: [id])
-  dailyBatch                       DailyImportBatch?  @relation(fields: [dailyBatchId], references: [id])
+  batch                              ImportBatch?  @relation(fields: [batchId], references: [id], onDelete: Restrict)
+  dailyBatch                          DailyImportBatch?  @relation(fields: [dailyBatchId], references: [id])
   Contracts                          Contract[]
 
   civilStatus                        CivilStatusDomain? @relation( fields: [civilStatusCode], references: [code])
@@ -595,7 +595,7 @@ model Contract {
   overduePaymentAmount        Decimal? @db.Decimal(18,2)
 
 
-  batch                       ImportBatch @relation(fields: [batchId], references: [id])
+  batch                       ImportBatch @relation(fields: [batchId], references: [id], onDelete: Restrict)
   branch                       Branch @relation(fields: [branchId], references: [id])
 
   client               Client @relation(fields: [clientId], references: [id])
@@ -617,6 +617,12 @@ enum ContractStatus {
   WRITTEN_OFF
 }
 
+enum SnapshotStatus {
+  DRAFT
+  VALIDATED
+  EXPORTED
+}
+
 model ContractMonthlySnapshot {
 
   id                         String @id @default(uuid())
@@ -628,6 +634,8 @@ model ContractMonthlySnapshot {
   reportingPeriodId          String
 
   contractStatus             ContractStatus
+
+  snapshotStatus             SnapshotStatus @default(DRAFT)
 
   financedAmount             Decimal? @db.Decimal(18,2)
 
@@ -770,7 +778,7 @@ model CicExport {
 
   generatedBy                 User @relation(fields: [generatedById], references: [id])
 
-  importBatch                 ImportBatch @relation(fields: [importBatchId], references: [id])
+  importBatch                 ImportBatch @relation(fields: [importBatchId], references: [id], onDelete: Cascade)
 
 }
 

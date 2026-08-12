@@ -8,6 +8,7 @@ type User = {
   id: number
   username: string
   name: string
+  branchId: string
   roles: string[]
   permissions: string[]
   company_id:string;

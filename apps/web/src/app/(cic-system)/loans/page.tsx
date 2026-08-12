@@ -20,7 +20,11 @@ import { formatNumber } from "@/utils/value/formatNumber";
 import { formatCompactCurrency } from "@/utils/value/formatCompactCurrency";
 import RequestModal from "@/components/Modal";
 import ClientViewLoanModal from "@/components/clients/ClientViewLoanModal";
-import { ClientLoan } from "@repo/shared";
+import { ClientLoan, UpdateLoanFormValues } from "@repo/shared";
+import { useGetLoanById } from "@/hooks/loans/useGetLoanById";
+import { useUpdateLoanById } from "@/hooks/loans/useUpdateLoanById";
+import EditLoanModal from "@/components/loans/EditLoanModal";
+import { toast } from "sonner";
 
 
   
@@ -40,6 +44,10 @@ export default function Loans() {
      contractPhase,
      setContractPhase
   ] = useState("");
+
+  const [selectedId, setSelectedId] = useState("");
+ const [viewLoan, setViewLoan] = useState<ClientLoan | null >(null);
+
 
   const {
 
@@ -67,8 +75,43 @@ export default function Loans() {
 
   });
 
+  const {data: loan, isLoading: updateIsLoading} = useGetLoanById(selectedId);
 
- const [viewLoan, setViewLoan] = useState<ClientLoan | null >(null);
+  const updateLoanMutation = useUpdateLoanById();
+
+
+  const handleEditLoan = async (id: string) => {
+      setSelectedId(id);
+  }
+
+  const handleUpdateLoan = async(
+    values: UpdateLoanFormValues
+  ) => {
+    try{
+      if(!selectedId) return;
+    await updateLoanMutation.mutateAsync({
+      id: selectedId,
+      data: values
+    });
+
+       toast.success("Loan updated successfully.")
+
+
+
+    }catch(error){
+   toast.error(
+            error instanceof Error
+               ? error.message
+               : "Failed to update loan"
+         );
+    }
+    setSelectedId("")
+  
+  }
+
+
+
+
 
 
 const getPaginationItems = () => {
@@ -583,6 +626,7 @@ const paginationItems =
                         flex items-center justify-center
                         text-blue-700
                      "
+                     onClick={()=>handleEditLoan(loan.id)}
                   >
                      <Pencil size={18} />
                   </button>
@@ -739,6 +783,15 @@ const paginationItems =
                        <ClientViewLoanModal loan={viewLoan} />
                     </RequestModal>
                  )}
+        {selectedId && !updateIsLoading && (
+          <EditLoanModal
+            isOpen={true}
+            loan={loan ?? null}
+            onClose={() => setSelectedId("")}
+            onSubmit={handleUpdateLoan}
+          />
+        )}
+
       </div>
     );
   }

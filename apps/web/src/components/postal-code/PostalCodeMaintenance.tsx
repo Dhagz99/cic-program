@@ -35,6 +35,7 @@ import {
 import { toast } from "sonner";
 import PostalAuditSummary from "./PostalAuditSummary";
 import PostalAuditTable from "./PostalAuditTable";
+import { useAuth } from "../context/UserContext";
 
 type StatusFilter =
   | "ALL"
@@ -44,6 +45,7 @@ type StatusFilter =
   | "UNRESOLVED";
 
 export default function PostalCodeMaintenance() {
+
   const [
     branchId,
     setBranchId
@@ -65,6 +67,11 @@ export default function PostalCodeMaintenance() {
   ] = useState<Set<string>>(
     new Set()
   );
+  const user = useAuth();
+
+const isAdmin =
+   user.hasRole("ADMIN")
+
 
   const {
     data: branches = [],
@@ -86,6 +93,20 @@ export default function PostalCodeMaintenance() {
     setSearch("");
     setStatusFilter("ALL");
   }, [branchId]);
+
+  const visibleBranches = isAdmin
+   ? branches
+   : branches.filter(
+        (branch) => branch.id === user.user?.branchId
+     );
+
+useEffect(() => {
+   if (!user) return;
+
+   if (!isAdmin && user.user?.branchId) {
+      setBranchId(user.user?.branchId);
+   }
+}, [user, isAdmin]);
 
   const filteredRows =
     useMemo(() => {
@@ -389,20 +410,18 @@ export default function PostalCodeMaintenance() {
                 focus:ring-blue-100
               "
             >
-              <option value="">
-                {isBranchesLoading
-                  ? "Loading branches..."
-                  : "Select branch"}
-              </option>
-
-              {branches.map(
-                (branch: any) => (
+              {isAdmin && (
+                <option value="">
+                  Select Branch
+                </option>
+              )}
+               {visibleBranches.map((branch) => (
                   <option
                     key={branch.id}
                     value={branch.id}
                   >
                     {branch.branchName ??
-                      branch.name}
+                      branch.branchName}
                   </option>
                 )
               )}

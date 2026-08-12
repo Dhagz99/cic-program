@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 
 import { redirect, useRouter } from "next/navigation";
-import {  useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 
 export default function CICLayout({
   children,
@@ -54,6 +54,29 @@ const hasDailyImport =
 const isClientsOpen = hasDailyImport;
 
   const router = useRouter();
+
+  useEffect(() => {
+   const handleClickOutside = (event: MouseEvent) => {
+      if (
+         menuRef.current &&
+         !menuRef.current.contains(event.target as Node)
+      ) {
+         setOpenMenu(false);
+      }
+   };
+
+   document.addEventListener(
+      "mousedown",
+      handleClickOutside
+   );
+
+   return () => {
+      document.removeEventListener(
+         "mousedown",
+         handleClickOutside
+      );
+   };
+}, []);
 
   if (loading) {
     return (
@@ -202,8 +225,11 @@ const isClientsOpen = hasDailyImport;
                   {/* SETTINGS */}
                   {hasPermission("MANAGER_ADMIN") && (
                   <button
-                    onClick={() =>
+                    onClick={() =>{
                       setOpenSettings(true)
+                       setOpenMenu(false)
+                    }
+                    
                     }
                     className="
                       w-full flex items-center gap-3
@@ -222,7 +248,7 @@ const isClientsOpen = hasDailyImport;
               
 
                   {/* USERS */}
-                  {hasPermission(
+                  {/* {hasPermission(
                     "USER_MANAGE"
                   ) && (
                     <button
@@ -242,10 +268,10 @@ const isClientsOpen = hasDailyImport;
                         Users
                       </span>
                     </button>
-                  )}
+                  )} */}
 
                   {/* BRANCHES */}
-                  <button
+                  {/* <button
                     onClick={() =>
                       setOpenBranchModal(true)
                     }
@@ -261,11 +287,15 @@ const isClientsOpen = hasDailyImport;
                     <span className="text-sm font-medium">
                       Branches
                     </span>
-                  </button>
+                  </button> */}
                   
                   {/* Postal Code Checker */}
                   <button
-                   onClick={() => router.push("/postal-codes")}
+                   onClick={() => {
+                      setOpenMenu(false);
+                      router.push("/postal-codes")
+                    }}
+                    
                     className="
                       w-full flex items-center gap-3
                       px-4 py-3 rounded-2xl
@@ -330,7 +360,7 @@ const isClientsOpen = hasDailyImport;
       {openSettings && (
         <RequestModal
           title="System Settings"
-          size="xxl"
+          size="xxxl"
           onClose={() => setOpenSettings(false)}
         >
           <SettingsModal />

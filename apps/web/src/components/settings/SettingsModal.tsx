@@ -42,14 +42,14 @@ export default function SettingsModal() {
           <Building2 size={16}/> Branches
         </button>
 
-        <button
+        {/* <button
           onClick={() => setActiveTab("groups")}
           className={`flex items-center gap-2 p-2 rounded-md ${
             activeTab === "groups" ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
           }`}
         >
           <Layers size={16}/> Branch Groups
-        </button>
+        </button> */}
 
         <button
           onClick={() => setActiveTab("permissions")}

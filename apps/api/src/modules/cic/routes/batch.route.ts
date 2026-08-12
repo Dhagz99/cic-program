@@ -5,7 +5,8 @@ import {
    approveBatch,
    returnBatch,
    finalizeBatch,
-   getBatchByIdController
+   getBatchByIdController,
+   deleteBatchController
 } from "../controllers/batch.controller";
 import { authenticateToken } from "../../auth/auth.middleware";
 
@@ -69,6 +70,19 @@ router.get(
    "/:batchId",
    authenticateToken,
    getBatchByIdController
+)
+
+/*
+-----------------------------------
+DELETE BATCH BY ID
+-----------------------------------
+*/
+
+
+router.delete(
+   "/:batchId",
+   authenticateToken,
+   deleteBatchController
 )
 
 export default router;

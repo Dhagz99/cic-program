@@ -3,8 +3,11 @@
 import api from "@/lib/axios";
 
 import type {
+   ApiResponse,
+   ClientLoan,
    ClientLoanPaginationResponse,
-   GetClientLoansParams
+   GetClientLoansParams,
+   UpdateLoanFormValues
 } from "@repo/shared";
 
 export const getClientLoansPaginationService =
@@ -39,3 +42,34 @@ async ({
    return response.data;
 
 };
+
+
+export const getLoanByIdService = 
+       async (
+         id: string
+      ) : Promise <ClientLoan> => {
+      
+      const response = await api.get<ApiResponse<ClientLoan>>(
+         `/loans/by-id/${encodeURIComponent(id)}`
+      );
+
+      return response.data.data
+}
+
+
+
+export const updateLoanByIdService = 
+   async(
+      id:string,
+      data: UpdateLoanFormValues
+   ): Promise<ClientLoan> => {
+
+      const response = await api.put<ApiResponse<ClientLoan>>(
+            `/loans/update-loan/${encodeURIComponent(id)}`, 
+            data
+      )
+
+      return response.data.data
+
+   }
+

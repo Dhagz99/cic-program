@@ -1,28 +1,55 @@
 import api from "@/lib/axios";
-import { ImportBatchItem, ReportingPeriod } from "@repo/shared";
+import { ContractExportValidationError, ImportBatchItem, ReportingPeriod } from "@repo/shared";
+import axios from "axios";
 
-export const exportReport =
-async (
-   batchId: string
-) => {
+export const exportReport = async (
+  batchId: string
+): Promise<Blob> => {
+  try {
+    const response = await api.get(
+      `/reports/${encodeURIComponent(batchId)}/export`,
+      {
+        responseType: "blob",
+      }
+    );
 
-   const response =
-      await api.get(
+    return response.data;
+  } catch (error) {
+    if (!axios.isAxiosError(error)) {
+      throw error;
+    }
 
-         `/reports/${batchId}/export`,
+    const data = error.response?.data;
 
-         {
+    if (data instanceof Blob) {
+      const text = await data.text();
 
-            responseType:
-               "blob"
+      try {
+        const parsed =
+          JSON.parse(text) as ContractExportValidationError;
 
-         }
+        throw parsed;
+      } catch (parseError) {
+        if (
+          typeof parseError === "object" &&
+          parseError !== null &&
+          "validationErrors" in parseError
+        ) {
+          throw parseError;
+        }
 
-      );
+        throw new Error(
+          "Failed to parse export validation response."
+        );
+      }
+    }
 
-   return response.data;
-
+    throw error;
+  }
 };
+
+
+
 export const getImportBatches =
 async (): Promise<ImportBatchItem[]> => {
 

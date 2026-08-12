@@ -10,6 +10,7 @@ import { useCreateUser } from "@/hooks/user/useCreateUser"
 import { useGetRoles, useUpdateUser } from "@/hooks/auth/useLogin"
 import { InputField, SelectField } from "@/components/FormInputs"
 import { useGetBranches } from "@/hooks/useGeneral"
+import { toast } from "sonner"
 
 type Props = {
   onClose: () => void
@@ -50,7 +51,6 @@ export default function CreateUserModal({
       label: `${branch.branchCode} - ${branch.branchName}`,
     })) ?? [];
 
-console.log("Initial ", initialData )
 
   const [errors, setErrors] =
     useState<ZodFormattedError<RegisterSchema> | null>(null)
@@ -91,7 +91,10 @@ console.log("Initial ", initialData )
             data: parsed.data,
           },
           {
-            onSuccess: onClose,
+            onSuccess:(data) => {
+              toast.success(data.message),
+               onClose()
+            }
           }
         );
     

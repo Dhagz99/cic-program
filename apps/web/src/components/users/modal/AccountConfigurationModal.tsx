@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Plus, Settings, Shield, UserCog } from "lucide-react"
+import { useMemo, useState } from "react"
+import { Plus, Search, Settings, Shield, UserCog } from "lucide-react"
 import CreateUserModal from "./CreateUserModal"
 import RequestModal from "../../Modal"
 import RoleConfigurationModal from "./RoleConfiguration"
@@ -13,10 +13,14 @@ type Props = {
   }
 export default function AccountConfigurationModal({ onClose}: Props) {
   const [openCreate, setOpenCreate] = useState(false)
-  const { data: users, isLoading } = useGetUsers()
+  const {
+      data: users = [],
+      isLoading,
+   } = useGetUsers();
   const [openRoleModal, setOpenRoleModal] = useState(false)
   const [mode, setMode] = useState<"create" | "edit">("create")
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [search, setSearch] = useState("");
 
   const handleEdit = (users: User)=> {
     setSelectedUser(users)
@@ -24,6 +28,27 @@ export default function AccountConfigurationModal({ onClose}: Props) {
     setOpenCreate(true)
   }
 
+
+  const filteredUsers = useMemo(() => {
+   const keyword = search.trim().toLowerCase();
+
+   if (!keyword) return users;
+
+   return users.filter((user) => {
+      const roles = user.roles
+         .map((role) => role.role.name)
+         .join(" ")
+         .toLowerCase();
+
+      return (
+         user.name?.toLowerCase().includes(keyword) ||
+         user.username?.toLowerCase().includes(keyword) ||
+         user.email?.toLowerCase().includes(keyword) ||
+         user.branch?.branchName?.toLowerCase().includes(keyword) ||
+         roles.includes(keyword)
+      );
+   });
+}, [users, search]);
 
 
   return (
@@ -41,9 +66,43 @@ export default function AccountConfigurationModal({ onClose}: Props) {
             Manage system users, roles, and permissions
           </p>
         </div>
-<div className="flex gap-2">
+
+   
+      </div>
+    {/* Search */}
+    <div className="flex justify-between">
+       <div className="relative min-w-md">
+            <Search
+               size={18}
+               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            />
+            <input
+               type="text"
+               value={search}
+               onChange={(e) => setSearch(e.target.value)}
+               placeholder="Search name, username, email, role, branch..."
+               className="
+                  w-full
+                  rounded-lg
+                  border border-gray-300
+                  py-2.5
+                  pl-10
+                  pr-4
+                  text-sm
+                  outline-none
+                  transition
+                  focus:border-blue-500
+                  focus:ring-2
+                  focus:ring-blue-100
+               "
+            />
+         </div>
+      <div className="flex gap-2">
       <button
-          onClick={() => setOpenCreate(true)}
+          onClick={() => {
+            setOpenCreate(true)
+            setMode("create")
+          } }
           className="inline-flex items-center gap-2 px-4 py-2 rounded-md
                      bg-blue-600 text-white text-sm font-medium
                      hover:bg-blue-700"
@@ -62,9 +121,8 @@ export default function AccountConfigurationModal({ onClose}: Props) {
       </button>
      
 </div>
-   
-      </div>
-
+    </div>
+        
       {/* Table */}
       <div className="bg-white border rounded-xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
@@ -83,7 +141,8 @@ export default function AccountConfigurationModal({ onClose}: Props) {
           </thead>
 
           <tbody>
-            {isLoading && (
+            {isLoading && 
+            (
               <tr>
                 <td colSpan={5} className="px-4 py-6 text-center text-gray-500">
                   Loading users…
@@ -91,15 +150,16 @@ export default function AccountConfigurationModal({ onClose}: Props) {
               </tr>
             )}
 
-            {users?.length === 0 && (
+            {users?.length === 0 || 
+                 filteredUsers.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-6 text-center text-gray-500">
+                <td colSpan={7} className="px-4 py-6 text-center text-gray-500">
                   No users found
                 </td>
               </tr>
             )}
 
-            {users?.map(user => (
+            {filteredUsers?.map(user => (
               <tr key={user.id} className="border-t hover:bg-gray-50">
                 <td className="px-4 py-3 font-medium text-gray-800">
                   {user.name}
@@ -179,7 +239,7 @@ export default function AccountConfigurationModal({ onClose}: Props) {
       {/* Create User Modal */}
       {openCreate && (
         <RequestModal
-          title="Register New User"
+          title={mode=="create" ? "Register New User" : "Update User"}
           size="md"
           onClose={() => {
             setOpenCreate(false)

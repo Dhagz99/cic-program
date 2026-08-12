@@ -13,12 +13,17 @@ import {
 import {
    useImportBatches
 } from "@/hooks/cic/useReports";
-import { ImportBatchItem } from "@repo/shared";
+import { ContractExportValidationError, ExportValidationResponse, ImportBatchItem, UpdateLoanFormValues } from "@repo/shared";
 import { getTimestamp } from "@/utils/date/getTimestamp";
 import { formatReportingPeriod } from "@/utils/date/formatReportingPerion";
 import { useExportReport } from "@/hooks/reports/useRepots";
 import { CreateReportingPeriodModal } from "@/components/reporting-period/CreateReportingPeriodModal";
 import { Button } from "@/components/ui/button";
+import { LoanValidationErrorModal } from "@/components/loans/LoanValidationErrorModal";
+import EditLoanModal from "@/components/loans/EditLoanModal";
+import { useGetLoanById } from "@/hooks/loans/useGetLoanById";
+import { useUpdateLoanById } from "@/hooks/loans/useUpdateLoanById";
+import { toast } from "sonner";
 
 
 export default function Reports() {
@@ -34,11 +39,22 @@ export default function Reports() {
    } = useImportBatches();
 
    const [isOpenReporting, setIsOpenReporting] = useState(false);
+   const [selectedId, setSelectedId] = useState("");
+   const [validationErrors, setValidationErrors] =
+       useState<ContractExportValidationError[]>([]);
+
+const [isValidationModalOpen, setIsValidationModalOpen] = useState(false);
 
   
    const exportReportMutation = useExportReport();
 
+   const handleEditValidationLoan = (id: string) => {
+      setSelectedId(id);
+   }
 
+    const {data: loan, isLoading: updateIsLoading} = useGetLoanById(selectedId);
+
+  const updateLoanMutation = useUpdateLoanById();
    /*
    |--------------------------------------------------------------------------
    | FILTER
@@ -93,9 +109,67 @@ export default function Reports() {
    */
 
 
-    const handleExport = (batchId: string) => {
-      exportReportMutation.mutate(batchId);
-   };
+const handleExport = (batchId: string) => {
+  exportReportMutation.mutate(batchId, {
+    onError: (error) => {
+      const validationError =
+        error as ExportValidationResponse;
+
+      console.log(
+        "Validation:",
+        validationError
+      );
+
+      if (
+        validationError.validationErrors?.length
+      ) {
+        setValidationErrors(
+          validationError.validationErrors
+        );
+
+        setIsValidationModalOpen(true);
+      }
+    },
+  });
+};
+
+
+const handleUpdateLoan = async (
+  values: UpdateLoanFormValues
+) => {
+
+   try{
+      if (!selectedId) return;
+
+      await updateLoanMutation.mutateAsync({
+         id: selectedId,
+         data: values,
+      });
+       toast.success("Loan updated successfully.")
+
+
+  setValidationErrors((prev) => {
+    const remaining = prev.filter(
+      (item) => item.id !== selectedId
+    );
+
+    if (remaining.length === 0) {
+      setIsValidationModalOpen(false);
+    }
+    return remaining;
+  });
+
+
+   }catch(error){
+         toast.error(
+            error instanceof Error
+               ? error.message
+               : "Failed to update loan"
+         );
+   }
+  setSelectedId("");
+  
+};
    if (isLoading) {
 
       return (
@@ -394,6 +468,25 @@ export default function Reports() {
          {isOpenReporting && (
             <CreateReportingPeriodModal  isOpen={isOpenReporting} onClose={()=>setIsOpenReporting(false)}/>
          )}
+
+         <LoanValidationErrorModal
+            isOpen={isValidationModalOpen}
+            errors={validationErrors}
+            onClose={() => {
+               setIsValidationModalOpen(false);
+               setValidationErrors([]);
+            }}
+            onEditLoan={handleEditValidationLoan}
+            />
+
+               {selectedId && !updateIsLoading && (
+                      <EditLoanModal
+                        isOpen={true}
+                        loan={loan ?? null}
+                        onClose={() => setSelectedId("")}
+                        onSubmit={handleUpdateLoan}
+                      />
+                    )}
 
       </div>
 

@@ -1,5 +1,6 @@
-import { GetClientLoansParams } from "@repo/shared";
+import { GetClientLoansParams, UpdateLoanFormValues } from "@repo/shared";
 import prisma from "../../lib/prisma";
+import { notEqual } from "assert";
 
 export async function getClientLoansServices({
    branchId,
@@ -260,3 +261,138 @@ const totalLoan =
    };
 
 }
+
+export async function getLoanByIdService(id: string) {
+      const loan = await prisma.contract.findUnique({
+         where: {
+            id
+         },
+         include:{
+            client: true
+         }
+      });
+
+      if(!loan){
+         throw new Error("Loan not found.");
+      }
+      return loan
+   
+}
+
+
+
+export async function updateLoanService(id: string, data: UpdateLoanFormValues ) {
+
+   return prisma.$transaction(async (tx) => {
+      const loan = await prisma.contract.findUnique({
+      where:{
+         id
+      },
+   });
+
+   if(!loan){
+      throw new Error("Loan not found.");
+   };
+
+   const updatedContract = await tx.contract.update({
+      where: {
+         id
+      },
+      data: {
+         contractNo: data.contractNo,
+         contractType: data.contractType,
+         contractPhase: data.contractPhase,
+         contractStatus: data.contractStatus,
+         currency: data.currency,
+         originalCurrency: data.originalCurrency,
+
+         contractStartDate: data.contractStartDate
+         ? new Date(data.contractStartDate)
+         : null,
+
+         contractRequestDate: data.contractRequestDate
+         ? new Date(data.contractRequestDate)
+         : null,
+
+         contractEndPlannedDate: data.contractEndPlannedDate
+         ? new Date(data.contractEndPlannedDate)
+         : null,
+
+         contractEndActualDate: data.contractEndActualDate
+         ? new Date(data.contractEndActualDate)
+         : null,
+
+         firstPaymentDate: data.firstPaymentDate
+         ? new Date(data.firstPaymentDate)
+         : null,
+
+         lastPaymentDate: data.lastPaymentDate
+         ? new Date(data.lastPaymentDate)
+         : null,
+
+         nextPaymentDate: data.nextPaymentDate
+         ? new Date(data.nextPaymentDate)
+         : null,
+
+         financedAmount: data.financedAmount,
+         installmentsNumber: data.installmentsNumber,
+         monthlyPaymentAmount: data.monthlyPaymentAmount,
+         lastPaymentAmount: data.lastPaymentAmount,
+         nextPaymentAmount: data.nextPaymentAmount,
+         outstandingBalance: data.outstandingBalance,
+         overduePaymentAmount: data.overduePaymentAmount,
+         outstandingPaymentNumber:
+         data.outstandingPaymentNumber,
+         overduePaymentNumber:
+         data.overduePaymentNumber,
+
+         paymentPeriodicity:
+         data.paymentPeriodicity,
+
+         paymentMethod:
+         data.paymentMethod,
+
+         transactionType:
+         data.transactionType,
+   
+      },
+     
+   });
+
+const result = await tx.contractMonthlySnapshot.updateMany({
+  where: {
+    contractId: id,
+    snapshotStatus: {
+      in: ["DRAFT", "VALIDATED"],
+    },
+  },
+  data: {
+      contractEndActualDate:
+         updatedContract.contractEndActualDate,
+
+      financedAmount:
+         updatedContract.financedAmount,
+
+      outstandingBalance:
+         updatedContract.outstandingBalance,
+
+      lastPaymentAmount:
+         updatedContract.lastPaymentAmount,
+
+      lastPaymentDate:
+         updatedContract.lastPaymentDate,
+
+      nextPaymentAmount:
+         updatedContract.nextPaymentAmount,
+
+      nextPaymentDate:
+         updatedContract.nextPaymentDate,
+
+      snapshotStatus: "VALIDATED",
+  },
+});
+
+   return updatedContract;
+   })
+}
+

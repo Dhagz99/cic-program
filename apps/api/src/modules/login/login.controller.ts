@@ -92,7 +92,7 @@ export async function updateUserController(req: Request, res: Response) {
   }
 
   const user = await updateUserService(userId, parsed.data)
-  res.json({ message: "User updated", user })
+  res.json({ message: "User successfully updated.", user })
 }
 
 

@@ -1,5 +1,7 @@
+import { ValidationErrorChecker } from "@repo/shared";
 import prisma from "../../lib/prisma";
 import { removeSpecialCharacters } from "../utils/removeSpecialCharacters";
+import { checkContractErrors } from "../cic/utils/validation/checkContractError";
 
 
 type GenerateReportParams = {
@@ -352,6 +354,8 @@ for (
    |--------------------------------------------------------------------------
    */
 
+   const validationErrors: ValidationErrorChecker[] = [];
+
    for (
       const snapshot of
       snapshots
@@ -360,6 +364,26 @@ for (
       const contract =
          snapshot.contract;
 
+
+   const errors = checkContractErrors({
+      contractId: contract.id,
+      contractNo: contract.contractNo,
+      providerSubjectNo: contract.providerSubjectNo,
+      contractPhase: snapshot.contractPhase,
+      contractStartDate: contract.contractStartDate,
+      contractReferenceDate: contract.contractRequestDate,
+      contractEndPlannedDate: contract.contractEndPlannedDate,
+      contractEndActualDate: snapshot.contractEndActualDate,
+      lastPaymentDate: snapshot.lastPaymentDate,
+      nextPaymentDate: snapshot.nextPaymentDate,
+      nextPaymentAmount: snapshot.nextPaymentAmount?.toNumber() ?? null,
+      outstandingPaymentNumber: snapshot.outstandingPaymentNumber,
+      installmentsNumber: contract.installmentsNumber,
+   });
+
+   validationErrors.push(...errors);
+
+      
          const ciRow = [
 
             "CI",
@@ -594,6 +618,18 @@ for (
 
    }
 
+
+if (validationErrors.length > 0) {
+   return {
+      success: false as const,
+      message:
+         "Some contract records contain invalid data. Please correct them before generating the report.",
+      totalErrors: validationErrors.length,
+      errors: validationErrors,
+   };
+}
+
+
    /*
    |--------------------------------------------------------------------------
    | FOOTER
@@ -626,6 +662,17 @@ for (
    const content =
       rows.join("\n");
 
+
+   await prisma.contractMonthlySnapshot.updateMany( {
+         where: {
+            branchId: batch.branchId,
+            reportingPeriodId: batch.reportingPeriodId
+         },
+         data: {
+            snapshotStatus: "EXPORTED"
+         }
+      })
+
       await prisma.cicExport.create({
          data: {
 
@@ -645,7 +692,10 @@ for (
          }
       });
 
+ 
+
    return {
+      success: true as const,
 
       fileName:
          `PF007980_CSDF_${batch.id}.txt`,

@@ -8,76 +8,69 @@ import { generateReportService, getImportBatchesService, getReportingPeriodsServ
  
 
  
- export const generateReport =
- async (
-    req: Request,
-    res: Response
- ) => {
- 
-    try {
-
-      const user =
-      req.user;
-
-
-      const userId =
-      user?.id;
+export const generateReport = async (
+   req: Request,
+   res: Response
+) => {
+   try {
+      const user = req.user;
+      const userId = user?.id;
 
       if (!userId) {
-            return res.status(400).json({
-               success: false,
-               message: "User ID not found",
-            });
-         }
+         return res.status(400).json({
+            success: false,
+            message: "User ID not found",
+         });
+      }
 
- 
-       const { batchId } =
-          req.params;
- 
-       const result =
-          await generateReportService({
- 
-             batchId,
-             userId: String(userId)
- 
-          });
- 
-       /*
-       |--------------------------------------------------------------------------
-       | DOWNLOAD FILE
-       |--------------------------------------------------------------------------
-       */
- 
-       res.setHeader(
-          "Content-Type",
-          "text/plain"
-       );
- 
-       res.setHeader(
-          "Content-Disposition",
-          `attachment; filename=${result.fileName}`
-       );
- 
-       return res.send(
-          result.content
-       );
- 
-    } catch (error) {
- 
-       console.error(error);
- 
-       return res.status(500).json({
- 
-          success: false,
- 
-          message:
-             "Failed to generate report"
- 
-       });
- 
-    }
- 
- };
+      const { batchId } = req.params;
+
+      const result = await generateReportService({
+         batchId,
+         userId: String(userId),
+      });
+
+      /*
+      |--------------------------------------------------------------------------
+      | VALIDATION FAILED
+      |--------------------------------------------------------------------------
+      */
+
+      if (!result.success) {
+         return res.status(422).json({
+            success: false,
+            message: result.message,
+            totalErrors: result.totalErrors,
+            validationErrors: result.errors,
+         });
+      }
+
+      /*
+      |--------------------------------------------------------------------------
+      | DOWNLOAD FILE
+      |--------------------------------------------------------------------------
+      */
+
+      res.setHeader(
+         "Content-Type",
+         "text/plain; charset=utf-8"
+      );
+
+      res.setHeader(
+         "Content-Disposition",
+         `attachment; filename="${result.fileName}"`
+      );
+
+      return res.status(200).send(result.content);
+   } catch (error) {
+      console.error(error);
+
+      return res.status(500).json({
+         success: false,
+         message: "Failed to generate report",
+      });
+   }
+};
 
 
  export const getImportBatches =

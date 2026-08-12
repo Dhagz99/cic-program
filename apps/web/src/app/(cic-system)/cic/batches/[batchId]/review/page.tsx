@@ -13,15 +13,19 @@ import ClientTable
 from "@/components/cic/review/ClientTable";
 import { useFinalizeBatch } from "@/hooks/cic/useFinalizeBatch";
 import { toast } from "sonner";
-import { ArrowLeft, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Trash2Icon } from "lucide-react";
 import { useSubmitBatch } from "@/hooks/cic/useSubmitBatch";
 import axios from "axios";
 import { useAuth } from "@/components/context/UserContext";
 import { useGetBatchById } from "@/hooks/cic/batch/useGetBatch";
+import { useDeleteBatch } from "@/hooks/cic/batch/useDeleteBatch";
+import SweetAlert from "@/components/Swal";
 
 export default function ReviewPage() {
 
+
    const {hasPermission} = useAuth();
+
 
    const params =
       useParams();
@@ -41,6 +45,32 @@ export default function ReviewPage() {
    } = useBatchReview(batchId);
 
    const {data: batchDetails} = useGetBatchById(batchId);
+
+   const {
+      mutate: deleteBatch,
+      isPending
+   } = useDeleteBatch();
+
+   const handleDeleteBatch = () => {
+      SweetAlert.confirmationAlert(
+         "Are you sure?", 
+         "Do you want to delete this batch?",
+         ()=>{
+            deleteBatch(batchId, {
+                  onSuccess: (data) => {
+                     toast.success(
+                        data.message
+                     );
+                     router.push("/cic/upload");
+                  },
+                  onError: (error) => {
+                     console.error(error);
+                  },
+               });
+         }
+      );
+  
+   };
 
    
 
@@ -180,27 +210,52 @@ export default function ReviewPage() {
     )}
 
     {hasPermission("STAGING_SUBMIT")  && (batchDetails?.status == "PENDING_COMPLETION") && (
-      <button
-        onClick={handleSubmit}
-        disabled={isSubmitting}
-        className="
-          inline-flex
-          items-center
-          gap-2
-          bg-green-600
-          hover:bg-green-700
-          disabled:opacity-50
-          text-white
-          px-5
-          py-3
-          rounded-2xl
-          font-medium
-          transition
-        "
-      >
-        <CheckCircle2 size={18} />
-        {isSubmitting ? "Submitting..." : "Submit Batch"}
-      </button>
+      <div className="flex gap-2">
+         <button
+               onClick={handleSubmit}
+               disabled={isSubmitting}
+               className="
+                  inline-flex
+                  items-center
+                  gap-2
+                  bg-green-600
+                  hover:bg-green-700
+                  disabled:opacity-50
+                  text-white
+                  px-5
+                  py-3
+                  rounded-2xl
+                  font-medium
+                  transition
+               "
+               >
+               <CheckCircle2 size={20} />
+               {isSubmitting ? "Submitting..." : "Submit Batch"}
+         </button>
+         <button
+            onClick={handleDeleteBatch}
+            disabled={isPending}
+            className="
+               inline-flex
+               items-center
+               gap-2
+               bg-red-400
+               hover:bg-red-500
+               disabled:opacity-50
+               text-white
+               px-5
+               py-3
+               rounded-2xl
+               font-medium
+               transition
+            "
+            >
+            <Trash2Icon size={20} />
+            {isPending ? "Deleting..." : "Delete Batch"}
+         </button>
+      </div>
+     
+      
     )}
   </div>
 </div>

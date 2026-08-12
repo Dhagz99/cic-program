@@ -17,6 +17,7 @@ import {
    finalizeBatchService
 } from "../services/batch/finalizeBatch.service";
 import { getBatchByIdService } from "../services/batch/viewBatch.service";
+import { BatchDeleteRestrictedError, BatchNotFoundError, deleteBatchService } from "../services/batch/deleteBatch.service";
 
 /*
 -----------------------------------
@@ -201,3 +202,40 @@ export const getBatchByIdController = async (
      
    }
 }
+
+
+export const deleteBatchController = async (
+   req: Request,
+   res: Response
+) => {
+   try {
+      const { batchId } = req.params;
+
+      const deletedBatch = await deleteBatchService(batchId);
+
+      return res.status(200).json({
+         success: true,
+         message: "Batch deleted successfully.",
+         data: deletedBatch,
+      });
+   } catch (error) {
+      if (error instanceof BatchNotFoundError) {
+         return res.status(404).json({
+            success: false,
+            message: error.message,
+         });
+      }
+
+      if (error instanceof BatchDeleteRestrictedError) {
+         return res.status(409).json({
+            success: false,
+            message: error.message,
+         });
+      }
+
+      return res.status(500).json({
+         success: false,
+         message: "Failed to delete batch.",
+      });
+   }
+};

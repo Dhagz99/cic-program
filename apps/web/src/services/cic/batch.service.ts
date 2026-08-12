@@ -260,3 +260,21 @@ export const getBatchByIdService =
       const response = await api.get<GetBatchByIdResponse>(`/batch/${batchId}`);
       return response.data.data;
    };
+
+ /*
+-----------------------------------
+DELETE BATCH BY ID
+-----------------------------------
+*/  
+
+
+export const deleteBatchByIdService = 
+   async (
+      batchId: string
+   ) => {
+      const response = 
+         await api.delete(
+            `/batch/${batchId}`
+         );
+      return response.data;
+   };

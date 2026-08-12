@@ -293,11 +293,6 @@ async (
             */
 
 
-            console.log("merge: ", mergedPreview)
-            console.log("existing: ", existingClient)
-
-
-
             return {
 
                /*
