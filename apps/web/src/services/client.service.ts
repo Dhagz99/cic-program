@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import { GetClientsParams, UpdateClientFormValues, UploadDailyClientResponse } from "@repo/shared";
+import { GetClientsParams, UpdateClientAddressParams, UpdateClientFormValues, UploadDailyClientResponse } from "@repo/shared";
 
 export async function getClientsPaginationService({ 
             page,
@@ -85,5 +85,21 @@ export async function updateClient(
 
     return response.data.data;
 
+  }
+
+
+  export async function updateClientAddressServices({ 
+    id,
+    address
+  }: UpdateClientAddressParams ) {
+
+    const response = await api.put(
+      `/clients/update-address/${encodeURIComponent(id)}`,{
+       address
+      }
+    )
+
+    return response.data
+    
   }
 

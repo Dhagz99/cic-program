@@ -303,3 +303,19 @@ export type UpdateLoanFormValues =
    z.infer<
       typeof updateLoanSchema
    >;
+
+
+export const updateClientAddressSchema = z.object({
+   id: z
+    .string()
+    .min(1, "Client Id is required."),
+
+  address: z
+    .string()
+    .trim()
+    .min(1, "Address is required."),
+});
+
+
+export type UpdateClientAddressParams = 
+   z.infer<typeof updateClientAddressSchema>;

@@ -1,4 +1,4 @@
-import { GetClientsParams, UpdateClientFormValues } from "@repo/shared";
+import { GetClientsParams, UpdateClientAddressParams, UpdateClientFormValues } from "@repo/shared";
 import prisma from "../../lib/prisma";
 import { AddressType } from "@prisma/client";
 
@@ -711,5 +711,17 @@ export async function getClientContractsService(
       stagingClient: updatedClient,
       client
     };
+  });
+}
+
+
+
+export async function updateClientAddressService({
+  id,
+  address
+}: UpdateClientAddressParams) {
+  return prisma.client.update({
+    where: { id },
+    data: { address },
   });
 }

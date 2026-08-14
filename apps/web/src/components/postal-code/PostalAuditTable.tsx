@@ -9,7 +9,7 @@ type Props = {
   rows: ClientPostalAuditItem[];
   selectedIds: Set<string>;
   isUpdating: boolean;
-
+  onDoubleClickRow: (data: ClientPostalAuditItem) => void;
   onToggleRow: (
     clientId: string
   ) => void;
@@ -19,7 +19,8 @@ export default function PostalAuditTable({
   rows,
   selectedIds,
   isUpdating,
-  onToggleRow
+  onToggleRow,
+  onDoubleClickRow
 }: Props) {
   if (rows.length === 0) {
     return (
@@ -116,6 +117,7 @@ export default function PostalAuditTable({
             return (
               <tr
                 key={item.clientId}
+                onDoubleClick={()=>onDoubleClickRow(item)}
                 className="
                   border-t
                   border-slate-200

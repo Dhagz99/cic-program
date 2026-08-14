@@ -55,6 +55,12 @@ export default function AddBorrowerModal({
     useState("");
 
   const validateFile = (file: File) => {
+
+     const fileName = file.name.toUpperCase();
+
+  if (fileName !== "CICNEW.DBF") {
+    return "The file name must be CICNEW.DBF.";
+  }
     const extension =
       file.name
         .split(".")

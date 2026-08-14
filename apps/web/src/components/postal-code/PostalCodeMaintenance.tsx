@@ -36,6 +36,8 @@ import { toast } from "sonner";
 import PostalAuditSummary from "./PostalAuditSummary";
 import PostalAuditTable from "./PostalAuditTable";
 import { useAuth } from "../context/UserContext";
+import { useUpdateClientAddress } from "@/hooks/clients/useUpdateClientAddress";
+import EditClientAddressModal from "../clients/EditClientAddressModal";
 
 type StatusFilter =
   | "ALL"
@@ -60,6 +62,14 @@ export default function PostalCodeMaintenance() {
     search,
     setSearch
   ] = useState("");
+
+    const [
+      selectedClient,
+      setSelectedClient,
+    ] =
+      useState<ClientPostalAuditItem | null>(
+        null
+      );
 
   const [
     selectedIds,
@@ -88,6 +98,9 @@ const isAdmin =
   const updateMutation =
     useUpdatePostalCodes(branchId);
 
+
+   const updateClientAddressMutation = useUpdateClientAddress(branchId); 
+
   useEffect(() => {
     setSelectedIds(new Set());
     setSearch("");
@@ -99,6 +112,9 @@ const isAdmin =
    : branches.filter(
         (branch) => branch.id === user.user?.branchId
      );
+
+
+
 
 useEffect(() => {
    if (!user) return;
@@ -282,6 +298,7 @@ useEffect(() => {
     }
   };
 
+
   const handleCheck = async () => {
     if (!branchId) {
       toast.error(
@@ -293,6 +310,21 @@ useEffect(() => {
 
     await refetch();
   };
+
+
+  const handleEditAddress = (
+  data: ClientPostalAuditItem
+) => {
+  if (!branchId) {
+    toast.error(
+      "Select a branch first."
+    );
+
+    return;
+  }
+
+  setSelectedClient(data);
+};
 
   return (
     <div className="space-y-6 p-6">
@@ -783,7 +815,17 @@ useEffect(() => {
               isUpdating={
                 updateMutation.isPending
               }
+              onDoubleClickRow={handleEditAddress}
             />
+
+            <EditClientAddressModal
+                isOpen={!!selectedClient}
+                client={selectedClient}
+                branchId={branchId}
+                onClose={() =>
+                  setSelectedClient(null)
+                }
+/>
           </div>
         </>
       )}

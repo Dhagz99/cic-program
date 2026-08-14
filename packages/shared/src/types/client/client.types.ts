@@ -19,6 +19,8 @@ export interface GetClientsParams {
  }
 
 
+
+
  // types/client-loan.ts   
 
 export interface ClientLoan {

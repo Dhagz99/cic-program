@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import http from "http";
 import { Server } from "socket.io";
 import routes from './routes/urls';
+import { errorHandler } from "./middleware/errorHandler";
 
 dotenv.config();
 
@@ -50,6 +51,8 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 // ---------------------------
 app.use("/api", routes);
+
+app.use(errorHandler);
 
 // ---------------------------
 // Socket.io

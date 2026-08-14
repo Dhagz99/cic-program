@@ -1,8 +1,8 @@
 // controllers/client.controller.ts
 
-import { Request, Response } from "express";
-import { getClientContractsService, getClientsPaginationService, getClientsService, getDailyImportService, updateClientService, updateDailyClientService } from "./client.service";
-import { UpdateClientFormValues } from "@repo/shared";
+import { NextFunction, Request, Response } from "express";
+import { getClientContractsService, getClientsPaginationService, getClientsService, getDailyImportService, updateClientAddressService, updateClientService, updateDailyClientService } from "./client.service";
+import { updateClientAddressSchema, UpdateClientFormValues } from "@repo/shared";
 
 
 export async function getClientsController(
@@ -309,4 +309,36 @@ export async function getClientContractsController(
       });
    }
 
+ }
+
+
+ export async function updateClientAddressController(
+   req: Request,
+   res: Response,
+   next: NextFunction
+ ) {
+   try{
+
+     const { id, address } = updateClientAddressSchema.parse({
+      id: req.params.id,
+      address: req.body.address,
+    });
+
+         const client  = await updateClientAddressService({
+             id, 
+            address
+           }
+         );
+
+         return res.status(200).json({
+            success: true,
+            message: "Client address updated successfully.",
+            data: client
+         });
+
+
+   }catch(error){
+       next(error);
+   }
+   
  }

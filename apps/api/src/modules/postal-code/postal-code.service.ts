@@ -40,7 +40,8 @@ export async function auditBranchPostalCodesService(
         middleName: true,
         lastName: true,
         address: true,
-        addressPostalCode: true
+        addressPostalCode: true,
+        branchId: true
       },
 
       orderBy: [
