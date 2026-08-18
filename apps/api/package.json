@@ -7,6 +7,7 @@
     "start": "node dist/src/server.js",
     "create:user": "tsx factory/createUser.ts",
     "seed:zip": "tsx factory/seeds/zipCodes.seed.ts",
+    "seed:zip-additional": "tsx factory/seeds/zip-code/additionalZipCodes.seed.ts",
     "scrape-zip": "tsx scripts/postal-code/scrape-phlpost-zip-codes.ts",
     "import-postal": "tsx scripts/postal-code/import-postal-codes.ts"
   },
