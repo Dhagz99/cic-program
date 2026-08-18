@@ -397,7 +397,7 @@ useEffect(() => {
             ? "Checking..."
             : "Check Postal Codes"}
         </button>
-
+        {isAdmin && (
         <button
             type="button"
             onClick={() =>
@@ -416,6 +416,8 @@ useEffect(() => {
             <MapPinPlus size={17} />
             Add Postal Code
           </button>
+        )}
+        
     </div>
        
       </div>
