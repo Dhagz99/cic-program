@@ -1,12 +1,14 @@
 import type {
   ClientPostalAuditItem,
   ClientPostalAuditResponse,
+  CreatePostalCodeInput,
   UpdateClientPostalCodesDTO
 } from "@repo/shared";
 
 import prisma from "../../lib/prisma";
 
 import {
+  normalizeLocationName,
   resolvePostalCodeFromAddress
 } from "./postal-code.resolver";
 
@@ -229,3 +231,27 @@ export async function updateClientPostalCodesService(
     };
   });
 }
+
+
+
+export async function createPostalCodeService(
+  data: CreatePostalCodeInput
+) {
+      return prisma.postalCodeReference.create({
+        data:{
+          ...data,
+            normalizedProvince: 
+              normalizeLocationName(
+                  data.normalizedProvince
+              ),
+            normalizedMunicipality: 
+              normalizeLocationName(
+                data.normalizedMunicipality
+              ),
+        },
+      });
+}
+
+
+
+

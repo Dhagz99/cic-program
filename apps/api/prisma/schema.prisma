@@ -903,7 +903,7 @@ model PostalCodeReference {
   zipCode                         String
 
   normalizedProvince              String
-  normalizedMunicipality           String
+  normalizedMunicipality          String
 
   municipalityCode                String?
 

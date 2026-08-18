@@ -1,14 +1,17 @@
 import type {
+  NextFunction,
   Request,
   Response
 } from "express";
 
 import {
+  createPostalCodeSchema,
   updateClientPostalCodesSchema
 } from "@repo/shared";
 
 import {
   auditBranchPostalCodesService,
+  createPostalCodeService,
   updateClientPostalCodesService
 } from "./postal-code.service";
 
@@ -90,4 +93,28 @@ export async function updateClientPostalCodesController(
           : "Postal-code update failed."
     });
   }
+}
+
+
+export async function createPostalCodeController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+){
+    try{
+
+      const data = createPostalCodeSchema.parse(req.body)
+
+
+      const postalCode = await createPostalCodeService(data);
+
+      return res.status(201).json({
+      success: true,
+      message: "Postal code created successfully.",
+      data: postalCode,
+    });
+
+    }catch(error){
+      next(error)
+    }
 }

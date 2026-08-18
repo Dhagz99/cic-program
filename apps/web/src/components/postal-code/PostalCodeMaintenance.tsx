@@ -9,6 +9,7 @@ import {
 import {
   CheckCircle2,
   MapPin,
+  MapPinPlus,
   RefreshCw,
   Save,
   Search,
@@ -38,6 +39,7 @@ import PostalAuditTable from "./PostalAuditTable";
 import { useAuth } from "../context/UserContext";
 import { useUpdateClientAddress } from "@/hooks/clients/useUpdateClientAddress";
 import EditClientAddressModal from "../clients/EditClientAddressModal";
+import AddPostalCodeModal from "./AddPostalCodeModal";
 
 type StatusFilter =
   | "ALL"
@@ -77,6 +79,9 @@ export default function PostalCodeMaintenance() {
   ] = useState<Set<string>>(
     new Set()
   );
+
+
+  const [isAddPostalCodeOpen, setIsAddPostalCodeOpen] = useState(false);
   const user = useAuth();
 
 const isAdmin =
@@ -356,8 +361,8 @@ useEffect(() => {
             missing or incorrect postal codes.
           </p>
         </div>
-
-        <button
+    <div className="flex gap-2">
+ <button
           type="button"
           disabled={
             !branchId ||
@@ -392,6 +397,27 @@ useEffect(() => {
             ? "Checking..."
             : "Check Postal Codes"}
         </button>
+
+        <button
+            type="button"
+            onClick={() =>
+              setIsAddPostalCodeOpen(true)
+            }
+            className="
+              inline-flex items-center gap-2
+              rounded-lg
+              bg-green-600
+              px-4 py-2.5
+              text-sm font-medium
+              text-white
+              hover:bg-green-700
+            "
+          >
+            <MapPinPlus size={17} />
+            Add Postal Code
+          </button>
+    </div>
+       
       </div>
 
       <div
@@ -824,8 +850,14 @@ useEffect(() => {
                 branchId={branchId}
                 onClose={() =>
                   setSelectedClient(null)
-                }
-/>
+                }  
+              />
+              <AddPostalCodeModal
+                  isOpen={isAddPostalCodeOpen}
+                  onClose={() =>
+                    setIsAddPostalCodeOpen(false)
+                  }
+                />
           </div>
         </>
       )}

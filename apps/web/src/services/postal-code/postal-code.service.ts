@@ -1,6 +1,7 @@
 import api from "@/lib/axios";
 import type {
   ClientPostalAuditResponse,
+  CreatePostalCodeInput,
   UpdateClientPostalCodesPayload
 } from "@repo/shared";
 
@@ -24,6 +25,18 @@ export async function updateClientPostalCodes(
       "/postal-codes/update",
       payload
     );
+
+  return response.data;
+}
+
+
+export async function createPostalCodeServices(
+  data: CreatePostalCodeInput
+) {
+  const response = await api.post(
+    "/postal-codes/create",
+    data
+  );
 
   return response.data;
 }
