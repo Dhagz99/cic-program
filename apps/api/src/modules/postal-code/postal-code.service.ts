@@ -248,6 +248,13 @@ export async function createPostalCodeService(
               normalizeLocationName(
                 data.normalizedMunicipality
               ),
+
+              normalizedPostalArea:
+                data.normalizedPostalArea 
+                  ? normalizeLocationName(
+                    data.normalizedPostalArea
+                  ) 
+                  : null,
         },
       });
 }

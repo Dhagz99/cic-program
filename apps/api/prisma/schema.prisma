@@ -900,10 +900,15 @@ model PostalCodeReference {
   regionName                      String
   provinceName                    String
   municipalityName                String
+
+  postalAreaName                  String?
+  postalAreaType                  String?
+
   zipCode                         String
 
   normalizedProvince              String
   normalizedMunicipality          String
+  normalizedPostalArea           String?
 
   municipalityCode                String?
 
@@ -912,9 +917,9 @@ model PostalCodeReference {
   importedAt                      DateTime    @default(now())
   verifiedAt                      DateTime?
 
-  @@unique([normalizedProvince, normalizedMunicipality,  zipCode ])
+  @@unique([normalizedProvince, normalizedMunicipality, normalizedPostalArea,  zipCode ])
 
-  @@index([ normalizedProvince, normalizedMunicipality])
+  @@index([ normalizedProvince, normalizedMunicipality, normalizedPostalArea])
 
   @@index([municipalityCode])
   @@index([zipCode])

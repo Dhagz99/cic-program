@@ -10,6 +10,9 @@ export function normalizeLocationName(
     .replace(/\bCITY OF\b/g, "")
     .replace(/\bMUNICIPALITY OF\b/g, "")
     .replace(/\bPROVINCE OF\b/g, "")
+    .replace(/\bBARANGAY\b/g, "")
+    .replace(/\bBRGY\.?\b/g, "")
+    .replace(/\bBGY\.?\b/g, "")
     .replace(/[().,'-]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -47,76 +50,247 @@ function getAddressParts(
 export async function resolvePostalCodeFromAddress(
   address: string
 ) {
-  const parts =
-    getAddressParts(address);
+  const parts = getAddressParts(address);
 
+  const normalizedParts =
+    parts.map(normalizeLocationName);
+
+  /*
+   * PRIORITY 1:
+   * Municipality + Province
+   *
+   * Example:
+   *
+   * MAHABANG PARANG,
+   * ANGONO,
+   * RIZAL
+   *
+   * municipality = ANGONO
+   * province     = RIZAL
+   */
   for (
-    let index = parts.length - 1;
-    index >= 0;
-    index--
+    let municipalityIndex =
+      normalizedParts.length - 2;
+    municipalityIndex >= 0;
+    municipalityIndex--
   ) {
     const normalizedMunicipality =
-      normalizeLocationName(
-        parts[index]
-      );
+      normalizedParts[municipalityIndex];
 
-    const possibleProvince =
-      index + 1 < parts.length
-        ? normalizeLocationName(
-            parts[index + 1]
-          )
-        : null;
+    const normalizedProvince =
+      normalizedParts[
+        municipalityIndex + 1
+      ];
 
-    if (possibleProvince) {
-      const exactMatch =
-        await prisma.postalCodeReference.findFirst({
-          where: {
-            normalizedMunicipality,
-            normalizedProvince:
-              possibleProvince
-          },
-
-          select: {
-            zipCode: true,
-            provinceName: true,
-            municipalityName: true
-          }
-        });
-
-      if (exactMatch) {
-        return exactMatch;
-      }
-    }
-  }
-
-  for (
-    let index = parts.length - 1;
-    index >= 0;
-    index--
-  ) {
-    const normalizedMunicipality =
-      normalizeLocationName(
-        parts[index]
-      );
-
-    const matches =
+    const candidates =
       await prisma.postalCodeReference.findMany({
         where: {
-          normalizedMunicipality
+          normalizedMunicipality,
+          normalizedProvince,
         },
-
-        take: 2,
 
         select: {
           zipCode: true,
           provinceName: true,
-          municipalityName: true
-        }
+          municipalityName: true,
+
+          postalAreaName: true,
+          postalAreaType: true,
+
+          normalizedProvince: true,
+          normalizedMunicipality: true,
+          normalizedPostalArea: true,
+        },
       });
 
-    if (matches.length === 1) {
-      return matches[0];
+    if (candidates.length === 0) {
+      continue;
     }
+
+    /*
+     * PRIORITY 1A:
+     * Postal area + municipality + province
+     *
+     * Search address segments before municipality.
+     */
+    for (
+      let areaIndex =
+        municipalityIndex - 1;
+      areaIndex >= 0;
+      areaIndex--
+    ) {
+      const normalizedArea =
+        normalizedParts[areaIndex];
+
+      const areaMatch =
+        candidates.find(
+          (record) =>
+            record.normalizedPostalArea ===
+            normalizedArea
+        );
+
+      if (areaMatch) {
+        return {
+          ...areaMatch,
+          matchLevel:
+            "POSTAL_AREA" as const,
+        };
+      }
+    }
+
+    /*
+     * PRIORITY 1B:
+     * Municipality-level record
+     */
+    const municipalityLevelRecords =
+      candidates.filter(
+        (record) =>
+          !record.normalizedPostalArea
+      );
+
+    const municipalityZipCodes =
+      new Set(
+        municipalityLevelRecords.map(
+          (record) => record.zipCode
+        )
+      );
+
+    if (
+      municipalityLevelRecords.length > 0 &&
+      municipalityZipCodes.size === 1
+    ) {
+      return {
+        ...municipalityLevelRecords[0],
+        matchLevel:
+          "MUNICIPALITY" as const,
+      };
+    }
+
+    /*
+     * There may only be postal-area records.
+     *
+     * If every postal area uses the same ZIP,
+     * resolving at municipality level is safe.
+     */
+    const allZipCodes =
+      new Set(
+        candidates.map(
+          (record) => record.zipCode
+        )
+      );
+
+    if (allZipCodes.size === 1) {
+      return {
+        ...candidates[0],
+        matchLevel:
+          "MUNICIPALITY" as const,
+      };
+    }
+
+    /*
+     * Don't return null here.
+     *
+     * Another municipality/province pair
+     * may still match.
+     */
+  }
+
+  /*
+   * PRIORITY 2:
+   * Municipality only
+   *
+   * Useful when province isn't included:
+   *
+   * POBLACION, DANAO CITY, PH
+   */
+  for (
+    let municipalityIndex =
+      normalizedParts.length - 1;
+    municipalityIndex >= 0;
+    municipalityIndex--
+  ) {
+    const normalizedMunicipality =
+      normalizedParts[
+        municipalityIndex
+      ];
+
+    const candidates =
+      await prisma.postalCodeReference.findMany({
+        where: {
+          normalizedMunicipality,
+        },
+
+        select: {
+          zipCode: true,
+          provinceName: true,
+          municipalityName: true,
+
+          postalAreaName: true,
+          postalAreaType: true,
+
+          normalizedProvince: true,
+          normalizedMunicipality: true,
+          normalizedPostalArea: true,
+        },
+      });
+
+    if (candidates.length === 0) {
+      continue;
+    }
+
+    /*
+     * Try postal area first.
+     */
+    for (
+      let areaIndex =
+        municipalityIndex - 1;
+      areaIndex >= 0;
+      areaIndex--
+    ) {
+      const normalizedArea =
+        normalizedParts[areaIndex];
+
+      const areaMatch =
+        candidates.find(
+          (record) =>
+            record.normalizedPostalArea ===
+            normalizedArea
+        );
+
+      if (areaMatch) {
+        return {
+          ...areaMatch,
+          matchLevel:
+            "POSTAL_AREA" as const,
+        };
+      }
+    }
+
+    /*
+     * Municipality-only resolution is allowed
+     * only when there is one unique ZIP.
+     */
+    const uniqueZipCodes =
+      new Set(
+        candidates.map(
+          (record) => record.zipCode
+        )
+      );
+
+    if (uniqueZipCodes.size === 1) {
+      return {
+        ...candidates[0],
+        matchLevel:
+          "MUNICIPALITY" as const,
+      };
+    }
+
+    /*
+     * Ambiguous municipality.
+     *
+     * Don't guess and don't immediately return.
+     * Continue checking the other address parts.
+     */
   }
 
   return null;

@@ -34,20 +34,49 @@ export type UpdateClientPostalCodesDTO =
   export const createPostalCodeSchema =
     z.object({
       regionName:z.
-        string().min(1, "Region name is required."),
+        string().trim().min(1, "Region name is required."),
+
       provinceName:z.
-        string().min(1, "Province name is required."),
+        string().trim().min(1, "Province name is required."),
+
       municipalityName:z.
-        string().min(1, "Municipality name is required."),
+        string().trim().min(1, "Municipality name is required."),
+
+      postalAreaName:z.
+          string().trim().optional(),
+
+      postalAreaType:z.
+            string().trim().optional(),
+
+
       zipCode:z.
-        string().min(1, "Zip code name is required."),
+        string().trim().min(1, "Zip code name is required."),
+
       normalizedProvince:z.
-        string().min(1, "Province name is required."),
+        string().trim().min(1, "Province name is required."),
+
       normalizedMunicipality:z.
-        string().min(1, "Municipality name is required."),
+        string().trim().min(1, "Municipality name is required."),
+
+      normalizedPostalArea:z.
+        string().trim().optional(),
+
       source:z.
-        string().min(1, "Source name is required.").default("MANUAL"),
-    });
+        string().trim().min(1, "Source name is required.").default("MANUAL"),
+    })
+      .superRefine((data, ctx) => {
+          if(
+            data.postalAreaName && 
+            !data.postalAreaType
+          ){
+            ctx.addIssue({
+              code: "custom",
+              path: ["postalAreaType"],
+              message:
+                 "Postal area type is required when postal area name is provided.",
+            });
+          }
+      });
 
 
   export type CreatePostalCodeInput =

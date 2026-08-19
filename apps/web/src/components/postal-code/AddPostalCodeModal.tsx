@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  useState,
-} from "react";
+import { useState } from "react";
 
 import {
   MapPinPlus,
@@ -15,13 +13,26 @@ import { toast } from "sonner";
 import {
   createPostalCodeSchema,
 } from "@repo/shared";
-import { useCreatePostalCode } from "@/hooks/postal-code/useCreatePostalCode";
 
+import {
+  useCreatePostalCode,
+} from "@/hooks/postal-code/useCreatePostalCode";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
 };
+
+type FieldErrors = Partial<
+  Record<
+    | "regionName"
+    | "provinceName"
+    | "municipalityName"
+    | "zipCode"
+    | "postalAreaType",
+    string
+  >
+>;
 
 export default function AddPostalCodeModal({
   isOpen,
@@ -41,6 +52,12 @@ export default function AddPostalCodeModal({
   const [zipCode, setZipCode] =
     useState("");
 
+  const [postalAreaName, setPostalAreaName] = useState("");
+  const [postalAreaType, setPostalAreaType] = useState("");
+
+  const [errors, setErrors] =
+    useState<FieldErrors>({});
+
   const createPostalCode =
     useCreatePostalCode();
 
@@ -48,11 +65,23 @@ export default function AddPostalCodeModal({
     return null;
   }
 
+  const clearFieldError = (
+    field: keyof FieldErrors
+  ) => {
+    setErrors((previous) => ({
+      ...previous,
+      [field]: undefined,
+    }));
+  };
+
   const resetForm = () => {
     setRegionName("");
     setProvinceName("");
     setMunicipalityName("");
     setZipCode("");
+    setPostalAreaName("");
+    setPostalAreaType("");
+    setErrors({});
   };
 
   const handleClose = () => {
@@ -69,27 +98,66 @@ export default function AddPostalCodeModal({
   ) => {
     e.preventDefault();
 
+    setErrors({});
+
     const result =
       createPostalCodeSchema.safeParse({
-        regionName,
-        provinceName,
-        municipalityName,
-        zipCode,
+        regionName:
+          regionName.trim(),
 
-       normalizedProvince:
-             provinceName.trim().toUpperCase(),
+        provinceName:
+          provinceName.trim(),
+
+        municipalityName:
+          municipalityName.trim(),
+
+        postalAreaName:
+           postalAreaName.trim() || undefined,
+         postalAreaType:
+            postalAreaType || undefined,
+
+        zipCode:
+          zipCode.trim(),
+
+        normalizedProvince:
+          provinceName
+            .trim()
+            .toUpperCase(),
 
         normalizedMunicipality:
-            municipalityName.trim().toUpperCase(),
+          municipalityName
+            .trim()
+            .toUpperCase(),
+
+        normalizedPostalArea:
+          postalAreaName
+            .trim()
+            .toUpperCase(),
 
         source: "MANUAL",
       });
 
     if (!result.success) {
-      toast.error(
-        result.error.issues[0]?.message ??
-          "Invalid postal code information."
-      );
+      const fieldErrors =
+        result.error.flatten()
+          .fieldErrors;
+
+      setErrors({
+        regionName:
+          fieldErrors.regionName?.[0],
+
+        provinceName:
+          fieldErrors.provinceName?.[0],
+
+        municipalityName:
+          fieldErrors.municipalityName?.[0],
+
+        zipCode:
+          fieldErrors.zipCode?.[0],
+
+      postalAreaType:
+          fieldErrors.postalAreaType?.[0],
+      });
 
       return;
     }
@@ -114,6 +182,38 @@ export default function AddPostalCodeModal({
     }
   };
 
+  const getInputClass = (
+    hasError: boolean
+  ) => `
+    w-full
+    rounded-xl
+    border
+    px-4 py-3
+    text-sm
+    outline-none
+    transition
+    disabled:bg-gray-100
+
+    ${
+      hasError
+        ? `
+          border-red-500
+          bg-red-50/30
+          text-red-900
+          placeholder:text-red-300
+          focus:border-red-500
+          focus:ring-4
+          focus:ring-red-500/10
+        `
+        : `
+          border-gray-300
+          focus:border-blue-500
+          focus:ring-4
+          focus:ring-blue-500/10
+        `
+    }
+  `;
+
   return (
     <div
       className="
@@ -132,6 +232,7 @@ export default function AddPostalCodeModal({
           shadow-2xl
         "
       >
+        {/* Header */}
         <div
           className="
             flex items-center
@@ -141,17 +242,24 @@ export default function AddPostalCodeModal({
             px-6 py-5
           "
         >
-          <div className="flex items-center gap-3">
+          <div
+            className="
+              flex items-center gap-3
+            "
+          >
             <div
               className="
                 flex h-10 w-10
-                items-center justify-center
+                items-center
+                justify-center
                 rounded-xl
                 bg-blue-50
                 text-blue-600
               "
             >
-              <MapPinPlus size={20} />
+              <MapPinPlus
+                size={20}
+              />
             </div>
 
             <div>
@@ -171,8 +279,9 @@ export default function AddPostalCodeModal({
                   text-gray-500
                 "
               >
-                Add an additional postal code
-                reference manually.
+                Add an additional
+                postal code reference
+                manually.
               </p>
             </div>
           </div>
@@ -197,7 +306,10 @@ export default function AddPostalCodeModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+        >
           <div
             className="
               grid grid-cols-1
@@ -206,167 +318,396 @@ export default function AddPostalCodeModal({
               md:grid-cols-2
             "
           >
+
+
+
+            <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Postal Area
+                </label>
+
+                <input
+                  type="text"
+                  value={postalAreaName}
+                  onChange={(e) => setPostalAreaName(e.target.value)}
+                  placeholder="e.g. Putatan, Manuyo, Almanza Uno"
+                  disabled={createPostalCode.isPending}
+                  className="
+                    w-full rounded-xl border border-gray-300
+                    px-4 py-3 text-sm outline-none transition
+                    focus:border-blue-500
+                    focus:ring-4 focus:ring-blue-500/10
+                    disabled:bg-gray-100
+                  "
+                />
+              </div>
+
+         <div>
+  <label
+    htmlFor="postalAreaType"
+    className={`
+      mb-2 block text-sm font-medium
+      ${
+        errors.postalAreaType
+          ? "text-red-600"
+          : "text-gray-700"
+      }
+    `}
+  >
+    Postal Area Type
+
+    {postalAreaName.trim() && (
+      <span className="ml-1 text-red-500">
+        *
+      </span>
+    )}
+  </label>
+
+  <select
+    id="postalAreaType"
+    value={postalAreaType}
+    onChange={(e) => {
+      setPostalAreaType(e.target.value);
+
+      // Optional: remove error as soon as
+      // the user selects a valid value
+      if (
+        e.target.value &&
+        errors.postalAreaType
+      ) {
+        setErrors((prev) => ({
+          ...prev,
+          postalAreaType: undefined,
+        }));
+      }
+    }}
+    disabled={createPostalCode.isPending}
+    className={`
+      w-full rounded-xl border
+      px-4 py-3 text-sm
+      outline-none transition
+      disabled:bg-gray-100
+      disabled:cursor-not-allowed
+
+      ${
+        errors.postalAreaType
+          ? `
+            border-red-500
+            text-red-900
+            focus:border-red-500
+            focus:ring-4
+            focus:ring-red-500/10
+          `
+          : `
+            border-gray-300
+            text-gray-900
+            focus:border-blue-500
+            focus:ring-4
+            focus:ring-blue-500/10
+          `
+      }
+    `}
+  >
+    <option value="">
+      Select type
+    </option>
+
+    <option value="BARANGAY">
+      Barangay
+    </option>
+
+    <option value="SUBDIVISION">
+      Subdivision
+    </option>
+
+    <option value="VILLAGE">
+      Village
+    </option>
+
+    <option value="DISTRICT">
+      District
+    </option>
+
+    <option value="POSTAL_AREA">
+      Postal Area
+    </option>
+  </select>
+
+  {errors.postalAreaType && (
+    <p className="mt-1.5 text-xs font-medium text-red-500">
+      {errors.postalAreaType}
+    </p>
+  )}
+</div>
+            {/* Region */}
             <div>
               <label
-                className="
+                className={`
                   mb-2 block
                   text-sm font-medium
-                  text-gray-700
-                "
+                  ${
+                    errors.regionName
+                      ? "text-red-600"
+                      : "text-gray-700"
+                  }
+                `}
               >
                 Region
+                <span
+                  className="
+                    ml-1 text-red-500
+                  "
+                >
+                  *
+                </span>
               </label>
 
               <input
                 type="text"
                 value={regionName}
-                onChange={(e) =>
+                onChange={(e) => {
                   setRegionName(
                     e.target.value
-                  )
-                }
+                  );
+
+                  clearFieldError(
+                    "regionName"
+                  );
+                }}
                 disabled={
                   createPostalCode.isPending
                 }
-                placeholder="e.g. Region III"
-                className="
-                  w-full
-                  rounded-xl
-                  border
-                  border-gray-300
-                  px-4 py-3
-                  text-sm
-                  outline-none
-                  transition
-                  focus:border-blue-500
-                  focus:ring-4
-                  focus:ring-blue-500/10
-                  disabled:bg-gray-100
-                "
+                placeholder="e.g. NCR"
+                aria-invalid={
+                  Boolean(
+                    errors.regionName
+                  )
+                }
+                className={getInputClass(
+                  Boolean(
+                    errors.regionName
+                  )
+                )}
               />
+
+              {errors.regionName && (
+                <p
+                  className="
+                    mt-1.5
+                    text-xs
+                    font-medium
+                    text-red-500
+                  "
+                >
+                  {errors.regionName}
+                </p>
+              )}
             </div>
 
+            {/* Province */}
             <div>
               <label
-                className="
+                className={`
                   mb-2 block
                   text-sm font-medium
-                  text-gray-700
-                "
+                  ${
+                    errors.provinceName
+                      ? "text-red-600"
+                      : "text-gray-700"
+                  }
+                `}
               >
                 Province
+                <span
+                  className="
+                    ml-1 text-red-500
+                  "
+                >
+                  *
+                </span>
               </label>
 
               <input
                 type="text"
                 value={provinceName}
-                onChange={(e) =>
+                onChange={(e) => {
                   setProvinceName(
                     e.target.value
-                  )
-                }
+                  );
+
+                  clearFieldError(
+                    "provinceName"
+                  );
+                }}
                 disabled={
                   createPostalCode.isPending
                 }
-                placeholder="e.g. Nueva Ecija"
-                className="
-                  w-full
-                  rounded-xl
-                  border
-                  border-gray-300
-                  px-4 py-3
-                  text-sm
-                  outline-none
-                  transition
-                  focus:border-blue-500
-                  focus:ring-4
-                  focus:ring-blue-500/10
-                  disabled:bg-gray-100
-                "
+                placeholder="e.g. Metro Manila"
+                aria-invalid={
+                  Boolean(
+                    errors.provinceName
+                  )
+                }
+                className={getInputClass(
+                  Boolean(
+                    errors.provinceName
+                  )
+                )}
               />
+
+              {errors.provinceName && (
+                <p
+                  className="
+                    mt-1.5
+                    text-xs
+                    font-medium
+                    text-red-500
+                  "
+                >
+                  {
+                    errors.provinceName
+                  }
+                </p>
+              )}
             </div>
 
+            {/* Municipality */}
             <div>
               <label
-                className="
+                className={`
                   mb-2 block
                   text-sm font-medium
-                  text-gray-700
-                "
+                  ${
+                    errors.municipalityName
+                      ? "text-red-600"
+                      : "text-gray-700"
+                  }
+                `}
               >
                 Municipality / City
+                <span
+                  className="
+                    ml-1 text-red-500
+                  "
+                >
+                  *
+                </span>
               </label>
 
               <input
                 type="text"
-                value={municipalityName}
-                onChange={(e) =>
+                value={
+                  municipalityName
+                }
+                onChange={(e) => {
                   setMunicipalityName(
                     e.target.value
-                  )
-                }
+                  );
+
+                  clearFieldError(
+                    "municipalityName"
+                  );
+                }}
                 disabled={
                   createPostalCode.isPending
                 }
-                placeholder="e.g. Cabanatuan City"
-                className="
-                  w-full
-                  rounded-xl
-                  border
-                  border-gray-300
-                  px-4 py-3
-                  text-sm
-                  outline-none
-                  transition
-                  focus:border-blue-500
-                  focus:ring-4
-                  focus:ring-blue-500/10
-                  disabled:bg-gray-100
-                "
+                placeholder="e.g. Muntinlupa"
+                aria-invalid={
+                  Boolean(
+                    errors.municipalityName
+                  )
+                }
+                className={getInputClass(
+                  Boolean(
+                    errors.municipalityName
+                  )
+                )}
               />
+
+              {errors.municipalityName && (
+                <p
+                  className="
+                    mt-1.5
+                    text-xs
+                    font-medium
+                    text-red-500
+                  "
+                >
+                  {
+                    errors.municipalityName
+                  }
+                </p>
+              )}
             </div>
 
+            {/* ZIP Code */}
             <div>
               <label
-                className="
+                className={`
                   mb-2 block
                   text-sm font-medium
-                  text-gray-700
-                "
+                  ${
+                    errors.zipCode
+                      ? "text-red-600"
+                      : "text-gray-700"
+                  }
+                `}
               >
                 ZIP Code
+                <span
+                  className="
+                    ml-1 text-red-500
+                  "
+                >
+                  *
+                </span>
               </label>
 
               <input
                 type="text"
+                inputMode="numeric"
                 value={zipCode}
-                onChange={(e) =>
+                onChange={(e) => {
                   setZipCode(
                     e.target.value
-                  )
-                }
+                  );
+
+                  clearFieldError(
+                    "zipCode"
+                  );
+                }}
                 disabled={
                   createPostalCode.isPending
                 }
-                placeholder="e.g. 3100"
-                className="
-                  w-full
-                  rounded-xl
-                  border
-                  border-gray-300
-                  px-4 py-3
-                  text-sm
-                  outline-none
-                  transition
-                  focus:border-blue-500
-                  focus:ring-4
-                  focus:ring-blue-500/10
-                  disabled:bg-gray-100
-                "
+                placeholder="e.g. 1770"
+                aria-invalid={
+                  Boolean(
+                    errors.zipCode
+                  )
+                }
+                className={getInputClass(
+                  Boolean(
+                    errors.zipCode
+                  )
+                )}
               />
+
+              {errors.zipCode && (
+                <p
+                  className="
+                    mt-1.5
+                    text-xs
+                    font-medium
+                    text-red-500
+                  "
+                >
+                  {errors.zipCode}
+                </p>
+              )}
             </div>
           </div>
 
+          {/* Footer */}
           <div
             className="
               flex items-center
