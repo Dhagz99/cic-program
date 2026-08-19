@@ -10,7 +10,7 @@ const additionalZipCodes = [
 
     normalizedProvince: "METRO MANILA",
     normalizedMunicipality: "MUNTINLUPA",
-
+    normalizedPostalArea: "",
     source: "MANUAL",
     verifiedAt: new Date()
   }
@@ -20,11 +20,13 @@ async function main() {
   for (const item of additionalZipCodes) {
     await prisma.postalCodeReference.upsert({
       where: {
-        normalizedProvince_normalizedMunicipality_zipCode: {
+        normalizedProvince_normalizedMunicipality_normalizedPostalArea_zipCode: {
           normalizedProvince:
             item.normalizedProvince,
           normalizedMunicipality:
             item.normalizedMunicipality,
+          normalizedPostalArea:
+            item.normalizedPostalArea,
           zipCode:
             item.zipCode
         }
