@@ -1,7 +1,9 @@
 import api from "@/lib/axios";
 import type {
+  ApiResponse,
   ClientPostalAuditResponse,
   CreatePostalCodeInput,
+  PostalCodeResponse,
   UpdateClientPostalCodesPayload
 } from "@repo/shared";
 
@@ -40,3 +42,12 @@ export async function createPostalCodeServices(
 
   return response.data;
 }
+
+
+  export const getPostalCodeService = 
+    async (): Promise <PostalCodeResponse[]> => {
+        const response = await api.get<ApiResponse<PostalCodeResponse[]>>(
+          "/postal-codes/fetch-all"
+        );
+        return response.data.data
+    } 

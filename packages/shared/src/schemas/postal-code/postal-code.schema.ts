@@ -84,3 +84,8 @@ export type UpdateClientPostalCodesDTO =
         typeof createPostalCodeSchema
       >;
 
+
+
+export type PostalCodeResponse = {
+  id: string;
+} & CreatePostalCodeInput;

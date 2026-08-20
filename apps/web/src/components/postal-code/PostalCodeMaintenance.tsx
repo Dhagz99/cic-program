@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   MapPin,
   MapPinPlus,
+  MapPlusIcon,
   RefreshCw,
   Save,
   Search,
@@ -40,6 +41,7 @@ import { useAuth } from "../context/UserContext";
 import { useUpdateClientAddress } from "@/hooks/clients/useUpdateClientAddress";
 import EditClientAddressModal from "../clients/EditClientAddressModal";
 import AddPostalCodeModal from "./AddPostalCodeModal";
+import PostalCodeModal from "./PostalCodeModal";
 
 type StatusFilter =
   | "ALL"
@@ -82,6 +84,8 @@ export default function PostalCodeMaintenance() {
 
 
   const [isAddPostalCodeOpen, setIsAddPostalCodeOpen] = useState(false);
+  const [isPostalCodeOpen, setIsPostalCodeOpen] = useState(false);
+  isPostalCodeOpen
   const user = useAuth();
 
 const isAdmin =
@@ -362,25 +366,60 @@ useEffect(() => {
           </p>
         </div>
     <div className="flex gap-2">
- <button
-          type="button"
-          disabled={
-            !branchId ||
-            isFetching
-          }
-          onClick={handleCheck}
-          className="
-            inline-flex h-11
-            items-center justify-center
-            gap-2 rounded-xl
-            bg-blue-600 px-5
-            text-sm font-medium
-            text-white
-            transition
-            hover:bg-blue-700
-            disabled:cursor-not-allowed
-            disabled:opacity-50
-          "
+        <button
+            type="button"
+            disabled={
+              !branchId ||
+              isFetching
+            }
+            onClick={()=>setIsPostalCodeOpen(true)}
+            className="
+              inline-flex h-11
+              items-center justify-center
+              gap-2 rounded-xl
+              bg-blue-600 px-5
+              text-sm font-medium
+              text-white
+              transition
+              hover:bg-blue-700
+              disabled:cursor-not-allowed
+              disabled:opacity-50
+            "
+        >
+          <MapPlusIcon
+            className={`
+              h-4 w-4
+              ${
+                isFetching
+                  ? "animate-spin"
+                  : ""
+              }
+            `}
+          />
+
+          {isFetching
+            ? "Checking..."
+            : "View Postal Codes"}
+      </button>
+         <button
+            type="button"
+            disabled={
+              !branchId ||
+              isFetching
+            }
+            onClick={handleCheck}
+            className="
+              inline-flex h-11
+              items-center justify-center
+              gap-2 rounded-xl
+              bg-blue-600 px-5
+              text-sm font-medium
+              text-white
+              transition
+              hover:bg-blue-700
+              disabled:cursor-not-allowed
+              disabled:opacity-50
+            "
         >
           <RefreshCw
             className={`
@@ -395,8 +434,8 @@ useEffect(() => {
 
           {isFetching
             ? "Checking..."
-            : "Check Postal Codes"}
-        </button>
+            : "Refresh Postal Codes"}
+      </button>
         {isAdmin && (
         <button
             type="button"
@@ -860,6 +899,13 @@ useEffect(() => {
                     setIsAddPostalCodeOpen(false)
                   }
                 />
+
+            <PostalCodeModal
+              isOpen={isPostalCodeOpen}
+              onClose={() =>
+                setIsPostalCodeOpen(false)
+              }
+            />
           </div>
         </>
       )}

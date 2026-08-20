@@ -12,6 +12,7 @@ import {
 import {
   auditBranchPostalCodesService,
   createPostalCodeService,
+  getPostalCodeService,
   updateClientPostalCodesService
 } from "./postal-code.service";
 
@@ -117,4 +118,25 @@ export async function createPostalCodeController(
     }catch(error){
       next(error)
     }
+}
+
+
+export async function getPostalCodeController(
+ req: Request,
+ res: Response,
+ next: NextFunction
+) {
+  try{
+
+      const postalCode = await getPostalCodeService();
+
+      return res.status(200).json({
+        success: true,
+        data: postalCode
+      })
+
+  }catch(error){
+    next(error)
+  }
+  
 }

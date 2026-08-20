@@ -260,5 +260,16 @@ export async function createPostalCodeService(
 }
 
 
+    export async function getPostalCodeService() {
+        return prisma.postalCodeReference.findMany({
+          orderBy: {
+            zipCode: "asc"
+          }
+        })
+    }
+
+
+
+
 
 

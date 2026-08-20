@@ -5,6 +5,7 @@ import {
 import {
   auditBranchPostalCodesController,
   createPostalCodeController,
+  getPostalCodeController,
   updateClientPostalCodesController
 } from "./postal-code.controller";
 import { authenticateToken } from "../auth/auth.middleware";
@@ -26,6 +27,12 @@ router.post(
   "/create",
   authenticateToken,
   createPostalCodeController
+)
+
+router.get(
+  "/fetch-all",
+  authenticateToken,
+  getPostalCodeController
 )
 
 export default router;
