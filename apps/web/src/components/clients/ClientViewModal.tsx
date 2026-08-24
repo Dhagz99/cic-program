@@ -203,6 +203,7 @@ const contractPhaseStyles: Record<string, string> = {
                         <Th>Financed</Th>
                         <Th>Monthly</Th>
                         <Th>Installment</Th>
+                        <Th>Request Date</Th>
                         <Th>Start Date</Th>
                         <Th>End Date</Th>
                         <Th>Status</Th>
@@ -233,6 +234,7 @@ const contractPhaseStyles: Record<string, string> = {
                               <Td>{formatMoney(contract.financedAmount)}</Td>
                               <Td>{formatMoney(contract.monthlyPaymentAmount)}</Td>
                               <Td>{contract.installmentsNumber}</Td>
+                              <Td>{formatDate(contract.contractRequestDate)}</Td>
                               <Td>{formatDate(contract.contractStartDate)}</Td>
                               <Td>{formatDate(contract.contractEndPlannedDate)}</Td>
                               <Td>

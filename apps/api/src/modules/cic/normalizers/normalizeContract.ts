@@ -25,7 +25,7 @@ export const normalizeContract = (
       
       contractStartDate:
          parseDate(
-            row.AVAIL
+            row.EFF
          ),
 
       contractRequestDate:
