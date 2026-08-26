@@ -2,6 +2,7 @@ import { ValidationErrorChecker } from "@repo/shared";
 import prisma from "../../lib/prisma";
 import { removeSpecialCharacters } from "../utils/removeSpecialCharacters";
 import { checkContractErrors } from "../cic/utils/validation/checkContractError";
+import { getOverDueDaysDomain } from "./report.utils";
 
 
 type GenerateReportParams = {
@@ -477,8 +478,15 @@ for (
             contract.overduePaymentNumber || "0",
 
             contract.overduePaymentAmount?.toString() || "0",
-           
-            "0", //Overdue Days
+
+
+            getOverDueDaysDomain(
+               contract.installmentsNumber,
+               contract.financedAmount?.toNumber() ?? null,
+               contract.outstandingPaymentNumber,
+               contract.outstandingBalance?.toNumber() ?? null
+            ),  //Overdue Days
+            
 
 
             "", //Good Type

@@ -5,10 +5,31 @@ import { parseAmount }
 import { parseDate }
    from "../utils/parseDate";
 import { addTermToDate } from "../utils/addTermToDate";
+import { parseMonthStartDate } from "../utils/parseMonthStartDate";
+import { calculateLastPaymentAmount } from "../utils/calculateLastPaymentAmount";
 
 export const normalizeContract = (
-   row: DbfTypes
+   row: DbfTypes,
+   previousOutstandingBalance:
+      number | null = null,
 ) => {
+
+const contractStartDate =
+   parseMonthStartDate(row.EFF);
+
+   const outstandingBalance =
+      parseAmount(
+         row.TOT
+      );
+
+
+
+const lastPaymentAmount =
+   calculateLastPaymentAmount(
+      previousOutstandingBalance,
+      outstandingBalance,
+      parseAmount(row.LPAMT)
+   );
 
 
 
@@ -23,21 +44,23 @@ export const normalizeContract = (
             ? String(row.ACCTNO).trim()
             : null,
       
-      contractStartDate:
-         parseDate(
-            row.EFF
-         ),
-
+      contractStartDate,
+      
       contractRequestDate:
          parseDate(
             row.AVAIL
          ),
 
-      contractEndPlannedDate:
-         addTermToDate(
-            row.EFF,
-            Number(row.FATERM), 
-         ),
+     contractEndPlannedDate:
+      contractStartDate
+         ? new Date(
+              contractStartDate.getFullYear(),
+              contractStartDate.getMonth() +
+                 Number(row.FATERM),
+              0
+           )
+         : null,
+
       contractEndActualDate:
          row.CPD === "CL" 
                ?
@@ -73,10 +96,9 @@ export const normalizeContract = (
          parseDate(
             row.EFF
          ),
-      lastPaymentAmount:
-         parseAmount(
-            row.MPA
-         ),
+
+      lastPaymentAmount,
+
       nextPaymentDate:
          row.CPD == "CL" ? null 
               :

@@ -18,6 +18,7 @@ import {
 import { getRawAddressFromDbfRow } from "../address/getRawAddressFromDbfRow";
 import { resolveAddressFromPSGCCache } from "../address/resolveAddress.service";
 import { buildStagingClientData, buildStagingContractData } from "../staging/buildStagingBulkData";
+import { loadPreviousContractSnapshotCache } from "../../../snapshot/loadPreviousContractSnapshotCache.service";
 
 
 export const uploadDbfService = async ({
@@ -48,6 +49,23 @@ export const uploadDbfService = async ({
    if (existingBatch) {
       throw new Error("Branch already uploaded");
    }
+
+
+   console.time(
+   "LOAD_PREVIOUS_CONTRACT_SNAPSHOTS"
+);
+
+const previousContractSnapshotCache =
+   await loadPreviousContractSnapshotCache({
+      branchId:
+         user.branchId,
+
+      reportingPeriodId,
+   });
+
+console.timeEnd(
+   "LOAD_PREVIOUS_CONTRACT_SNAPSHOTS"
+);
 
    const uploadDir =
       path.join(
@@ -90,6 +108,7 @@ export const uploadDbfService = async ({
 
    console.time("NORMALIZE_VALIDATE");
 
+ 
    const clientMap =
       new Map<string, any>();
 
@@ -140,8 +159,27 @@ export const uploadDbfService = async ({
             resolvedAddress
          );
 
-      const normalizedContract =
-         normalizeContract(row);
+   const contractNo =
+      row.ACCTNO
+         ? String(
+              row.ACCTNO
+           ).trim()
+         : null;
+
+
+   const previousOutstandingBalance =
+         contractNo
+            ? previousContractSnapshotCache.get(
+               contractNo
+            ) ?? null
+            : null;
+
+
+   const normalizedContract =
+      normalizeContract(
+         row,
+         previousOutstandingBalance
+      );
 
       const clientValidationErrors =
          validateClient(normalizedClient);
