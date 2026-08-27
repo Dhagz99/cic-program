@@ -14,6 +14,8 @@ export const normalizeContract = (
       number | null = null,
 ) => {
 
+   
+
 const contractStartDate =
    parseMonthStartDate(row.EFF);
 
@@ -30,6 +32,22 @@ const lastPaymentAmount =
       outstandingBalance,
       parseAmount(row.LPAMT)
    );
+
+   console.log({
+   contractNo:
+      row.ACCTNO,
+
+   previousOutstandingBalance,
+
+   currentOutstandingBalance:
+      outstandingBalance,
+
+   fallbackPayment:
+      parseAmount(row.LPAMT),
+
+   calculatedLastPayment:
+      lastPaymentAmount,
+});
 
 
 

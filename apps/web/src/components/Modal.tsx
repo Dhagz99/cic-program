@@ -16,7 +16,7 @@ const sizeMap: Record<ModalProps["size"], string> = {
   lg: "w-[800px]",
   xl: "w-[950px]",
   xxl: "w-[1100px]",
-  xxxl: "w-[1350px]",
+  xxxl: "w-[1450px]",
 };
 
 export default function RequestModal({

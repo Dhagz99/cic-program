@@ -19,6 +19,7 @@ import { getRawAddressFromDbfRow } from "../address/getRawAddressFromDbfRow";
 import { resolveAddressFromPSGCCache } from "../address/resolveAddress.service";
 import { buildStagingClientData, buildStagingContractData } from "../staging/buildStagingBulkData";
 import { loadPreviousContractSnapshotCache } from "../../../snapshot/loadPreviousContractSnapshotCache.service";
+import { applyRenewalPayments } from "../contract/applyRenewalPayments.service";
 
 
 export const uploadDbfService = async ({
@@ -174,6 +175,9 @@ console.timeEnd(
             ) ?? null
             : null;
 
+const hasPreviousSnapshot =
+   previousOutstandingBalance !== null;
+
 
    const normalizedContract =
       normalizeContract(
@@ -216,8 +220,16 @@ console.timeEnd(
          contract:
             normalizedContract,
          validationErrors:
-            contractValidationErrors
+            contractValidationErrors,
+         hasPreviousSnapshot,
       });
+
+
+   applyRenewalPayments(
+      contractsTemp
+   );
+
+
 
       if (previewContracts.length < 5) {
          previewContracts.push(
