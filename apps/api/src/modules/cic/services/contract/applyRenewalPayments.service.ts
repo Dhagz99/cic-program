@@ -1,6 +1,8 @@
 // contract/applyRenewalPayments.service.ts
 
-type ContractTempItem = {
+import { normalizeLastPaymentDate } from "../../utils/normalizeLastPaymentDate";
+
+export type ContractTempItem = {
    rowNo: number;
 
    providerSubjectNo: string;
@@ -528,6 +530,12 @@ export const applyRenewalPayments = (
          usedOldContracts.add(
             oldContractNo
          );
+         
+           for (const item of contracts) {
+               normalizeLastPaymentDate(
+                  item.contract
+               );
+           }
       }
    }
 };

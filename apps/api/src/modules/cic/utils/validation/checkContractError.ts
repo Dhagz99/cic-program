@@ -14,7 +14,7 @@ export function checkContractErrors(data: ContractValidationInput): ValidationEr
       });
    };
 
-   console.log("data: ", data)
+   
 
    // Outstanding Payment > Installments
    if (

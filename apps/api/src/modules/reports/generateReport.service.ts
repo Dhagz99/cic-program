@@ -487,7 +487,23 @@ for (
                contract.outstandingBalance?.toNumber() ?? null
             ),  //Overdue Days
             
-
+          console.log("OVERDUE DAYS", {
+   id: contract.id,
+   contractNo: contract.contractNo,
+   installmentsNumber: contract.installmentsNumber,
+   financedAmount:
+      contract.financedAmount?.toNumber() ?? null,
+   outstandingPaymentNumber:
+      contract.outstandingPaymentNumber,
+   outstandingBalance:
+      contract.outstandingBalance?.toNumber() ?? null,
+   result:    getOverDueDaysDomain(
+               contract.installmentsNumber,
+               contract.financedAmount?.toNumber() ?? null,
+               contract.outstandingPaymentNumber,
+               contract.outstandingBalance?.toNumber() ?? null
+            ),
+}),
 
             "", //Good Type
             "", //Good Value
