@@ -94,5 +94,32 @@ export function checkContractErrors(data: ContractValidationInput): ValidationEr
       );
    }
 
+   // RERORT CONTRACT REFERENCE < CONTRACT START DATE
+   if(
+      data.reportReferenceDate  && 
+       data.contractStartDate &&
+       new Date(data.reportReferenceDate) <
+         new Date(data.contractStartDate)
+   ){
+      addError(
+         "Report Contract Reference date is less than Contract Start Date."
+      );
+   }
+
+
+      // RERORT CONTRACT REFERENCE < LAST PAYMENT DATE
+   if(
+      data.reportReferenceDate  && 
+       data.lastPaymentDate &&
+       new Date(data.reportReferenceDate) <
+         new Date(data.lastPaymentDate)
+   ){
+      addError(
+         "Report Contract Reference date is less than Last Payment Date."
+      );
+   }
+
+
+
    return errors;
 }

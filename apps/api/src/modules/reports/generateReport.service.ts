@@ -3,6 +3,7 @@ import prisma from "../../lib/prisma";
 import { removeSpecialCharacters } from "../utils/removeSpecialCharacters";
 import { checkContractErrors } from "../cic/utils/validation/checkContractError";
 import { getOverDueDaysDomain } from "./report.utils";
+import { getFirstDayOfMonthUtils, getLastDayOfMonthUtils } from "../utils/getLastDayOfMonth";
 
 
 type GenerateReportParams = {
@@ -65,6 +66,19 @@ if (!batch) {
 
       );
 
+const reportReferenceDate =
+      getLastDayOfMonthUtils(
+         batch.reportingPeriod.year,
+         batch.reportingPeriod.month
+      );
+
+
+const reportFirstReferenceDate =
+      getFirstDayOfMonthUtils(
+         batch.reportingPeriod.year,
+         batch.reportingPeriod.month
+      );
+
    /*
    |--------------------------------------------------------------------------
    | FILE ROWS
@@ -102,6 +116,10 @@ if (!batch) {
       }
 
    });
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -365,6 +383,41 @@ for (
       const contract =
          snapshot.contract;
 
+   //SKIP INVALID DATA BASE TO REPORT REFERENCE
+
+
+      
+
+    const isAlreadyClosed =
+        snapshot.contractPhase === "CL" ||
+        (snapshot.outstandingBalance?.toNumber() ?? 0) === 0;
+
+    const isValidForReferenceDate = contract.contractStartDate && reportReferenceDate < new Date(contract.contractStartDate);
+    
+    const isValidToSkip = contract.contractStartDate &&  
+                  (reportFirstReferenceDate <= contract.contractStartDate ) && 
+         (reportReferenceDate >= contract.contractStartDate );
+
+
+    // Contract is valid for this reporting period,
+    // but it was already closed before CIC ever received it.
+    if (
+        isValidForReferenceDate || (
+         isAlreadyClosed && isValidToSkip
+        )
+    ) {
+        console.log(
+            "SKIPPED NEVER-REPORTED CLOSED CONTRACT",
+            {
+                contractId: contract.id,
+                contractNo: contract.contractNo,
+                providerSubjectNo:
+                    contract.providerSubjectNo,
+            }
+        );
+
+        continue;
+    }
 
    const errors = checkContractErrors({
       contractId: contract.id,
@@ -380,6 +433,7 @@ for (
       nextPaymentAmount: snapshot.nextPaymentAmount?.toNumber() ?? null,
       outstandingPaymentNumber: snapshot.outstandingPaymentNumber,
       installmentsNumber: contract.installmentsNumber,
+      reportReferenceDate: reportReferenceDate.toISOString(),
    });
 
    validationErrors.push(...errors);
@@ -487,23 +541,23 @@ for (
                contract.outstandingBalance?.toNumber() ?? null
             ),  //Overdue Days
             
-          console.log("OVERDUE DAYS", {
-   id: contract.id,
-   contractNo: contract.contractNo,
-   installmentsNumber: contract.installmentsNumber,
-   financedAmount:
-      contract.financedAmount?.toNumber() ?? null,
-   outstandingPaymentNumber:
-      contract.outstandingPaymentNumber,
-   outstandingBalance:
-      contract.outstandingBalance?.toNumber() ?? null,
-   result:    getOverDueDaysDomain(
-               contract.installmentsNumber,
-               contract.financedAmount?.toNumber() ?? null,
-               contract.outstandingPaymentNumber,
-               contract.outstandingBalance?.toNumber() ?? null
-            ),
-}),
+//           console.log("OVERDUE DAYS", {
+//    id: contract.id,
+//    contractNo: contract.contractNo,
+//    installmentsNumber: contract.installmentsNumber,
+//    financedAmount:
+//       contract.financedAmount?.toNumber() ?? null,
+//    outstandingPaymentNumber:
+//       contract.outstandingPaymentNumber,
+//    outstandingBalance:
+//       contract.outstandingBalance?.toNumber() ?? null,
+//    result:    getOverDueDaysDomain(
+//                contract.installmentsNumber,
+//                contract.financedAmount?.toNumber() ?? null,
+//                contract.outstandingPaymentNumber,
+//                contract.outstandingBalance?.toNumber() ?? null
+//             ),
+// }),
 
             "", //Good Type
             "", //Good Value

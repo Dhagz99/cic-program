@@ -35,4 +35,6 @@ export type ContractValidationInput = {
    nextPaymentAmount?: number | string | null;
    outstandingPaymentNumber?: number | string | null;
    installmentsNumber?: number | string | null;
+   
+   reportReferenceDate?: number | string | null;
 };
