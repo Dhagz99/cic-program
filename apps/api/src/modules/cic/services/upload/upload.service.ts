@@ -225,9 +225,6 @@ const hasPreviousSnapshot =
       });
 
 
-   applyRenewalPayments(
-      contractsTemp
-   );
 
 
 
@@ -237,6 +234,12 @@ const hasPreviousSnapshot =
          );
       }
    }
+
+   applyRenewalPayments(
+      contractsTemp
+   );
+
+
 
    const clientsTemp =
       Array.from(

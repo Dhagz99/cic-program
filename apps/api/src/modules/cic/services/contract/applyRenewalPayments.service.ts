@@ -53,7 +53,9 @@ export const applyRenewalPayments = (
          ContractTempItem[]
       >();
 
+
    for (const item of contracts) {
+
       const current =
          contractsByClient.get(
             item.providerSubjectNo
@@ -84,6 +86,7 @@ export const applyRenewalPayments = (
       */
 
       clientContracts.sort((a, b) => {
+
          const dateA =
             a.contract
                .contractRequestDate
@@ -228,8 +231,8 @@ export const applyRenewalPayments = (
 
 
                   /*
-                  Old contract must exist before
-                  the renewal contract.
+                  Old contract must have been
+                  requested before renewal.
                   */
 
                   if (
@@ -241,7 +244,7 @@ export const applyRenewalPayments = (
 
 
                   /*
-                  Match loan series based on
+                  Same loan series based on
                   monthly payment.
                   */
 
@@ -300,9 +303,10 @@ export const applyRenewalPayments = (
          ALREADY CLOSED
          --------------------------------
 
-         If DBF already says this contract
-         is closed, preserve its existing:
+         DBF already says this contract is
+         closed.
 
+         Preserve:
          - lastPaymentAmount
          - lastPaymentDate
          */
@@ -312,6 +316,11 @@ export const applyRenewalPayments = (
                .contractPhase === "CL";
 
          if (isAlreadyClosed) {
+
+            usedOldContracts.add(
+               oldContractNo
+            );
+
             continue;
          }
 
@@ -321,17 +330,17 @@ export const applyRenewalPayments = (
          PREVIOUS SNAPSHOT EXISTS
          --------------------------------
 
-         Snapshot calculation already
-         produced the correct payment amount.
+         Snapshot processing already
+         calculated the payment amount.
 
          Example:
 
-         April balance = 13,000
-         May balance   = 2,600
+         Previous balance = 13,000
+         Current balance  = 2,600
 
-         lastPaymentAmount = 10,400
+         Payment = 10,400
 
-         DO NOT replace this with:
+         DO NOT replace that amount with:
 
          principal - balance
          */
@@ -341,25 +350,23 @@ export const applyRenewalPayments = (
          ) {
 
             /*
-            But if payment date is missing,
-            the renewal request date is the
-            final payment date of the old loan.
+            Preserve snapshot payment amount.
+
+            If snapshot processing did not
+            provide a payment date, use the
+            renewal request date.
             */
 
             if (
                oldContract.contract
                   .lastPaymentDate === null
             ) {
+
                oldContract.contract
                   .lastPaymentDate =
                      newRequestDate;
             }
 
-
-            /*
-            Prevent another renewal from
-            using this old contract.
-            */
 
             usedOldContracts.add(
                oldContractNo
@@ -373,19 +380,21 @@ export const applyRenewalPayments = (
 
                   newContractNo,
 
-                  hasPreviousSnapshot:
+                  oldHasPreviousSnapshot:
                      oldContract
                         .hasPreviousSnapshot,
 
-                  lastPaymentAmount:
+                  oldLastPaymentAmount:
                      oldContract
                         .contract
                         .lastPaymentAmount,
 
-                  lastPaymentDate:
+                  oldLastPaymentDate:
                      oldContract
                         .contract
-                        .lastPaymentDate
+                        .lastPaymentDate,
+
+                  newRequestDate
                }
             );
 
@@ -399,12 +408,31 @@ export const applyRenewalPayments = (
          NO PREVIOUS SNAPSHOT
          --------------------------------
 
-         This handles the special case:
+         The old loan was renewed before
+         we collected a previous monthly
+         snapshot.
 
-         Old loan was renewed before the
-         system collected a monthly snapshot.
+         For this case the renewal closes
+         the old loan.
+
+         Example:
+
+         9656
+         Principal = 46,800
+         Balance   =  3,900
+
+         Last Payment =
+            46,800 - 3,900
+            = 42,900
+
+         New contract 9946 request date:
+            04/28/2026
+
+         Therefore:
+
+         9656 Last Payment      = 42,900
+         9656 Last Payment Date = 04/28/2026
          */
-
 
          const principalAmount =
             oldContract.contract
@@ -420,38 +448,32 @@ export const applyRenewalPayments = (
          LAST PAYMENT AMOUNT
          --------------------------------
 
-         Preserve an existing DBF payment
-         amount if it already exists.
+         IMPORTANT:
 
-         Only calculate the fallback when
-         lastPaymentAmount is missing.
+         Do NOT preserve the normal DBF
+         fallback amount here.
 
-         Business rule:
+         A renewal without a previous
+         snapshot uses:
 
-         principal - current balance
+         principal - outstanding balance
          */
 
          if (
-            oldContract.contract
-               .lastPaymentAmount === null
+            principalAmount !== null &&
+            outstandingBalance !== null
          ) {
 
-            if (
-               principalAmount !== null &&
-               outstandingBalance !== null
-            ) {
-
-               const payment =
-                  principalAmount -
-                  outstandingBalance;
+            const payment =
+               principalAmount -
+               outstandingBalance;
 
 
-               oldContract.contract
-                  .lastPaymentAmount =
-                     payment > 0
-                        ? payment
-                        : null;
-            }
+            oldContract.contract
+               .lastPaymentAmount =
+                  payment > 0
+                     ? payment
+                     : null;
          }
 
 
@@ -460,19 +482,19 @@ export const applyRenewalPayments = (
          LAST PAYMENT DATE
          --------------------------------
 
-         If old contract has no payment date,
-         use the new renewal's request date.
+         The new renewal request date is
+         the final payment date of the old
+         contract.
+
+         Do NOT check whether the existing
+         date is null because normalizeContract
+         may already have populated a fallback
+         date.
          */
 
-         if (
-            oldContract.contract
-               .lastPaymentDate === null
-         ) {
-
-            oldContract.contract
-               .lastPaymentDate =
-                  newRequestDate;
-         }
+         oldContract.contract
+            .lastPaymentDate =
+               newRequestDate;
 
 
          /*
@@ -530,12 +552,23 @@ export const applyRenewalPayments = (
          usedOldContracts.add(
             oldContractNo
          );
-         
-           for (const item of contracts) {
-               normalizeLastPaymentDate(
-                  item.contract
-               );
-           }
       }
+   }
+
+
+   /*
+   --------------------------------
+   NORMALIZE PAYMENT DATES
+   --------------------------------
+
+   Run this only AFTER all renewal
+   processing has finished.
+   */
+
+   for (const item of contracts) {
+
+      normalizeLastPaymentDate(
+         item.contract
+      );
    }
 };

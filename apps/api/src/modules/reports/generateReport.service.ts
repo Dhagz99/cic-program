@@ -385,7 +385,8 @@ for (
 
    //SKIP INVALID DATA BASE TO REPORT REFERENCE
 
-
+      const isFirstClosedData =  contract.contractEndPlannedDate && contract.lastPaymentDate   
+                                  &&   new Date(contract.contractEndPlannedDate) < new Date(contract.lastPaymentDate);
       
 
     const isAlreadyClosed =
@@ -404,7 +405,8 @@ for (
     if (
         isValidForReferenceDate || (
          isAlreadyClosed && isValidToSkip
-        )
+        ) || isFirstClosedData
+
     ) {
         console.log(
             "SKIPPED NEVER-REPORTED CLOSED CONTRACT",
